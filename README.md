@@ -1,16 +1,31 @@
 # swift-fcpxml
 
-[![Platforms - macOS 10.15+ | iOS 10+ | tvOS 10+ | visionOS 1+](https://img.shields.io/badge/platforms-macOS%2010.15+%20|%20iOS%2010+%20|%20tvOS%2010+%20|%20visionOS%201+-lightgrey.svg?style=flat)](https://developer.apple.com/swift) ![Swift 5.5-6.0](https://img.shields.io/badge/Swift-5.5–6.0-orange.svg?style=flat) [![Xcode 13-16](https://img.shields.io/badge/Xcode-13–16-blue.svg?style=flat)](https://developer.apple.com/swift) [![License: MIT](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)](https://github.com/orchetect/swift-fcpxml/blob/main/LICENSE)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Forchetect%2Fswift-fcpxml%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/orchetect/swift-fcpxml) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Forchetect%2Fswift-fcpxml%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/orchetect/swift-fcpxml) [![License: MIT](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)](https://github.com/orchetect/swift-fcpxml/blob/main/LICENSE)
 
-A Swift library for efficient parsing and extracting timeline events on FCPXML (Final Cut Pro XML) files.
+A Swift library for efficient parsing and extracting timeline events from FCPXML (Final Cut Pro XML) files, with limited authoring support.
+
+The library is concerned with two main areas:
+
+1. Reading and authoring the FCPXML format using a fast and lightweight data model that wraps the XML objects
+2. Reasoning on FCPXML data and extracting information such as timeline events
 
 > [!NOTE]
 >
-> The evolution of this library is ongoing, and features are added on an as-needed basis.
+> The library is currently only available on macOS, which is a limitation of Apple's `XMLDocument` API. In future, this could be refactored to use FoundationXML in the Swift 6.x toolchain.
+
+> [!IMPORTANT]
 >
-> Currently a substantial amount of the FCPXML DTD is modeled and traversable, but is not entirely complete - some of the more esoteric XML elements have not yet beed modeled.
->
-> The core feature-set does allow for comprehensive reasoning on the XML in order to extract timeline events such as markers, and is being used actively in production.
+> The evolution of this library is ongoing, and as such some features may be missing or incomplete. See the [Roadmap](#Roadmap) section below.
+
+## Roadmap
+
+The evolution of this library is ongoing, and features may be added on an as-needed basis.
+
+This library grew out of the more focused need to parse timeline events and has gradually gained more ground in modeling the XML. Currently a substantial amount of the FCPXML DTD is modeled and traversable, but is not entirely complete - some of the more esoteric XML elements have not yet beed modeled.
+
+The model is more oriented toward reading, but limited authoring support is available and the library has been built with wider authoring support potentially being added in future in mind.
+
+The core feature-set does allow for comprehensive reasoning on the XML in order to extract timeline events such as markers, and is being used actively in production.
 
 ## Installation
 
