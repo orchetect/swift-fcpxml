@@ -13,7 +13,7 @@ import SwiftTimecodeCore
 import Testing
 import TestingExtensions
 
-@Suite struct FinalCutPro_FCPXML_Complex: FCPXMLUtilities {
+@Suite struct FinalCutPro_FCPXML_Complex: TestUtils {
     // MARK: - Test Data
     
     var fileContents: Data { get throws {
@@ -195,7 +195,7 @@ import TestingExtensions
     
     // MARK: - Clip Info
     
-    struct ClipInfo: Equatable, Hashable, FCPXMLUtilities {
+    struct ClipInfo: Equatable, Hashable, TestUtils {
         var elementType: FCPXML.ElementType
         var name: String?
         var absoluteStart: Timecode?

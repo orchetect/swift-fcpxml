@@ -12,7 +12,7 @@ import SwiftExtensions
 import SwiftTimecodeCore
 import Testing
 
-@Suite struct FinalCutPro_FCPXML_ElementInit: FCPXMLUtilities {
+@Suite struct FinalCutPro_FCPXML_ElementInit: TestUtils {
     // MARK: - Common Elements
     
     @Test

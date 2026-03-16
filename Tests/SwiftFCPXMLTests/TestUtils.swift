@@ -1,5 +1,5 @@
 //
-//  FCPXMLUtilities.swift
+//  TestUtils.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
 //  © 2022 Steffan Andrews • Licensed under MIT License
 //
@@ -11,9 +11,9 @@ import Foundation
 import SwiftExtensions
 import SwiftTimecodeCore
 
-protocol FCPXMLUtilities { }
+protocol TestUtils { }
 
-extension FCPXMLUtilities {
+extension TestUtils {
     static func tc(_ timecodeString: String, _ fr: TimecodeFrameRate) -> Timecode {
         try! Timecode(.string(timecodeString), at: fr, base: .max80SubFrames)
     }

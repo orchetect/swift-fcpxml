@@ -11,7 +11,7 @@ import SwiftExtensions
 import SwiftTimecodeCore
 import Testing
 
-@Suite struct FinalCutPro_FCPXML_RootVersionTests: FCPXMLUtilities {
+@Suite struct FinalCutPro_FCPXML_RootVersionTests: TestUtils {
     typealias Version = FCPXML.Version
     
     @Test

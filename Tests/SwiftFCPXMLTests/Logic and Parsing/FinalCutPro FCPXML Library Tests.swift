@@ -12,7 +12,7 @@ import SwiftExtensions
 import SwiftTimecodeCore
 import Testing
 
-@Suite struct FinalCutPro_FCPXML_Library: FCPXMLUtilities {
+@Suite struct FinalCutPro_FCPXML_Library: TestUtils {
     @Test
     func location() async throws {
         let url = try #require(URL(string: "file:///Users/user/Movies/MyLibrary.fcpbundle/"))

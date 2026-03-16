@@ -10,7 +10,7 @@
 import SwiftExtensions
 import Testing
 
-@Suite struct FinalCutPro_FCPXML_RolesParsing: FCPXMLUtilities {
+@Suite struct FinalCutPro_FCPXML_RolesParsing: TestUtils {
     /// Standard role (audio or video)
     @Test
     func parseRawStandardRole() async throws {

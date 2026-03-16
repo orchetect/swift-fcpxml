@@ -13,7 +13,7 @@ import SwiftTimecodeCore
 import Testing
 import TestingExtensions
 
-@Suite struct FinalCutPro_FCPXML_FormatInfo: FCPXMLUtilities {
+@Suite struct FinalCutPro_FCPXML_FormatInfo: TestUtils {
     /// Ensure `format` and `tcFormat` information can be found by traversing XML parents.
     @Test
     func firstFormatAndTCFormat() async throws {

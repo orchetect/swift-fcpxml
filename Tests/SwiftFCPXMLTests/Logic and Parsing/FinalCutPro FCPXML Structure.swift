@@ -13,7 +13,7 @@ import SwiftTimecodeCore
 import Testing
 import TestingExtensions
 
-@Suite struct FinalCutPro_FCPXML_Structure: FCPXMLUtilities {
+@Suite struct FinalCutPro_FCPXML_Structure: TestUtils {
     /// Ensure that elements that can appear in various locations in the XML hierarchy are all found.
     @Test
     func parse() async throws {

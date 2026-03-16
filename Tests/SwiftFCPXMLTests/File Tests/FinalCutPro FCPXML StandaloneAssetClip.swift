@@ -13,7 +13,7 @@ import SwiftTimecodeCore
 import Testing
 import TestingExtensions
 
-@Suite struct FinalCutPro_FCPXML_StandaloneAssetClip: FCPXMLUtilities {
+@Suite struct FinalCutPro_FCPXML_StandaloneAssetClip: TestUtils {
     // MARK: - Test Data
     
     var fileContents: Data { get throws {

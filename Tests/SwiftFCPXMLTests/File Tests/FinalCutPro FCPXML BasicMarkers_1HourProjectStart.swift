@@ -13,7 +13,7 @@ import SwiftTimecodeCore
 import Testing
 import TestingExtensions
 
-@Suite struct FinalCutPro_FCPXML_BasicMarkers_1HourProjectStart: FCPXMLUtilities {
+@Suite struct FinalCutPro_FCPXML_BasicMarkers_1HourProjectStart: TestUtils {
     // MARK: - Tests
     
     @Test

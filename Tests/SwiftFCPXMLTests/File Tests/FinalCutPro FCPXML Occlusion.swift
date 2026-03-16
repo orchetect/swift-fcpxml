@@ -13,7 +13,7 @@ import SwiftTimecodeCore
 import Testing
 import TestingExtensions
 
-@Suite struct FinalCutPro_FCPXML_Occlusion: FCPXMLUtilities {
+@Suite struct FinalCutPro_FCPXML_Occlusion: TestUtils {
     // MARK: - Test Data
     
     var fileContents: Data { get throws {
