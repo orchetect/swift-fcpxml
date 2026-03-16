@@ -1,5 +1,5 @@
 {
-  "originHash" : "49f05b27f1e4a3983592aca3afc25b7388aa5c2c90fd08734fba795ff6d8ae30",
+  "originHash" : "7e5206ce3f54ce74aac49af821ffe459bdb5664831b4f5583c231fa3a029e0ad",
   "pins" : [
     {
       "identity" : "swift-data-parsing",
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/orchetect/swift-timecode",
       "state" : {
-        "revision" : "f9a9e88c8e4c38b1b29d3db8130e1f07112e8b9e",
-        "version" : "3.0.0"
+        "revision" : "c15034c2943fd08f22ff5b86f7d7273f11f1679e",
+        "version" : "3.1.0"
       }
     }
   ],

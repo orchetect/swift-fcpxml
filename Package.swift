@@ -13,7 +13,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/orchetect/swift-extensions", from: "2.1.1"),
-        .package(url: "https://github.com/orchetect/swift-timecode", from: "3.0.0"),
+        .package(url: "https://github.com/orchetect/swift-timecode", from: "3.1.0"),
         
         // testing-only dependencies
         .package(url: "https://github.com/orchetect/swift-testing-extensions", from: "0.3.0"),
