@@ -44,11 +44,11 @@ extension FCPXML {
     
     /// `Timecode` template.
     public static func formTimecode(
-        rational: Fraction,
+        rational fraction: Fraction,
         at rate: TimecodeFrameRate
     ) throws -> Timecode {
         try Timecode(
-            .rational(rational),
+            .rational(fraction),
             at: rate,
             base: timecodeSubFramesBase,
             limit: timecodeUpperLimit
@@ -78,12 +78,12 @@ extension FCPXML {
     
     /// `TimecodeInterval` template.
     public static func formTimecodeInterval(
-        realTime: TimeInterval,
+        realTime seconds: TimeInterval,
         at rate: TimecodeFrameRate
     ) throws -> TimecodeInterval {
         
         try TimecodeInterval(
-            realTime: realTime,
+            realTime: seconds,
             at: rate,
             base: timecodeSubFramesBase,
             limit: timecodeUpperLimit
@@ -92,11 +92,11 @@ extension FCPXML {
     
     /// `TimecodeInterval` template.
     public static func formTimecodeInterval(
-        rational: Fraction,
+        rational fraction: Fraction,
         at rate: TimecodeFrameRate
     ) throws -> TimecodeInterval {
         try TimecodeInterval(
-            rational,
+            fraction,
             at: rate,
             base: timecodeSubFramesBase,
             limit: timecodeUpperLimit
