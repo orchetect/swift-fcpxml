@@ -142,7 +142,7 @@ extension FCPXML.Audition {
 
 // Audition
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Audition`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Audition`` model object.
     /// Call this on a `audition` element only.
     public var fcpAsAudition: FCPXML.Audition? {
         .init(element: self)

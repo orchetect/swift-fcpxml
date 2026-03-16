@@ -102,7 +102,7 @@ extension FCPXML.ElementType {
 }
 
 extension XMLElement {
-    /// Returns the ``FinalCutPro/FCPXML/ElementType`` case for the XML element.
+    /// Returns the ``FCPXML/ElementType`` case for the XML element.
     public var fcpElementType: FCPXML.ElementType? {
         guard let name = name else { return nil }
         return .init(rawValue: name)

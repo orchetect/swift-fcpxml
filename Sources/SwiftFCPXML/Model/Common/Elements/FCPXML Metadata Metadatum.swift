@@ -57,7 +57,7 @@ extension FCPXML.Metadata.Metadatum {
 // MARK: - Attributes
 
 extension FCPXML.Metadata.Metadatum {
-    /// Metadata key returned as a ``FinalCutPro/FCPXML/Metadata/Key`` enum case.
+    /// Metadata key returned as a ``FCPXML/Metadata/Key`` enum case.
     /// This is stored as a reverse-DNS formatted string. ie: `"com.apple.proapps.studio.reel"`
     ///
     /// Even though `key` is a required attribute, this property returns an Optional since not all
@@ -142,7 +142,7 @@ extension FCPXML.Metadata.Metadatum {
 // Metadatum
 extension XMLElement {
     /// FCPXML:
-    /// Returns the element wrapped in a ``FinalCutPro/FCPXML/Metadata/Metadatum`` model object.
+    /// Returns the element wrapped in a ``FCPXML/Metadata/Metadatum`` model object.
     /// Call this on an `md` element only.
     public var fcpAsMetadatum: FCPXML.Metadata.Metadatum? {
         .init(element: self)

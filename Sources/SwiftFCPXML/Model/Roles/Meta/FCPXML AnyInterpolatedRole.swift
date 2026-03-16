@@ -83,19 +83,19 @@ extension FCPXML.AnyInterpolatedRole {
 }
 
 extension FCPXML.AnyInterpolatedRole {
-    /// Returns `true` if the interpolated case is ``FinalCutPro/FCPXML/AnyInterpolatedRole/assigned(_:)``.
+    /// Returns `true` if the interpolated case is ``FCPXML/AnyInterpolatedRole/assigned(_:)``.
     public var isAssigned: Bool {
         guard case .assigned = self else { return false }
         return true
     }
     
-    /// Returns `true` if the interpolated case is ``FinalCutPro/FCPXML/AnyInterpolatedRole/defaulted(_:)``.
+    /// Returns `true` if the interpolated case is ``FCPXML/AnyInterpolatedRole/defaulted(_:)``.
     public var isDefaulted: Bool {
         guard case .defaulted = self else { return false }
         return true
     }
     
-    /// Returns `true` if the interpolated case is ``FinalCutPro/FCPXML/AnyInterpolatedRole/inherited(_:)``.
+    /// Returns `true` if the interpolated case is ``FCPXML/AnyInterpolatedRole/inherited(_:)``.
     public var isInherited: Bool {
         guard case .inherited = self else { return false }
         return true

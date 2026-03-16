@@ -191,7 +191,7 @@ extension FCPXML.Metadata {
 
 // Metadata
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Metadata`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Metadata`` model object.
     /// Call this on a `metadata` element only.
     public var fcpAsMetadata: FCPXML.Metadata? {
         .init(element: self)

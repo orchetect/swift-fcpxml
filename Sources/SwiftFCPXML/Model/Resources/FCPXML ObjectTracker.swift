@@ -73,7 +73,7 @@ extension FCPXML.ObjectTracker {
 
 // ObjectTracker
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/ObjectTracker`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/ObjectTracker`` model object.
     /// Call this on a `object-tracker` element only.
     public var fcpAsObjectTracker: FCPXML.ObjectTracker? {
         .init(element: self)

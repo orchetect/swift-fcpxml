@@ -191,7 +191,7 @@ extension XMLElement {
 
 // Audio
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Audio`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Audio`` model object.
     /// Call this on a `audio` element only.
     public var fcpAsAudio: FCPXML.Audio? {
         .init(element: self)

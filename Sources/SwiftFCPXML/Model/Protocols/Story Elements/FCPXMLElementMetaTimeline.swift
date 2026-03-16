@@ -15,7 +15,7 @@ import SwiftTimecodeCore
 /// This provides properties that can intelligently infer common properties such as timeline start
 /// timecode or duration timecode.
 public protocol FCPXMLElementMetaTimeline: FCPXMLElement {
-    /// Returns the timeline model wrapped in a type-erased ``FinalCutPro/FCPXML/AnyTimeline`` instance.
+    /// Returns the timeline model wrapped in a type-erased ``FCPXML/AnyTimeline`` instance.
     func asAnyTimeline() -> FCPXML.AnyTimeline
 }
 

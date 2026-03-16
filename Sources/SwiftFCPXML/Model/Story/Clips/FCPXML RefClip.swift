@@ -221,7 +221,7 @@ extension FCPXML.RefClip {
 
 // RefClip
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/RefClip`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/RefClip`` model object.
     /// Call this on a `ref-clip` element only.
     public var fcpAsRefClip: FCPXML.RefClip? {
         .init(element: self)

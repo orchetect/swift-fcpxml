@@ -91,7 +91,7 @@ extension FCPXML.Locator: FCPXMLElementBookmarkChild { }
 
 // Locator
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Locator`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Locator`` model object.
     /// Call this on a `locator` element only.
     public var fcpAsLocator: FCPXML.Locator? {
         .init(element: self)

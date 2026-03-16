@@ -101,7 +101,7 @@ extension FCPXML.Media.Multicam.Angle: FCPXMLElementMetaTimeline {
 
 // Angle
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in an ``FinalCutPro/FCPXML/Media/Multicam/Angle`` model object.
+    /// FCPXML: Returns the element wrapped in an ``FCPXML/Media/Multicam/Angle`` model object.
     /// Call this on a `mc-angle` element only.
     public var fcpAsMCAngle: FCPXML.Media.Multicam.Angle? {
         .init(element: self)

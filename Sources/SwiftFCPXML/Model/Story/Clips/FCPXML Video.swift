@@ -160,7 +160,7 @@ extension FCPXML.Video: FCPXMLElementMetaTimeline {
 
 // Video
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Video`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Video`` model object.
     /// Call this on a `video` element only.
     public var fcpAsVideo: FCPXML.Video? {
         .init(element: self)

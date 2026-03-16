@@ -186,7 +186,7 @@ extension FCPXML.Media {
 
 // Media
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Media`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Media`` model object.
     /// Call this on a `media` element only.
     public var fcpAsMedia: FCPXML.Media? {
         .init(element: self)

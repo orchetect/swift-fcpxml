@@ -280,7 +280,7 @@ extension XMLElement {
 
 // Asset
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in an ``FinalCutPro/FCPXML/Asset`` model object.
+    /// FCPXML: Returns the element wrapped in an ``FCPXML/Asset`` model object.
     /// Call this on an `asset` element only.
     public var fcpAsAsset: FCPXML.Asset? {
         .init(element: self)

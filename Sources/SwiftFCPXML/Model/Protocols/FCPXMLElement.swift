@@ -21,7 +21,7 @@ public protocol FCPXMLElement where Self: Equatable, Self: Hashable {
     ///
     /// Most model objects only handle a single type.
     /// However some model objects are 'meta types' and can handle more than one, such as
-    /// ``FinalCutPro/FCPXML/Marker`` which handles both `marker` and `chapter-marker`.
+    /// ``FCPXML/Marker`` which handles both `marker` and `chapter-marker`.
     static var supportedElementTypes: Set<FCPXML.ElementType> { get }
     
     /// Initialize a new empty element with defaults.

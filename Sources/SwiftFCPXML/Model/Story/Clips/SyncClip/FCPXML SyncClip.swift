@@ -188,7 +188,7 @@ extension FCPXML.SyncClip: FCPXMLElementMetaTimeline {
 
 // SyncClip
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/SyncClip`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/SyncClip`` model object.
     /// Call this on a `sync-clip` element only.
     public var fcpAsSyncClip: FCPXML.SyncClip? {
         .init(element: self)

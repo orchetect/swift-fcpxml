@@ -119,7 +119,7 @@ extension FCPXML.Project {
 
 // Project
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Project`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Project`` model object.
     /// Call this on a `project` element only.
     public var fcpAsProject: FCPXML.Project? {
         .init(element: self)

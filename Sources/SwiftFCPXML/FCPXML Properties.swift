@@ -115,21 +115,21 @@ extension FCPXML {
 }
 
 extension FCPXML.Library {
-    /// Wraps child timeline(s) in a type-erased ``FinalCutPro/FCPXML/AnyTimeline`` instances.
+    /// Wraps child timeline(s) in a type-erased ``FCPXML/AnyTimeline`` instances.
     func childTimelinesAsAnyTimelines() -> [FCPXML.AnyTimeline] {
         element._fcpMetaTimelinesAsAnyTimelines()
     }
 }
 
 extension FCPXML.Event {
-    /// Wraps child timeline(s) in a type-erased ``FinalCutPro/FCPXML/AnyTimeline`` instances.
+    /// Wraps child timeline(s) in a type-erased ``FCPXML/AnyTimeline`` instances.
     func childTimelinesAsAnyTimelines() -> [FCPXML.AnyTimeline] {
         element._fcpMetaTimelinesAsAnyTimelines()
     }
 }
 
 extension FCPXML.Project {
-    /// Wraps child `sequence` element in a type-erased ``FinalCutPro/FCPXML/AnyTimeline`` instances.
+    /// Wraps child `sequence` element in a type-erased ``FCPXML/AnyTimeline`` instances.
     func sequenceAsAnyTimeline() -> FCPXML.AnyTimeline {
         .sequence(self.sequence)
     }

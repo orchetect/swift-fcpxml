@@ -137,7 +137,7 @@ extension XMLElement {
 
 // Library
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Library`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Library`` model object.
     /// Call this on a `library` element only.
     public var fcpAsLibrary: FCPXML.Library? {
         .init(element: self)

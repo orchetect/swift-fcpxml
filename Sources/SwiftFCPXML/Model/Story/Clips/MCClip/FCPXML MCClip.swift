@@ -215,7 +215,7 @@ extension FCPXML.MCClip {
 
 // MCClip
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/MCClip`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/MCClip`` model object.
     /// Call this on a `mc-clip` element only.
     public var fcpAsMCClip: FCPXML.MCClip? {
         .init(element: self)

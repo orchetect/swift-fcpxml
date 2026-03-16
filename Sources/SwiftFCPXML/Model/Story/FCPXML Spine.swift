@@ -112,7 +112,7 @@ extension FCPXML.Spine: FCPXMLElementMetaTimeline {
 
 // Spine
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Spine`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Spine`` model object.
     /// Call this on a `spine` element only.
     public var fcpAsSpine: FCPXML.Spine? {
         .init(element: self)

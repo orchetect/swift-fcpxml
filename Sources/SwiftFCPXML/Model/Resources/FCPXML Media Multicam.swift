@@ -168,7 +168,7 @@ extension XMLElement {
 
 // Multicam
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Media/Multicam`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Media/Multicam`` model object.
     /// Call this on a `multicam` element only.
     public var fcpAsMulticam: FCPXML.Media.Multicam? {
         .init(element: self)

@@ -236,7 +236,7 @@ extension FCPXML.AssetClip: FCPXMLElementMetaTimeline {
 
 // AssetClip
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/AssetClip`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/AssetClip`` model object.
     /// Call this on a `asset-clip` element only.
     public var fcpAsAssetClip: FCPXML.AssetClip? {
         .init(element: self)

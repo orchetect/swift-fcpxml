@@ -167,7 +167,7 @@ extension XMLElement {
 
 // Text
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Text`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Text`` model object.
     /// Call this on a `text` element only.
     public var fcpAsText: FCPXML.Text? {
         .init(element: self)

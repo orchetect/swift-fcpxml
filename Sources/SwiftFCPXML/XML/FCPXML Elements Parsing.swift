@@ -37,7 +37,7 @@ extension XMLElement {
     }
     
     /// FCPXML: Returns immediate child timeline model objects wrapped in type-erased
-    /// ``FinalCutPro/FCPXML/AnyTimeline`` instances.
+    /// ``FCPXML/AnyTimeline`` instances.
     public var fcpTimelineElementsAsAnyTimeline: LazyMapSequence<
         LazyFilterSequence<
             LazyMapSequence<
@@ -60,7 +60,7 @@ extension XMLElement {
     /// `project` elements.
     ///
     /// - Returns: Sequence of timeline elements wrapped in a type-erased
-    ///   ``FinalCutPro/FCPXML/AnyTimeline`` instance.
+    ///   ``FCPXML/AnyTimeline`` instance.
     func _fcpMetaTimelinesAsAnyTimelines() -> [FCPXML.AnyTimeline] {
         childElements
             .flatMap { element -> [FCPXML.AnyTimeline] in

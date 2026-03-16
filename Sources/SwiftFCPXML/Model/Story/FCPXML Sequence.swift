@@ -209,7 +209,7 @@ extension XMLElement {
 
 // Sequence
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Sequence`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Sequence`` model object.
     /// Call this on a `sequence` element only.
     public var fcpAsSequence: FCPXML.Sequence? {
         .init(element: self)

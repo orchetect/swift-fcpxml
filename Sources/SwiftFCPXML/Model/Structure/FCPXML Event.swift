@@ -106,7 +106,7 @@ extension FCPXML.Event {
 
 // Event
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in an ``FinalCutPro/FCPXML/Event`` model object.
+    /// FCPXML: Returns the element wrapped in an ``FCPXML/Event`` model object.
     /// Call this on an `event` element only.
     public var fcpAsEvent: FCPXML.Event? {
         .init(element: self)

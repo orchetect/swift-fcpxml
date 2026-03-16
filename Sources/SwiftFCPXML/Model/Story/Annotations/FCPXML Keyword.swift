@@ -98,7 +98,7 @@ extension FCPXML.Keyword: FCPXMLElementOptionalDuration { }
 
 // Keyword
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Keyword`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Keyword`` model object.
     /// Call this on a `keyword` element only.
     public var fcpAsKeyword: FCPXML.Keyword? {
         .init(element: self)

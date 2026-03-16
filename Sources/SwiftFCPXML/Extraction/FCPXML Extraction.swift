@@ -16,7 +16,7 @@ extension FCPXMLElement {
     /// Extract elements from the element and recursively from all sub-elements.
     ///
     /// - Parameters:
-    ///   - types: Element types to include. If empty, all element types will be returned.
+    ///   - elementTypes: Element types to include. If empty, all element types will be returned.
     ///   - scope: Extraction scope.
     public func extract(
         types elementTypes: Set<FCPXML.ElementType>,
@@ -65,7 +65,7 @@ extension XMLElement {
     /// Extract elements from the element and recursively from all sub-elements.
     ///
     /// - Parameters:
-    ///   - types: Element types to include. If empty, all element types will be returned.
+    ///   - elementTypes: Element types to include. If empty, all element types will be returned.
     ///   - scope: Extraction scope.
     public func fcpExtract(
         types elementTypes: Set<FCPXML.ElementType>,

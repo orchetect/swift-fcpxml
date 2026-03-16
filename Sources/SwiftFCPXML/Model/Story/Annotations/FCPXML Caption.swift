@@ -115,7 +115,7 @@ extension FCPXML.Caption: FCPXMLElementTextStyleDefinitionChildren { }
 
 // Caption
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Caption`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Caption`` model object.
     /// Call this on a `caption` element only.
     public var fcpAsCaption: FCPXML.Caption? {
         .init(element: self)

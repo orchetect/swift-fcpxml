@@ -134,7 +134,7 @@ extension FCPXML.Gap: FCPXMLElementMetaTimeline {
 
 // Gap
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Gap`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Gap`` model object.
     /// Call this on a `gap` element only.
     public var fcpAsGap: FCPXML.Gap? {
         .init(element: self)

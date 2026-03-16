@@ -102,7 +102,7 @@ extension FCPXML.TimeMap {
 
 // TimeMap
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/TimeMap`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/TimeMap`` model object.
     /// Call this on a `timeMap` element only.
     public var fcpAsTimeMap: FCPXML.TimeMap? {
         .init(element: self)

@@ -191,7 +191,7 @@ extension FCPXML.Clip: FCPXMLElementMetaTimeline {
 
 // Clip
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Clip`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Clip`` model object.
     /// Call this on a `clip` element only.
     public var fcpAsClip: FCPXML.Clip? {
         .init(element: self)

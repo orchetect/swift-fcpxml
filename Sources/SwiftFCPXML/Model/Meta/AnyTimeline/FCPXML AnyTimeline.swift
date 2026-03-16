@@ -107,7 +107,7 @@ extension FCPXML.AnyTimeline {
 
 // Spine
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/AnyTimeline`` model object
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/AnyTimeline`` model object
     /// if the element is a timeline object.
     public var fcpAsAnyTimeline: FCPXML.AnyTimeline? {
         .init(element: self)

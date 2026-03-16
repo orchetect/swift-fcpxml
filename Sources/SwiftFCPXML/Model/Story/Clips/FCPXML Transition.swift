@@ -129,7 +129,7 @@ extension FCPXML.Transition: FCPXMLElementMetaTimeline {
 
 // Transition
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Transition`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Transition`` model object.
     /// Call this on a `transition` element only.
     public var fcpAsTransition: FCPXML.Transition? {
         .init(element: self)

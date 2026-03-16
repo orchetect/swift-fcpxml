@@ -51,8 +51,6 @@ extension FCPXML {
         public var excludedTraversalTypes: Set<FCPXML.ElementType>
         
         /// Element types to exclude during extraction.
-        /// This rule supersedes ``filteredExtractionTypes`` in the event the same type exists in
-        /// both.
         public var excludedExtractionTypes: Set<FCPXML.ElementType>
         
         /// Predicate to apply to element traversal.

@@ -154,7 +154,7 @@ extension FCPXML.Title: FCPXMLElementMetaTimeline {
 
 // Title
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Title`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Title`` model object.
     /// Call this on a `title` element only.
     public var fcpAsTitle: FCPXML.Title? {
         .init(element: self)

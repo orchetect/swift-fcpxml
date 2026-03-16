@@ -189,7 +189,7 @@ extension Sequence where Element == XMLElement {
 
 // Multicam Source
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/MulticamSource`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/MulticamSource`` model object.
     /// Call this on a `mc-source` element only.
     public var fcpAsMulticamSource: FCPXML.MulticamSource? {
         .init(element: self)

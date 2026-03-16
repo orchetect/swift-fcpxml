@@ -125,7 +125,7 @@ extension FCPXML.Root {
 
 // `fcpxml`
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Root`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Root`` model object.
     /// Call this on a `fcpxml` element only.
     public var fcpAsRoot: FCPXML.Root? {
         .init(element: self)

@@ -13,7 +13,7 @@ public protocol FCPXMLRole where Self: RawRepresentable, RawValue == String, Sel
     /// Returns the role type enum case.
     var roleType: FCPXML.RoleType { get }
     
-    /// Returns the annotation as ``FinalCutPro/FCPXML/AnyRole``.
+    /// Returns the annotation as ``FCPXML/AnyRole``.
     func asAnyRole() -> FCPXML.AnyRole
     
     /// Returns the role with its string lowercased.

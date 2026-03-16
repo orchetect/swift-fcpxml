@@ -262,7 +262,7 @@ extension XMLElement {
 
 // Marker or Chapter Marker
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Marker`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Marker`` model object.
     /// Call this on a `marker` or `chapter-marker` element only.
     public var fcpAsMarker: FCPXML.Marker? {
         .init(element: self)
@@ -315,7 +315,7 @@ extension FCPXML.Marker {
 
 // Marker or Chapter Marker
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/Marker/MarkerElementType``
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/Marker/MarkerElementType``
     /// model object.
     /// Call this on a `marker` or `chapter-marker` element only.
     internal var fcpMarkerElementType: FCPXML.Marker.MarkerElementType? {

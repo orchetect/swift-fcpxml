@@ -101,7 +101,7 @@ extension FCPXML.ConformRate: FCPXMLElementFrameSampling { }
 
 // ConformRate
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/ConformRate`` model object.
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/ConformRate`` model object.
     /// Call this on a `conform-rate` element only.
     public var fcpAsConformRate: FCPXML.ConformRate? {
         .init(element: self)

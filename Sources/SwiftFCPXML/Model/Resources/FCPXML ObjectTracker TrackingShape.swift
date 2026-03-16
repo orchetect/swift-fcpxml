@@ -70,7 +70,7 @@ extension FCPXML.ObjectTracker.TrackingShape {
 
 // ObjectTracker.TrackingShape
 extension XMLElement {
-    /// FCPXML: Returns the element wrapped in a ``FinalCutPro/FCPXML/ObjectTracker/TrackingShape``
+    /// FCPXML: Returns the element wrapped in a ``FCPXML/ObjectTracker/TrackingShape``
     /// model object.
     /// Call this on a `tracking-shape` element only.
     public var fcpAsTrackingShape: FCPXML.ObjectTracker.TrackingShape? {
