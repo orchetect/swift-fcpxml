@@ -21,7 +21,7 @@ The library is concerned with two main areas:
 
 The evolution of this library is ongoing, and features may be added on an as-needed basis.
 
-This library grew out of the more focused need to parse timeline events and has gradually gained more ground in modeling the XML. Currently a substantial amount of the FCPXML DTD is modeled and traversable, but is not entirely complete - some of the more esoteric XML elements have not yet beed modeled.
+This library grew out of the more focused need to parse timeline events and has gradually gained more ground in modeling the XML. Currently a substantial amount of the FCPXML DTD is modeled and traversable, but is not entirely complete - some of the more esoteric XML elements have not yet been modeled.
 
 The model is more oriented toward reading, but limited authoring support is available and the library has been built with wider authoring support potentially being added in future in mind.
 
