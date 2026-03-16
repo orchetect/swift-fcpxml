@@ -1,0 +1,51 @@
+{
+  "originHash" : "49f05b27f1e4a3983592aca3afc25b7388aa5c2c90fd08734fba795ff6d8ae30",
+  "pins" : [
+    {
+      "identity" : "swift-data-parsing",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/orchetect/swift-data-parsing",
+      "state" : {
+        "revision" : "ede3136a6cd3e89b3157dc8590eb43ac3c210fce",
+        "version" : "0.1.0"
+      }
+    },
+    {
+      "identity" : "swift-extensions",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/orchetect/swift-extensions",
+      "state" : {
+        "revision" : "ec46b1bf872b6dfb7fa48ecd4e5478c6a401b573",
+        "version" : "2.1.1"
+      }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-syntax.git",
+      "state" : {
+        "revision" : "4799286537280063c85a32f09884cfbca301b1a1",
+        "version" : "602.0.0"
+      }
+    },
+    {
+      "identity" : "swift-testing-extensions",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/orchetect/swift-testing-extensions",
+      "state" : {
+        "revision" : "2bfa77bf0637102360bc723c2c568237f961a2a3",
+        "version" : "0.3.0"
+      }
+    },
+    {
+      "identity" : "swift-timecode",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/orchetect/swift-timecode",
+      "state" : {
+        "revision" : "f9a9e88c8e4c38b1b29d3db8130e1f07112e8b9e",
+        "version" : "3.0.0"
+      }
+    }
+  ],
+  "version" : 3
+}
