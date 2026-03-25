@@ -56,7 +56,7 @@ extension FCPXML.CaptionRole: FCPXMLRole {
     public func titleCased(derivedOnly: Bool) -> Self {
         // derivedOnly has no effect for caption roles
         
-        let role = role.titleCased
+        let role = role.titleCased(firstCharacterOfWordsOnly: false, preserveUppercaseWords: false)
         // caption format case shouldn't be modified
         
         return Self(role: role, captionFormat: captionFormat)

@@ -49,13 +49,13 @@ extension FCPXML.AudioRole: FCPXMLRole {
     }
     
     public func titleCased(derivedOnly: Bool) -> Self {
-        let newRole: String = role.titleCased
+        let newRole: String = role.titleCased(firstCharacterOfWordsOnly: false, preserveUppercaseWords: false)
         var newSubRole: String?
         
         if derivedOnly, !isSubRoleDerivedFromMainRole {
             newSubRole = subRole
         } else {
-            newSubRole = subRole?.titleCased
+            newSubRole = subRole?.titleCased(firstCharacterOfWordsOnly: false, preserveUppercaseWords: false)
         }
         
         return Self(role: newRole, subRole: newSubRole)
