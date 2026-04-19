@@ -1,7 +1,7 @@
 //
 //  FCPXMLElementFrameSampling.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -15,13 +15,15 @@ public protocol FCPXMLElementFrameSampling: FCPXMLElement {
 }
 
 extension FCPXMLElementFrameSampling {
-    private var _frameSamplingDefault: FCPXML.FrameSampling { .floor }
-    
+    private var _frameSamplingDefault: FCPXML.FrameSampling {
+        .floor
+    }
+
     public var frameSampling: FCPXML.FrameSampling {
         get {
             guard let value = element.stringValue(forAttributeNamed: "frameSampling")
             else { return _frameSamplingDefault }
-            
+
             return FCPXML.FrameSampling(rawValue: value) ?? _frameSamplingDefault
         }
         nonmutating set {

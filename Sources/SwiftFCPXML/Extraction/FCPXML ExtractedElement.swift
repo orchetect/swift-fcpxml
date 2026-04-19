@@ -1,24 +1,24 @@
 //
 //  FCPXML ExtractedElement.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     // TODO: XMLElement is not Sendable
-    
+
     /// Extracted element and its context.
     public struct ExtractedElement: @unchecked Sendable {
         public let element: XMLElement
         public let breadcrumbs: [XMLElement]
         public let resources: XMLElement?
-        
+
         init(
             element: XMLElement,
             breadcrumbs: [XMLElement],
@@ -28,7 +28,7 @@ extension FCPXML {
             self.breadcrumbs = breadcrumbs
             self.resources = resources
         }
-        
+
         /// Return the a context value for the element.
         public func value<Value>(
             forContext contextKey: FCPXML.ElementContext<Value>

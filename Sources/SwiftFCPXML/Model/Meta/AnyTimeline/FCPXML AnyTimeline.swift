@@ -1,14 +1,14 @@
 //
 //  FCPXML AnyTimeline.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2024 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// Type-erased box containing a FCPXML timeline element.
@@ -27,33 +27,35 @@ extension FCPXML {
         case title(Title)
         case transition(Transition)
         case video(Video)
-        
+
         public var element: XMLElement {
             switch self {
-            case let .assetClip(model): return model.element
-            case let .clip(model): return model.element
-            case let .gap(model): return model.element
-            case let .mcAngle(model): return model.element
-            case let .mcClip(model): return model.element
-            case let .refClip(model): return model.element
-            case let .sequence(model): return model.element
-            case let .spine(model): return model.element
-            case let .syncClip(model): return model.element
-            case let .title(model): return model.element
-            case let .transition(model): return model.element
-            case let .video(model): return model.element
+            case let .assetClip(model): model.element
+            case let .clip(model): model.element
+            case let .gap(model): model.element
+            case let .mcAngle(model): model.element
+            case let .mcClip(model): model.element
+            case let .refClip(model): model.element
+            case let .sequence(model): model.element
+            case let .spine(model): model.element
+            case let .syncClip(model): model.element
+            case let .title(model): model.element
+            case let .transition(model): model.element
+            case let .video(model): model.element
             }
         }
-        
-        public var elementType: ElementType { model.elementType }
-        
+
+        public var elementType: ElementType {
+            model.elementType
+        }
+
         public static let supportedElementTypes: Set<ElementType> = .allTimelineCases
-        
+
         public init() {
             // can't instance without knowing what element type it is
             fatalError()
         }
-        
+
         public init?(element: XMLElement) {
             /**/ if let model = element.fcpAsAssetClip { self = .assetClip(model) }
             else if let model = element.fcpAsClip { self = .clip(model) }
@@ -68,7 +70,7 @@ extension FCPXML {
             else if let model = element.fcpAsTransition { self = .transition(model) }
             else if let model = element.fcpAsVideo { self = .video(model) }
             else { return nil }
-            
+
             // technically this is redundant:
             // guard _isElementTypeSupported(element: element) else { return nil }
         }
@@ -77,8 +79,10 @@ extension FCPXML {
 
 // MARK: - Meta Conformances
 
-extension FCPXML.AnyTimeline: FCPXMLElementMetaTimeline { 
-    public func asAnyTimeline() -> FCPXML.AnyTimeline { self }
+extension FCPXML.AnyTimeline: FCPXMLElementMetaTimeline {
+    public func asAnyTimeline() -> FCPXML.AnyTimeline {
+        self
+    }
 }
 
 // MARK: - Properties
@@ -87,18 +91,18 @@ extension FCPXML.AnyTimeline {
     /// Return the wrapped model object typed as ``FCPXMLElement``.
     public var model: any FCPXMLElement {
         switch self {
-        case let .assetClip(model): return model
-        case let .clip(model): return model
-        case let .gap(model): return model
-        case let .mcAngle(model): return model
-        case let .mcClip(model): return model
-        case let .refClip(model): return model
-        case let .sequence(model): return model
-        case let .spine(model): return model
-        case let .syncClip(model): return model
-        case let .title(model): return model
-        case let .transition(model): return model
-        case let .video(model): return model
+        case let .assetClip(model): model
+        case let .clip(model): model
+        case let .gap(model): model
+        case let .mcAngle(model): model
+        case let .mcClip(model): model
+        case let .refClip(model): model
+        case let .sequence(model): model
+        case let .spine(model): model
+        case let .syncClip(model): model
+        case let .title(model): model
+        case let .transition(model): model
+        case let .video(model): model
         }
     }
 }

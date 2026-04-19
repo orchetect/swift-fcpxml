@@ -1,7 +1,7 @@
 //
 //  FCPXML ObjectTracker.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -24,15 +24,15 @@ extension FCPXML {
     /// > See [`object-tracker`](https://developer.apple.com/documentation/professional_video_applications/fcpxml_reference/object-tracker).
     public struct ObjectTracker: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .objectTracker
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.objectTracker]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -47,7 +47,7 @@ extension FCPXML.ObjectTracker {
         trackingShapes: [TrackingShape]
     ) {
         self.init()
-        
+
         element._addChildren(trackingShapes)
     }
 }
@@ -56,7 +56,7 @@ extension FCPXML.ObjectTracker {
 
 extension FCPXML.ObjectTracker {
     // no Attributes
-    
+
     // contains 1 or more `tracking-shape`
 }
 

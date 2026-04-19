@@ -1,7 +1,7 @@
 //
 //  FCPXMLElementModelTypeProtocol Static.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -10,9 +10,7 @@ import Foundation
 
 // MARK: - Root
 
-extension FCPXMLElementModelTypeProtocol where
-Self == FCPXML.ElementModelType<FCPXML.Root>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Root> {
     public static var fcpxml: FCPXML.ElementModelType<FCPXML.Root> {
         .init()
     }
@@ -20,25 +18,19 @@ Self == FCPXML.ElementModelType<FCPXML.Root>
 
 // MARK: - Structure
 
-extension FCPXMLElementModelTypeProtocol where
-Self == FCPXML.ElementModelType<FCPXML.Library>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Library> {
     public static var library: FCPXML.ElementModelType<FCPXML.Library> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol where
-Self == FCPXML.ElementModelType<FCPXML.Event>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Event> {
     public static var event: FCPXML.ElementModelType<FCPXML.Event> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Project>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Project> {
     public static var project: FCPXML.ElementModelType<FCPXML.Project> {
         .init()
     }
@@ -46,49 +38,37 @@ where Self == FCPXML.ElementModelType<FCPXML.Project>
 
 // MARK: - Resources
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Asset>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Asset> {
     public static var asset: FCPXML.ElementModelType<FCPXML.Asset> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Media>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Media> {
     public static var media: FCPXML.ElementModelType<FCPXML.Media> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Format>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Format> {
     public static var format: FCPXML.ElementModelType<FCPXML.Format> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Effect>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Effect> {
     public static var effect: FCPXML.ElementModelType<FCPXML.Effect> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Locator>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Locator> {
     public static var locator: FCPXML.ElementModelType<FCPXML.Locator> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.ObjectTracker>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.ObjectTracker> {
     public static var objectTracker: FCPXML.ElementModelType<FCPXML.ObjectTracker> {
         .init()
     }
@@ -96,9 +76,7 @@ where Self == FCPXML.ElementModelType<FCPXML.ObjectTracker>
 
 // asset sub-elements
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.MediaRep>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.MediaRep> {
     public static var mediaRep: FCPXML.ElementModelType<FCPXML.MediaRep> {
         .init()
     }
@@ -106,9 +84,7 @@ where Self == FCPXML.ElementModelType<FCPXML.MediaRep>
 
 // media sub-elements
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Media.Multicam>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Media.Multicam> {
     public static var multicam: FCPXML.ElementModelType<FCPXML.Media.Multicam> {
         .init()
     }
@@ -116,9 +92,7 @@ where Self == FCPXML.ElementModelType<FCPXML.Media.Multicam>
 
 // media.multicam sub-elements
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Media.Multicam.Angle>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Media.Multicam.Angle> {
     public static var mcAngle: FCPXML.ElementModelType<FCPXML.Media.Multicam.Angle> {
         .init()
     }
@@ -126,9 +100,7 @@ where Self == FCPXML.ElementModelType<FCPXML.Media.Multicam.Angle>
 
 // object-tracker sub-elements
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.ObjectTracker.TrackingShape>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.ObjectTracker.TrackingShape> {
     public static var trackingShape: FCPXML.ElementModelType<FCPXML.ObjectTracker.TrackingShape> {
         .init()
     }
@@ -136,17 +108,13 @@ where Self == FCPXML.ElementModelType<FCPXML.ObjectTracker.TrackingShape>
 
 // MARK: - Story Elements
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Sequence>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Sequence> {
     public static var sequence: FCPXML.ElementModelType<FCPXML.Sequence> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Spine>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Spine> {
     public static var spine: FCPXML.ElementModelType<FCPXML.Spine> {
         .init()
     }
@@ -154,41 +122,31 @@ where Self == FCPXML.ElementModelType<FCPXML.Spine>
 
 // MARK: - Clips
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.AssetClip>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.AssetClip> {
     public static var assetClip: FCPXML.ElementModelType<FCPXML.AssetClip> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Audio>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Audio> {
     public static var audio: FCPXML.ElementModelType<FCPXML.Audio> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Audition>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Audition> {
     public static var audition: FCPXML.ElementModelType<FCPXML.Audition> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Clip>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Clip> {
     public static var clip: FCPXML.ElementModelType<FCPXML.Clip> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Gap>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Gap> {
     public static var gap: FCPXML.ElementModelType<FCPXML.Gap> {
         .init()
     }
@@ -203,49 +161,37 @@ where Self == FCPXML.ElementModelType<FCPXML.Gap>
 //     }
 // }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.MCClip>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.MCClip> {
     public static var mcClip: FCPXML.ElementModelType<FCPXML.MCClip> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.RefClip>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.RefClip> {
     public static var refClip: FCPXML.ElementModelType<FCPXML.RefClip> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.SyncClip>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.SyncClip> {
     public static var syncClip: FCPXML.ElementModelType<FCPXML.SyncClip> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Title>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Title> {
     public static var title: FCPXML.ElementModelType<FCPXML.Title> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Transition>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Transition> {
     public static var transition: FCPXML.ElementModelType<FCPXML.Transition> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Video>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Video> {
     public static var video: FCPXML.ElementModelType<FCPXML.Video> {
         .init()
     }
@@ -253,9 +199,7 @@ where Self == FCPXML.ElementModelType<FCPXML.Video>
 
 // asset-clip sub-elements
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.AudioChannelSource>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.AudioChannelSource> {
     public static var audioChannelSource: FCPXML.ElementModelType<FCPXML.AudioChannelSource> {
         .init()
     }
@@ -263,9 +207,7 @@ where Self == FCPXML.ElementModelType<FCPXML.AudioChannelSource>
 
 // mc-clip sub-elements
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.MulticamSource>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.MulticamSource> {
     public static var mcSource: FCPXML.ElementModelType<FCPXML.MulticamSource> {
         .init()
     }
@@ -273,17 +215,13 @@ where Self == FCPXML.ElementModelType<FCPXML.MulticamSource>
 
 // sync-clip/ref-clip sub-elements
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.SyncClip.SyncSource>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.SyncClip.SyncSource> {
     public static var syncSource: FCPXML.ElementModelType<FCPXML.SyncClip.SyncSource> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.AudioRoleSource>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.AudioRoleSource> {
     public static var audioRoleSource: FCPXML.ElementModelType<FCPXML.AudioRoleSource> {
         .init()
     }
@@ -291,26 +229,20 @@ where Self == FCPXML.ElementModelType<FCPXML.AudioRoleSource>
 
 // MARK: - Annotations
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Caption>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Caption> {
     public static var caption: FCPXML.ElementModelType<FCPXML.Caption> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Keyword>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Keyword> {
     public static var keyword: FCPXML.ElementModelType<FCPXML.Keyword> {
         .init()
     }
 }
 
 // Marker model includes `marker` and `chapter-marker` element types
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Marker>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Marker> {
     public static var marker: FCPXML.ElementModelType<FCPXML.Marker> {
         .init()
     }
@@ -318,9 +250,7 @@ where Self == FCPXML.ElementModelType<FCPXML.Marker>
 
 // MARK: - Textual
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Text>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Text> {
     public static var text: FCPXML.ElementModelType<FCPXML.Text> {
         .init()
     }
@@ -328,17 +258,13 @@ where Self == FCPXML.ElementModelType<FCPXML.Text>
 
 // MARK: - Metadata
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Metadata>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Metadata> {
     public static var metadata: FCPXML.ElementModelType<FCPXML.Metadata> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.Metadata.Metadatum>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.Metadata.Metadatum> {
     public static var metadatum: FCPXML.ElementModelType<FCPXML.Metadata.Metadatum> {
         .init()
     }
@@ -346,25 +272,19 @@ where Self == FCPXML.ElementModelType<FCPXML.Metadata.Metadatum>
 
 // MARK: - Misc
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.ConformRate>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.ConformRate> {
     public static var conformRate: FCPXML.ElementModelType<FCPXML.ConformRate> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.TimeMap>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.TimeMap> {
     public static var timeMap: FCPXML.ElementModelType<FCPXML.TimeMap> {
         .init()
     }
 }
 
-extension FCPXMLElementModelTypeProtocol
-where Self == FCPXML.ElementModelType<FCPXML.TimeMap.TimePoint>
-{
+extension FCPXMLElementModelTypeProtocol where Self == FCPXML.ElementModelType<FCPXML.TimeMap.TimePoint> {
     public static var timePoint: FCPXML.ElementModelType<FCPXML.TimeMap.TimePoint> {
         .init()
     }

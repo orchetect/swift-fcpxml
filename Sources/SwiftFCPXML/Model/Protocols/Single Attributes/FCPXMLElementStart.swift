@@ -1,7 +1,7 @@
 //
 //  FCPXMLElementStart.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -19,7 +19,7 @@ extension FCPXMLElementRequiredStart {
         get { element.fcpStart ?? .zero }
         nonmutating set { element.fcpStart = newValue }
     }
-    
+
     /// Returns the start time of the element as timecode.
     public func startAsTimecode(
         frameRateSource: FCPXML.FrameRateSource = .localToElement
@@ -41,12 +41,12 @@ extension FCPXMLElementOptionalStart {
         get { element.fcpStart }
         nonmutating set { element.fcpStart = newValue }
     }
-    
+
     /// Returns the start time of the element as timecode.
     public func startAsTimecode(
         frameRateSource: FCPXML.FrameRateSource = .localToElement
     ) -> Timecode? {
-        guard  start != nil else { return nil }
+        guard start != nil else { return nil }
         return element._fcpStartAsTimecode(
             frameRateSource: frameRateSource,
             default: .zero
@@ -62,7 +62,7 @@ extension XMLElement {
         default defaultStart: Fraction? = .zero
     ) -> Timecode? {
         guard let dur = fcpStart ?? defaultStart else { return nil }
-        
+
         return try? _fcpTimecode(
             fromRational: dur,
             frameRateSource: frameRateSource

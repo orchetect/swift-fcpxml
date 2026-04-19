@@ -1,7 +1,7 @@
 //
 //  FCPXML AudioRate.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -35,16 +35,16 @@ extension FCPXML.AudioRate {
     /// Attribute raw value for use in a `sequence` element.
     public var rawValueForSequence: String {
         switch self {
-        case .rate32kHz: return "32k"
-        case .rate44_1kHz: return "44.1k"
-        case .rate48kHz: return "48k"
-        case .rate88_2kHz: return "88.2k"
-        case .rate96kHz: return "96k"
-        case .rate176_4kHz: return "176.4k"
-        case .rate192kHz: return "192k"
+        case .rate32kHz: "32k"
+        case .rate44_1kHz: "44.1k"
+        case .rate48kHz: "48k"
+        case .rate88_2kHz: "88.2k"
+        case .rate96kHz: "96k"
+        case .rate176_4kHz: "176.4k"
+        case .rate192kHz: "192k"
         }
     }
-    
+
     /// Initialize using attribute's raw value from a `sequence` element.
     public init?(rawValueForSequence rawValue: String) {
         guard let match = Self.allCases
@@ -58,22 +58,22 @@ extension FCPXML.AudioRate {
     /// Attribute raw value for use in an `asset` element.
     public var rawValueForAsset: String {
         switch self {
-        case .rate32kHz: return "32000"
-        case .rate44_1kHz: return "44100"
-        case .rate48kHz: return "48000"
-        case .rate88_2kHz: return "88200"
-        case .rate96kHz: return "96000"
-        case .rate176_4kHz: return "176400"
-        case .rate192kHz: return "192000"
+        case .rate32kHz: "32000"
+        case .rate44_1kHz: "44100"
+        case .rate48kHz: "48000"
+        case .rate88_2kHz: "88200"
+        case .rate96kHz: "96000"
+        case .rate176_4kHz: "176400"
+        case .rate192kHz: "192000"
         }
     }
-    
+
     /// Initialize using attribute's raw value from an `asset` element.
     public init?(rawValueForAsset rawValue: String) {
         guard let match = Self.allCases
             .first(where: { $0.rawValueForAsset == rawValue })
         else { return nil }
-        
+
         self = match
     }
 }

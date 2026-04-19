@@ -1,14 +1,14 @@
 //
 //  FCPXML SyncClip.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// Contains a clip with its contained and anchored items synchronized.
@@ -21,15 +21,15 @@ extension FCPXML {
     /// > Use the `sync-source` element to describe the audio components of a synchronized clip.
     public struct SyncClip: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .syncClip
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.syncClip]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -63,31 +63,31 @@ extension FCPXML.SyncClip {
         metadata: FCPXML.Metadata? = nil
     ) {
         self.init()
-        
+
         self.format = format
         self.tcStart = tcStart
         self.tcFormat = tcFormat
-        
+
         // Audio Start/Duration
         self.audioStart = audioStart
         self.audioDuration = audioDuration
-        
+
         // Anchorable Attributes
         self.lane = lane
         self.offset = offset
-        
+
         // Clip Attributes
         self.name = name
         self.start = start
         self.duration = duration
         self.enabled = enabled
-        
+
         // Mod Date
         self.modDate = modDate
-        
+
         // Note child
         self.note = note
-        
+
         // Metadata
         self.metadata = metadata
     }
@@ -103,21 +103,21 @@ extension FCPXML.SyncClip {
         case audioDuration
         case tcStart
         case tcFormat
-        
+
         // Anchorable Attributes
         case lane
         case offset
-        
+
         // Clip Attributes
         case name
         case start
         case duration
         case enabled
-        
+
         // Mod Date
         case modDate
     }
-    
+
     // contains DTD sync-source*
     // contains DTD %timing-params
     // contains DTD %intrinsic-params
@@ -159,7 +159,7 @@ extension FCPXML.SyncClip {
             element.addChildren(newValue)
         }
     }
-    
+
     /// Returns child story elements.
     public var storyElements: LazyFilteredCompactMapSequence<[XMLNode], XMLElement> {
         element.fcpStoryElements
@@ -180,8 +180,10 @@ extension FCPXML.SyncClip /* : FCPXMLElementSyncSourceChildren */ {
 
 // MARK: - Meta Conformances
 
-extension FCPXML.SyncClip: FCPXMLElementMetaTimeline { 
-    public func asAnyTimeline() -> FCPXML.AnyTimeline { .syncClip(self) }
+extension FCPXML.SyncClip: FCPXMLElementMetaTimeline {
+    public func asAnyTimeline() -> FCPXML.AnyTimeline {
+        .syncClip(self)
+    }
 }
 
 // MARK: - Typing

@@ -1,7 +1,7 @@
 //
 //  FCPXML ElementType XML.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -11,14 +11,14 @@ import SwiftExtensions
 
 // MARK: - Sequence First
 
-extension Sequence where Element == XMLElement {
+extension Sequence<XMLElement> {
     /// FCPXML: Returns the first element with the given element type.
     public func first(
         whereFCPElementType elementType: FCPXML.ElementType
     ) -> Element? {
         first { $0.fcpElementType == elementType }
     }
-    
+
     /// FCPXML: Returns the first element with any of the given element types.
     public func first(
         whereFCPElementTypes elementTypes: Set<FCPXML.ElementType>
@@ -28,7 +28,7 @@ extension Sequence where Element == XMLElement {
             return elementTypes.contains(elementType)
         }
     }
-    
+
     /// FCPXML: Returns the first element that matches the given predicate.
     @_disfavoredOverload
     public func first(
@@ -43,28 +43,28 @@ extension Sequence where Element == XMLElement {
 
 // MARK: - Sequence Filter
 
-extension Sequence where Element == XMLElement {
+extension Sequence<XMLElement> {
     /// FCPXML: Returns the sequence filtered by the given element type.
     public func filter(
         whereFCPElementType elementType: FCPXML.ElementType
     ) -> LazyFilterSequence<Self> {
-        self.lazy.filter(whereFCPElementType: elementType)
+        lazy.filter(whereFCPElementType: elementType)
     }
-    
+
     /// FCPXML: Returns the sequence filtered by the given element types.
     public func filter(
         whereFCPElementTypes elementTypes: Set<FCPXML.ElementType>
     ) -> LazyFilterSequence<Self> {
-        self.lazy.filter(whereFCPElementTypes: elementTypes)
+        lazy.filter(whereFCPElementTypes: elementTypes)
     }
-    
+
     /// FCPXML: Returns the sequence filtered by the given predicate.
     @_disfavoredOverload
     public func filter(
         whereFCPElementType predicate: @escaping (_ elementType: FCPXML.ElementType) -> Bool,
         includeUnrecognizedElements: Bool
     ) -> LazyFilterSequence<Self> {
-        self.lazy.filter(whereFCPElementType: predicate, includeUnrecognizedElements: includeUnrecognizedElements)
+        lazy.filter(whereFCPElementType: predicate, includeUnrecognizedElements: includeUnrecognizedElements)
     }
 }
 
@@ -77,7 +77,7 @@ extension LazySequence where Element == XMLElement {
     ) -> LazyFilterSequence<LazySequence<Base>.Elements> {
        filter { $0.fcpElementType == elementType }
     }
-    
+
     /// FCPXML: Returns the sequence filtered by the given element types.
     public func filter(
         whereFCPElementTypes elementTypes: Set<FCPXML.ElementType>
@@ -87,7 +87,7 @@ extension LazySequence where Element == XMLElement {
             return elementTypes.contains(elementType)
         }
     }
-    
+
     /// FCPXML: Returns the sequence filtered by the given predicate.
     @_disfavoredOverload
     public func filter(
@@ -110,7 +110,7 @@ extension XMLElement {
     ) -> XMLElement? {
         childElements.first(whereFCPElementType: elementType)
     }
-    
+
     /// FCPXML: Returns the first child element of the given element type.
     /// If no matching child is found, the default is added as a child and returned.
     ///
@@ -129,7 +129,7 @@ extension XMLElement {
             return dc
         }
     }
-    
+
     /// FCPXML: Returns the first child element of the given element type.
     /// If no matching child is found, the default is added as a child and returned.
     ///
@@ -147,7 +147,7 @@ extension XMLElement {
             return defaultChild
         }
     }
-    
+
     /// FCPXML: Returns the first child element matching the given predicate.
     @_disfavoredOverload
     public func firstChildElement(

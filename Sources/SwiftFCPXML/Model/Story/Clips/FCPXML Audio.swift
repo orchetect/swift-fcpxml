@@ -1,14 +1,14 @@
 //
 //  FCPXML Audio.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// Audio element.
@@ -18,15 +18,15 @@ extension FCPXML {
     /// > References audio data from an `asset` or `effect` element.
     public struct Audio: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .audio
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.audio]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -55,23 +55,23 @@ extension FCPXML.Audio {
         note: String? = nil
     ) {
         self.init()
-        
+
         self.ref = ref
         self.role = role
         self.srcID = srcID
         self.sourceChannels = sourceChannels
         self.outputChannels = outputChannels
-        
+
         // Anchorable Attributes
         self.lane = lane
         self.offset = offset
-        
+
         // Clip Attributes
         self.name = name
         self.start = start
         self.duration = duration
         self.enabled = enabled
-        
+
         // Note child
         self.note = note
     }
@@ -91,18 +91,18 @@ extension FCPXML.Audio {
         case srcCh
         /// Output audio channels (comma separated, from: `L,R,C,LFE,Ls,Rs,X`)
         case outCh
-        
+
         // Anchorable Attributes
         case lane
         case offset
-        
+
         // Clip Attributes
         case name
         case start
         case duration
         case enabled
     }
-    
+
     // contains DTD %timing-params
     // contains DTD adjust-volume?
     // contains DTD %anchor_item*
@@ -119,24 +119,24 @@ extension FCPXML.Audio {
         get { element.fcpRef ?? "" }
         nonmutating set { element.fcpRef = newValue }
     }
-    
+
     public var role: FCPXML.AudioRole? {
         get { element.fcpRole(as: FCPXML.AudioRole.self) }
         nonmutating set { element.fcpSet(role: newValue) }
     }
-    
+
     /// Source/track identifier in asset (if not '1').
     public var srcID: String? {
         get { element.stringValue(forAttributeNamed: Attributes.srcID.rawValue) }
         nonmutating set { element.addAttribute(withName: Attributes.srcID.rawValue, value: newValue) }
     }
-    
+
     /// Source audio channels (comma separated, 1-based index, ie: "1, 2")
     public var sourceChannels: String? {
         get { element.fcpSourceChannels }
         nonmutating set { element.fcpSourceChannels = newValue }
     }
-    
+
     /// Output audio channels (comma separated, from: `L, R, C, LFE, Ls, Rs, X`)
     public var outputChannels: String? {
         get { element.fcpOutputChannels }
@@ -157,7 +157,7 @@ extension FCPXML.Audio {
             element.addChildren(newValue)
         }
     }
-    
+
     /// Returns child story elements.
     public var storyElements: LazyFilteredCompactMapSequence<[XMLNode], XMLElement> {
         element.fcpStoryElements
@@ -178,7 +178,7 @@ extension XMLElement {
         get { stringValue(forAttributeNamed: "srcCh") }
         set { addAttribute(withName: "srcCh", value: newValue) }
     }
-    
+
     /// FCPXML: Get or set the value of the `outCh` attribute.
     /// Use on `audio` and `audio-channel-source` elements.
     public var fcpOutputChannels: String? {

@@ -1,7 +1,7 @@
 //
 //  FCPXML ElementContext.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -14,13 +14,13 @@ extension FCPXML {
     /// from an element.
     public struct ElementContext<Value> {
         public let valueBuilder: ValueBuilder
-        
+
         public init(
             value: @escaping ValueBuilder
         ) {
             valueBuilder = value
         }
-        
+
         /// Returns the context value using the associated context value builder.
         ///
         /// - Parameters:
@@ -39,11 +39,11 @@ extension FCPXML {
                 breadcrumbs: breadcrumbs,
                 resources: resources
             )
-            
+
             let resources = resources
                 ?? element.fcpRootResources
                 ?? XMLElement(name: ElementType.resources.rawValue)
-            
+
             return valueBuilder(
                 element,
                 breadcrumbs,

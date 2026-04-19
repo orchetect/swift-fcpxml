@@ -1,7 +1,7 @@
 //
 //  FCPXML RolesExtractionPreset.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -14,32 +14,32 @@ extension FCPXML {
     /// Results are sorted by type, then by name.
     public struct RolesExtractionPreset: FCPXMLExtractionPreset {
         public var roleTypes: Set<RoleType>
-        
+
         public init(
             roleTypes: Set<RoleType>
         ) {
             self.roleTypes = roleTypes
         }
-        
+
         public func perform(
             on extractable: XMLElement,
             scope: FCPXML.ExtractionScope
         ) async -> [FCPXML.AnyRole] {
             // early return in case no types are specified
             guard !roleTypes.isEmpty else { return [] }
-            
+
             let extracted = await extractable.fcpExtract(scope: scope) { element in
                 element
                     .value(forContext: .inheritedRoles)
                     .filter(roleTypes: roleTypes)
                     .map(\.wrapped)
             }
-            
+
             let output = extracted
-                .flatMap { $0 }
+                .flatMap(\.self)
                 .removingDuplicates()
                 .sortedByRoleTypeThenByName()
-            
+
             return output
         }
     }

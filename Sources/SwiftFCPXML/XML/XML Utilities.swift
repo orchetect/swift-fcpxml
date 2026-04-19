@@ -1,7 +1,7 @@
 //
 //  XML Utilities.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -25,9 +25,9 @@ extension XMLElement {
     ) {
         let block: (_ element: XMLElement) -> WalkAncestorsIntermediateResult<Void> = { element in
             if block(element) {
-                return .continue
+                .continue
             } else {
-                return .return(withValue: ())
+                .return(withValue: ())
             }
         }
         _ = Self.walkAncestorElements(
@@ -36,7 +36,7 @@ extension XMLElement {
             block
         )
     }
-    
+
     /// Utility:
     /// Walk ancestors of the element.
     package func walkAncestorElements<T>(
@@ -50,7 +50,7 @@ extension XMLElement {
             block
         )
     }
-    
+
     /// Utility Helper:
     /// Walk ancestors of the element.
     private static func walkAncestorElements<T>(
@@ -58,29 +58,29 @@ extension XMLElement {
         returning: T.Type,
         _ block: (_ element: XMLElement) -> WalkAncestorsIntermediateResult<T>
     ) -> WalkAncestorsResult<T> {
-        guard let element = element else { return .exhaustedAncestors }
-        
+        guard let element else { return .exhaustedAncestors }
+
         let blockResult = block(element)
-        
+
         switch blockResult {
         case .continue:
             guard let parent = element.parentElement else {
                 return .exhaustedAncestors
             }
             return walkAncestorElements(startingWith: parent, returning: returning, block)
-        case .return(let value):
+        case let .return(value):
             return .value(value)
         case .failure:
             return .failure
         }
     }
-    
+
     package enum WalkAncestorsIntermediateResult<T> {
         case `continue`
         case `return`(withValue: T)
         case failure
     }
-    
+
     package enum WalkAncestorsResult<T> {
         case exhaustedAncestors
         case value(_ value: T)
@@ -92,23 +92,23 @@ extension XMLElement {
     /// Utility:
     /// Returns ancestor elements beginning from closest ancestor.
     /// If `replacement` is non-nil it will be used instead of the element's ancestors.
-    /// 
+    ///
     /// - Parameters:
     ///   - replacement: Optional replacement for ancestors. Ordered nearest to furthest ancestor.
     ///   - includingSelf: Include `self` as the first ancestor.
     /// - Returns: Sequence of ancestors, optionally including `self`.
-    package func ancestorElements<S: Sequence<XMLElement>>(
-        overrideWith replacement: S?,
+    package func ancestorElements(
+        overrideWith replacement: (some Sequence<XMLElement>)?,
         includingSelf: Bool
     ) -> AnySequence<XMLElement> {
-        if let replacement = replacement {
+        if let replacement {
             if includingSelf {
-                return ([self] + replacement).asAnySequence
+                ([self] + replacement).asAnySequence
             } else {
-                return replacement.asAnySequence
+                replacement.asAnySequence
             }
         } else {
-            return ancestorElements(includingSelf: includingSelf).asAnySequence
+            ancestorElements(includingSelf: includingSelf).asAnySequence
         }
     }
 }

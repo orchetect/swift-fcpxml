@@ -1,14 +1,14 @@
 //
 //  FCPXML Metadata Metadatum.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 // MARK: - Metadatum
 
@@ -16,15 +16,15 @@ extension FCPXML.Metadata {
     /// A single key/value element of metadata.
     public struct Metadatum: FCPXMLElement, Equatable, Hashable {
         public let element: XMLElement
-        
+
         public let elementType: FCPXML.ElementType = .metadatum
-        
+
         public static let supportedElementTypes: Set<FCPXML.ElementType> = [.metadatum]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -50,7 +50,7 @@ extension FCPXML.Metadata.Metadatum {
         case description // optional
         case source // optional
     }
-    
+
     // some md keys use the `value` attribute, and some use an interior `array`
 }
 
@@ -71,20 +71,20 @@ extension FCPXML.Metadata.Metadatum {
             keyString = newValue.rawValue
         }
     }
-    
+
     /// Metadata raw key name string.
     /// This is stored as a reverse-DNS formatted string. ie: `"com.apple.proapps.studio.reel"`
     public var keyString: String {
         get { element.stringValue(forAttributeNamed: Attributes.key.rawValue) ?? "" }
         nonmutating set { element.addAttribute(withName: Attributes.key.rawValue, value: newValue) }
     }
-    
+
     /// Metadata raw `value` attribute string.
     public var value: String? {
         get { element.fcpValue }
         nonmutating set { element.fcpValue = newValue }
     }
-    
+
     /// Boolean value determining whether the metadatum's value is editable.
     /// (Default: false)
     public var editable: Bool {
@@ -100,26 +100,26 @@ extension FCPXML.Metadata.Metadatum {
             )
         }
     }
-    
+
     /// The value type of the metadatum.
     public var type: FCPXML.Metadata.MetadatumType? {
         get {
             guard let value = element.stringValue(forAttributeNamed: Attributes.type.rawValue)
             else { return nil }
-            
+
             return FCPXML.Metadata.MetadatumType(rawValue: value)
         }
         nonmutating set {
             element.addAttribute(withName: Attributes.type.rawValue, value: newValue?.rawValue)
         }
     }
-    
+
     /// Display name for user interface.
     public var displayName: String? {
         get { element.stringValue(forAttributeNamed: Attributes.displayName.rawValue) }
         nonmutating set { element.addAttribute(withName: Attributes.displayName.rawValue, value: newValue) }
     }
-    
+
     /// Description for user interface.
     public var displayDescription: String? {
         get { element.stringValue(forAttributeNamed: Attributes.description.rawValue) }

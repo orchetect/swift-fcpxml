@@ -1,7 +1,7 @@
 //
 //  FCPXML Effect.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -24,15 +24,15 @@ extension FCPXML {
     /// > ).
     public struct Effect: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .effect
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.effect]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -50,7 +50,7 @@ extension FCPXML.Effect {
         src: String? = nil
     ) {
         self.init()
-        
+
         self.id = id
         self.name = name
         self.uid = uid
@@ -65,15 +65,15 @@ extension FCPXML.Effect {
         // shared resource attributes
         /// Identifier. (Required)
         case id
-        
+
         /// Name.
         case name
-        
+
         // effect attributes
-        
+
         /// UID. (Required)
         case uid // required
-        
+
         /// Source.
         case src
     }
@@ -83,27 +83,27 @@ extension FCPXML.Effect {
 
 extension FCPXML.Effect {
     // shared resource attributes
-    
+
     /// Identifier. (Required)
     public var id: String {
         get { element.fcpID ?? "" }
         nonmutating set { element.fcpID = newValue }
     }
-    
+
     /// Name.
     public var name: String? {
         get { element.fcpName }
         nonmutating set { element.fcpName = newValue }
     }
-    
+
     // effect attributes
-    
+
     /// UID. (Required)
     public var uid: String {
         get { element.fcpUID ?? "" }
         nonmutating set { element.fcpUID = newValue }
     }
-    
+
     /// Source.
     public var src: String? {
         get { element.fcpSRC }

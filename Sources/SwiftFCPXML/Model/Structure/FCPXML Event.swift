@@ -1,7 +1,7 @@
 //
 //  FCPXML Event.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -19,15 +19,15 @@ extension FCPXML {
     /// > by keywords and other matching criteria listed under the Smart Collection Match Elements.
     public struct Event: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .event
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.event]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -43,7 +43,7 @@ extension FCPXML.Event {
         uid: String? = nil
     ) {
         self.init()
-        
+
         self.name = name
         self.uid = uid
     }
@@ -57,7 +57,7 @@ extension FCPXML.Event {
         case name
         case uid
     }
-    
+
     // can contain one or more of any:
     //   clip | audition | mc-clip | ref-clip | sync-clip | asset-clip | project
     // can contain one or more of any DTD %collection_item:
@@ -71,7 +71,7 @@ extension FCPXML.Event {
         get { element.fcpName ?? "" }
         nonmutating set { element.fcpName = newValue }
     }
-    
+
     public var uid: String? {
         get { element.fcpUID }
         nonmutating set { element.fcpUID = newValue }
@@ -86,12 +86,12 @@ extension FCPXML.Event {
         get { element.children(whereFCPElement: .project) }
         nonmutating set { element._updateChildElements(ofType: .project, with: newValue) }
     }
-    
+
     /// Returns child story elements.
     public var storyElements: LazyFilteredCompactMapSequence<[XMLNode], XMLElement> {
         element.fcpStoryElements
     }
-    
+
     /// Get or set child elements.
     public var contents: LazyCompactMapSequence<[XMLNode], XMLElement> {
         get { element.childElements }

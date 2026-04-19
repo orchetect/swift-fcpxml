@@ -1,7 +1,7 @@
 //
 //  FCPXML TimeMap.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -20,15 +20,15 @@ extension FCPXML {
     /// > elements. All other time values are interpolated from the specified `timept` elements."
     public struct TimeMap: FCPXMLElement, Equatable, Hashable {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .timeMap
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.timeMap]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -45,7 +45,7 @@ extension FCPXML.TimeMap {
         timePoints: (some Sequence<TimePoint>)? = nil as [TimePoint]?
     ) {
         self.init()
-        
+
         self.frameSampling = frameSampling
         self.preservesPitch = preservesPitch
         timePoints?.forEach { element.addChild($0.element) }
@@ -59,7 +59,7 @@ extension FCPXML.TimeMap {
         case frameSampling
         case preservesPitch // 0 or 1, default: 1
     }
-    
+
     // contains 0 or more `timept` child elements
 }
 
@@ -92,7 +92,7 @@ extension FCPXML.TimeMap {
         get {
             element.children(whereFCPElement: .timePoint)
         }
-        nonmutating set { 
+        nonmutating set {
             element._updateChildElements(ofType: .timePoint, with: newValue)
         }
     }

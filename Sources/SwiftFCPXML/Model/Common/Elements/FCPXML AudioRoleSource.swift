@@ -1,14 +1,14 @@
 //
 //  FCPXML AudioRoleSource.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// FCPXML 1.11 DTD:
@@ -16,15 +16,15 @@ extension FCPXML {
     /// component in a clip."
     public struct AudioRoleSource: FCPXMLElement, Equatable, Hashable {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .audioRoleSource
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.audioRoleSource]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -40,7 +40,7 @@ extension FCPXML.AudioRoleSource {
         active: Bool = true
     ) {
         self.init()
-        
+
         self.role = role
         self.active = active
     }
@@ -55,7 +55,7 @@ extension FCPXML.AudioRoleSource {
         /// Active state of the audio role source.
         case active // default true
     }
-    
+
     // can contain adjusts
     // can contain filters
 }
@@ -65,13 +65,13 @@ extension FCPXML.AudioRoleSource {
 extension FCPXML.AudioRoleSource {
     /// Role the audio component is associated with.
     public var role: FCPXML.AudioRole {
-        get { 
+        get {
             element.fcpRole(as: FCPXML.AudioRole.self)
                 ?? .defaultAudioRole
         }
         nonmutating set { element.fcpSet(role: newValue) }
     }
-    
+
     /// Active state of the audio role source.
     public var active: Bool {
         get { element.fcpGetActive(default: true) }
@@ -105,10 +105,10 @@ extension XMLElement {
 
 // MARK: - Collection Methods
 
-extension Sequence where Element == FCPXML.AudioRoleSource {
+extension Sequence<FCPXML.AudioRoleSource> {
     /// Convert and wrap the audio role source as ``FCPXML/AnyRole``
     public func asAnyRoles() -> [FCPXML.AnyRole] {
-        compactMap { $0.role }
+        compactMap(\.role)
             .compactMap { .audio($0) }
     }
 }

@@ -1,7 +1,7 @@
 //
-//  FCPXML Extraction.swift
+//  FCPXML Extract.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -44,7 +44,7 @@ extension XMLElement {
             traversalPredicate: { _ in false },
             extractionPredicate: nil
         )
-        
+
         guard let elementType = fcpElementType,
               let extractedElement = await fcpExtract(
                   types: [elementType],
@@ -59,7 +59,7 @@ extension XMLElement {
                 resources: nil
             )
         }
-        
+
         return extractedElement
     }
 }

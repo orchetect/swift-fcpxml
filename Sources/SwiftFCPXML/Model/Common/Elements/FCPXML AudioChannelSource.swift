@@ -1,14 +1,14 @@
 //
 //  FCPXML AudioChannelSource.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// FCPXML 1.11 DTD:
@@ -18,15 +18,15 @@ extension FCPXML {
     /// storyline."
     public struct AudioChannelSource: FCPXMLElement, Equatable, Hashable {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .audioChannelSource
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.audioChannelSource]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -47,7 +47,7 @@ extension FCPXML.AudioChannelSource {
         active: Bool = true
     ) {
         self.init()
-        
+
         self.sourceChannels = sourceChannels
         self.outputChannels = outputChannels
         self.role = role
@@ -68,13 +68,13 @@ extension FCPXML.AudioChannelSource {
         case outputChannels = "outCh"
         /// Output role assignment.
         case role
-        
+
         case start
         case duration
         case enabled
         case active
     }
-    
+
     // contains adjusts
     // contains filters
     // contains mutes
@@ -88,24 +88,24 @@ extension FCPXML.AudioChannelSource {
         get { element.fcpSourceChannels ?? "" }
         nonmutating set { element.fcpSourceChannels = newValue }
     }
-    
+
     /// Output audio channels (comma separated, from: `L, R, C, LFE, Ls, Rs, X`)
     public var outputChannels: String? {
         get { element.fcpOutputChannels }
         nonmutating set { element.fcpOutputChannels = newValue }
     }
-    
+
     /// Output role assignment.
     public var role: FCPXML.AudioRole? {
         get { element.fcpRole(as: FCPXML.AudioRole.self) }
         nonmutating set { element.fcpSet(role: newValue) }
     }
-    
+
     public var enabled: Bool {
         get { element.fcpGetEnabled(default: true) }
         nonmutating set { element.fcpSet(enabled: newValue, default: true) }
     }
-    
+
     public var active: Bool {
         get { element.fcpGetActive(default: true) }
         nonmutating set { element.fcpSet(active: newValue, default: true) }
@@ -127,7 +127,7 @@ extension FCPXML.AudioChannelSource {
             element.addChildren(newValue)
         }
     }
-    
+
     // TODO: public var adjusts: []
     // TODO: public var filters: []
     // TODO: public var mutes: []
@@ -146,7 +146,7 @@ extension XMLElement {
 
 // MARK: - Collection Methods
 
-extension Sequence where Element == FCPXML.AudioChannelSource {
+extension Sequence<FCPXML.AudioChannelSource> {
     /// Convert and wrap the audio channel source roles as ``FCPXML/AnyRole``
     public func asAnyRoles() -> [FCPXML.AnyRole] {
         compactMap(\.role)

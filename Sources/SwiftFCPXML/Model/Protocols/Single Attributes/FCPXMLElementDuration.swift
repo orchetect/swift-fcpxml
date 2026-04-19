@@ -1,7 +1,7 @@
 //
 //  FCPXMLElementDuration.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -19,7 +19,7 @@ extension FCPXMLElementRequiredDuration {
         get { element.fcpDuration ?? .zero }
         nonmutating set { element.fcpDuration = newValue }
     }
-    
+
     /// Returns the local timeline duration of the element as timecode.
     public func durationAsTimecode(
         frameRateSource: FCPXML.FrameRateSource = .localToElement
@@ -41,7 +41,7 @@ extension FCPXMLElementOptionalDuration {
         get { element.fcpDuration }
         nonmutating set { element.fcpDuration = newValue }
     }
-    
+
     /// Returns the start time of the element as timecode.
     public func durationAsTimecode(
         frameRateSource: FCPXML.FrameRateSource = .localToElement
@@ -62,7 +62,7 @@ extension XMLElement {
         default defaultDuration: Fraction? = .zero
     ) -> Timecode? {
         guard let dur = fcpDuration ?? defaultDuration else { return nil }
-        
+
         return try? _fcpTimecode(
             fromRational: dur,
             frameRateSource: frameRateSource

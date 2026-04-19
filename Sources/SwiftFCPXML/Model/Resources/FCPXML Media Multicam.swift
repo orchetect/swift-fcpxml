@@ -1,29 +1,29 @@
 //
 //  FCPXML Media Multicam.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML.Media {
     /// A multi-camera element contains one or more `mc-angle` elements that each manage a series of
     /// other story elements.
     public struct Multicam: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: FCPXML.ElementType = .multicam
-        
+
         public static let supportedElementTypes: Set<FCPXML.ElementType> = [.multicam]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -46,7 +46,7 @@ extension FCPXML.Media.Multicam {
         metadata: FCPXML.Metadata? = nil
     ) {
         self.init()
-        
+
         // Media Attributes
         self.format = format
         self.duration = duration
@@ -64,14 +64,14 @@ extension FCPXML.Media.Multicam {
 extension FCPXML.Media.Multicam {
     public enum Attributes: String {
         case renderFormat
-        
+
         // Media Attributes
         case format
         case duration
         case tcStart
         case tcFormat
     }
-    
+
     // contains DTD mc-angle*
 }
 
@@ -94,15 +94,15 @@ extension FCPXML.Media.Multicam {
     public var angles: LazyFCPXMLChildrenSequence<Angle> {
         element.fcpMCAngles
     }
-    
+
     /// Returns audio and video `mc-angle` elements for the given `mc-source` collection.
     /// Call on a `multicam` element.
-    public func audioVideoMCAngles<S: Sequence<FCPXML.MulticamSource>>(
-        forMulticamSources sources: S
+    public func audioVideoMCAngles(
+        forMulticamSources sources: some Sequence<FCPXML.MulticamSource>
     ) -> (audioMCAngle: Angle?, videoMCAngle: Angle?) {
         element.fcpAudioVideoMCAngles(forMulticamSources: sources)
     }
-    
+
     /// Returns the child `mc-angle` with the given angle identifier.
     /// Call on a `multicam` element.
     func mcAngle(
@@ -123,27 +123,27 @@ extension XMLElement {
     public var fcpMCAngles: LazyFCPXMLChildrenSequence<FCPXML.Media.Multicam.Angle> {
         children(whereFCPElement: .mcAngle)
     }
-    
+
     /// FCPXML: Returns audio and video `mc-angle` elements for the given `mc-source` collection.
     /// Call on a `multicam` element.
-    public func fcpAudioVideoMCAngles<S: Sequence<XMLElement>>(
-        forMulticamSources sources: S
+    public func fcpAudioVideoMCAngles(
+        forMulticamSources sources: some Sequence<XMLElement>
     ) -> (
         audioMCAngle: FCPXML.Media.Multicam.Angle?,
         videoMCAngle: FCPXML.Media.Multicam.Angle?
     ) {
         let (audioAngleID, videoAngleID) = sources.fcpAudioVideoAngleIDs()
-        
+
         let audioMCAngle = fcpMCAngle(forAngleID: audioAngleID)
         let videoMCAngle = fcpMCAngle(forAngleID: videoAngleID)
-        
+
         return (audioMCAngle: audioMCAngle, videoMCAngle: videoMCAngle)
     }
-    
+
     /// FCPXML: Returns audio and video `mc-angle` elements for the given `mc-source` collection.
     /// Call on a `multicam` element.
-    public func fcpAudioVideoMCAngles<S: Sequence<FCPXML.MulticamSource>>(
-        forMulticamSources sources: S
+    public func fcpAudioVideoMCAngles(
+        forMulticamSources sources: some Sequence<FCPXML.MulticamSource>
     ) -> (
         audioMCAngle: FCPXML.Media.Multicam.Angle?,
         videoMCAngle: FCPXML.Media.Multicam.Angle?
@@ -152,13 +152,13 @@ extension XMLElement {
             forMulticamSources: sources.map(\.element)
         )
     }
-    
+
     /// FCPXML: Returns the child `mc-angle` with the given angle identifier.
     /// Call on a `multicam` element.
     public func fcpMCAngle(
         forAngleID angleID: String?
     ) -> FCPXML.Media.Multicam.Angle? {
-        guard let angleID = angleID else { return nil }
+        guard let angleID else { return nil }
         return fcpMCAngles
             .first(where: { $0.angleID == angleID })
     }

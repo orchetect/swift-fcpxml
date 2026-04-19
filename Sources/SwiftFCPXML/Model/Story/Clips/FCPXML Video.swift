@@ -1,14 +1,14 @@
 //
 //  FCPXML Video.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// Video element.
@@ -18,15 +18,15 @@ extension FCPXML {
     /// > References video data from an `asset` or `effect` element.
     public struct Video: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .video
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.video]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -53,21 +53,21 @@ extension FCPXML.Video {
         note: String? = nil
     ) {
         self.init()
-        
+
         self.ref = ref
         self.role = role
         self.srcID = srcID
-        
+
         // Anchorable Attributes
         self.lane = lane
         self.offset = offset
-        
+
         // Clip Attributes
         self.name = name
         self.start = start
         self.duration = duration
         self.enabled = enabled
-        
+
         // Note child
         self.note = note
     }
@@ -83,18 +83,18 @@ extension FCPXML.Video {
         case role
         /// Source/track identifier in asset (if not '1').
         case srcID
-        
+
         // Anchorable Attributes
         case lane
         case offset
-        
+
         // Clip Attributes
         case name
         case start
         case duration
         case enabled
     }
-    
+
     // can contain DTD param*
     // contains DTD %timing-params
     // contains DTD %intrinsic-params-video
@@ -112,13 +112,13 @@ extension FCPXML.Video {
         get { element.fcpRef ?? "" }
         nonmutating set { element.fcpRef = newValue }
     }
-    
+
     /// Video role. (Default: Video)
     public var role: FCPXML.VideoRole? {
         get { element.fcpRole(as: FCPXML.VideoRole.self) }
         nonmutating set { element.fcpSet(role: newValue) }
     }
-    
+
     /// Source/track identifier in asset (if not '1').
     public var srcID: String? {
         get { element.stringValue(forAttributeNamed: Attributes.srcID.rawValue) }
@@ -139,7 +139,7 @@ extension FCPXML.Video {
             element.addChildren(newValue)
         }
     }
-    
+
     /// Returns child story elements.
     public var storyElements: LazyFilteredCompactMapSequence<[XMLNode], XMLElement> {
         element.fcpStoryElements
@@ -153,7 +153,9 @@ extension FCPXML.Video: FCPXMLElementTimingParams { }
 // MARK: - Meta Conformances
 
 extension FCPXML.Video: FCPXMLElementMetaTimeline {
-    public func asAnyTimeline() -> FCPXML.AnyTimeline { .video(self) }
+    public func asAnyTimeline() -> FCPXML.AnyTimeline {
+        .video(self)
+    }
 }
 
 // MARK: - Typing

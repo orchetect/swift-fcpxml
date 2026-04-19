@@ -1,7 +1,7 @@
 //
 //  FCPXML FrameDataPreset.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2024 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -13,7 +13,7 @@ extension FCPXML {
     /// FCPXML extraction preset that extracts markers,.
     public struct FrameDataPreset: FCPXMLExtractionPreset {
         public init() { }
-        
+
         public func perform(
             on extractable: XMLElement,
             scope: FCPXML.ExtractionScope
@@ -22,32 +22,34 @@ extension FCPXML {
                 types: .allClipCases,
                 scope: scope
             )
-            
+
             let clips: [ExtractedClip] = extracted.compactMap {
                 guard let start = $0.value(forContext: .absoluteStartAsTimecode()),
                       let end = $0.value(forContext: .absoluteEndAsTimecode())
                 else { return nil }
-                
+
                 return (
                     start: start,
                     end: end,
                     clip: $0
                 )
             }
-            
+
             let frameRate = extractable._fcpTimecodeFrameRate() ?? .fps24
             let timelineStart = extractable._fcpTimelineStartAsTimecode()
                 ?? Timecode(.zero, at: frameRate)
-            
+
             return FCPXML.ExtractedFrameData(
                 timelineStart: timelineStart,
                 clips: clips
             )
         }
-        
-        public typealias ExtractedClip = (start: Timecode,
-                                          end: Timecode,
-                                          clip: FCPXML.ExtractedElement)
+
+        public typealias ExtractedClip = (
+            start: Timecode,
+            end: Timecode,
+            clip: FCPXML.ExtractedElement
+        )
     }
 }
 
@@ -60,12 +62,12 @@ extension FCPXMLExtractionPreset where Self == FCPXML.FrameDataPreset {
 
 extension FCPXML {
     // TODO: XMLElement is not Sendable
-    
+
     /// An extracted frame with associated data.
     public struct ExtractedFrameData: @unchecked Sendable {
         public let timelineStart: Timecode
         public let clips: [FrameDataPreset.ExtractedClip]
-        
+
         init(
             timelineStart: Timecode,
             clips: [FrameDataPreset.ExtractedClip]
@@ -73,7 +75,7 @@ extension FCPXML {
             self.timelineStart = timelineStart
             self.clips = clips
         }
-        
+
         /// Returns the clip that contains the given timecode.
         public func clip(for timecode: Timecode) -> FCPXML.ExtractedElement? {
             clips
@@ -83,9 +85,9 @@ extension FCPXML {
                 }?
                 .clip
         }
-        
+
         // convenience
-        
+
         public struct FrameData {
             public let timecode: Timecode
             public let localTimecode: Timecode
@@ -94,17 +96,17 @@ extension FCPXML {
             public let markers: [FCPXML.ExtractedMarker]
             public let metadata: [FCPXML.Metadata.Metadatum]
         }
-        
+
         public func data(for timecode: Timecode) async -> FrameData? {
             guard let clip = clip(for: timecode) else { return nil }
-            
+
             let timecodeRoundedDown = timecode.roundedDown(toNearest: .frames)
             guard let timecodeNextFrame = try? timecodeRoundedDown.adding(.frames(1)) else { return nil }
             let frameRange = timecodeRoundedDown ..< timecodeNextFrame
-            
+
             let localTimecode: Timecode
             if let clipStart = clip.value(forContext: .absoluteStartAsTimecode(frameRateSource: .mainTimeline)),
-               let clipLocalStart = clip.value(forContext: .absoluteStartAsTimecode(frameRateSource: .localToElement)) 
+               let clipLocalStart = clip.value(forContext: .absoluteStartAsTimecode(frameRateSource: .localToElement))
             {
                 let offsetIntoClip = timecode - clipStart
                 localTimecode = clipLocalStart + offsetIntoClip
@@ -112,9 +114,9 @@ extension FCPXML {
                 // failsafe
                 localTimecode = Timecode(.zero, using: timecode.properties)
             }
-            
+
             let clipName = clip.element.fcpName ?? ""
-            
+
             let keywords: [FCPXML.Keyword] = clip.value(forContext: .keywords())
                 .filter {
                     guard let kwRange = $0.absoluteRangeAsTimecode(
@@ -123,23 +125,23 @@ extension FCPXML {
                         resources: clip.resources
                     )
                     else { return true }
-                    
+
                     return kwRange.contains(timecode)
                 }
             let keywordsFlat = keywords.flattenedKeywords()
-            
+
             let markers = await clip.element
                 .fcpExtract(preset: .markers, scope: .mainTimeline)
                 .filter {
                     // keep markers that match the current frame's timecode
                     guard let markerTimecode = $0.value(forContext: .absoluteStartAsTimecode())
                     else { return false }
-                    
+
                     return frameRange.contains(markerTimecode)
                 }
-            
+
             let md = clip.value(forContext: .metadata)
-            
+
             return FrameData(
                 timecode: timecode,
                 localTimecode: localTimecode,

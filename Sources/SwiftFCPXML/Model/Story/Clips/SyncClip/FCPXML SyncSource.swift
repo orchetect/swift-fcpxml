@@ -1,14 +1,14 @@
 //
 //  FCPXML SyncSource.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML.SyncClip {
     /// Describes an the audio component of a synchronized clip.
@@ -18,15 +18,15 @@ extension FCPXML.SyncClip {
     /// > for a source of a synchronized clip.
     public struct SyncSource: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: FCPXML.ElementType = .syncSource
-        
+
         public static let supportedElementTypes: Set<FCPXML.ElementType> = [.syncSource]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -41,7 +41,7 @@ extension FCPXML.SyncClip.SyncSource {
         sourceID: SourceID
     ) {
         self.init()
-        
+
         self.sourceID = sourceID
     }
 }
@@ -51,12 +51,12 @@ extension FCPXML.SyncClip.SyncSource {
 extension FCPXML.SyncClip.SyncSource {
     public enum Attributes: String {
         // Element-Specific Attributes
-        
+
         /// Required.
         /// Synchronization source ID.
         case sourceID // required
     }
-    
+
     // contains DTD audio-role-source*
 }
 
@@ -67,13 +67,13 @@ extension FCPXML.SyncClip.SyncSource {
         get {
             guard let value = element.stringValue(forAttributeNamed: Attributes.sourceID.rawValue)
             else { return nil }
-            
+
             return SourceID(rawValue: value)
         }
         nonmutating set {
             // required attribute, don't allow setting nil
-            guard let newValue = newValue else { return }
-            
+            guard let newValue else { return }
+
             element.addAttribute(withName: Attributes.sourceID.rawValue, value: newValue.rawValue)
         }
     }

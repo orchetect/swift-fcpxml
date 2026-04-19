@@ -1,14 +1,14 @@
 //
 //  FCPXML Attributes.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 // MARK: - Basic Attributes
 
@@ -18,43 +18,43 @@ extension XMLElement {
         get { stringValue(forAttributeNamed: "format") }
         set { addAttribute(withName: "format", value: newValue) }
     }
-    
+
     /// FCPXML: Get or set the value of the `id` attribute.
     public var fcpID: String? {
         get { stringValue(forAttributeNamed: "id") }
         set { addAttribute(withName: "id", value: newValue) }
     }
-    
+
     /// FCPXML: Get or set the value of the `uid` attribute.
     public var fcpUID: String? {
         get { stringValue(forAttributeNamed: "uid") }
         set { addAttribute(withName: "uid", value: newValue) }
     }
-    
+
     /// FCPXML: Get or set the value of the `name` attribute.
     public var fcpName: String? {
         get { stringValue(forAttributeNamed: "name") }
         set { addAttribute(withName: "name", value: newValue) }
     }
-    
+
     /// FCPXML: Get or set the value of the `note` attribute.
     public var fcpNote: String? {
         get { stringValue(forAttributeNamed: "note") }
         set { addAttribute(withName: "note", value: newValue) }
     }
-    
+
     /// FCPXML: Get or set the value of the `ref` attribute.
     public var fcpRef: String? {
         get { stringValue(forAttributeNamed: "ref") }
         set { addAttribute(withName: "ref", value: newValue) }
     }
-    
+
     /// FCPXML: Get or set the value of the `src` attribute.
     public var fcpSRC: String? {
         get { stringValue(forAttributeNamed: "src") }
         set { addAttribute(withName: "src", value: newValue) }
     }
-    
+
     /// FCPXML: Get or set the value of the `value` attribute.
     public var fcpValue: String? {
         get { stringValue(forAttributeNamed: "value") }
@@ -72,7 +72,7 @@ extension XMLElement {
         get { _fcpGetFraction(forAttribute: "audioStart", scaled: true) }
         set { _fcpSet(fraction: newValue, forAttribute: "audioStart", scaled: true) }
     }
-    
+
     /// FCPXML: Get or set the value of the `audioDuration` attribute.
     /// Scales value if containing clip has a `conform-rate` child element.
     /// Use on `asset-clip`, `clip`, `mc-clip`, `ref-clip` or `sync-clip`.
@@ -80,48 +80,48 @@ extension XMLElement {
         get { _fcpGetFraction(forAttribute: "audioDuration", scaled: true) }
         set { _fcpSet(fraction: newValue, forAttribute: "audioDuration", scaled: true) }
     }
-    
+
     /// FCPXML: Get or set the value of the `duration` attribute.
     /// Scales value if containing clip has a `conform-rate` child element.
     public var fcpDuration: Fraction? {
         get { _fcpGetFraction(forAttribute: "duration", scaled: true) }
         set { _fcpSet(fraction: newValue, forAttribute: "duration", scaled: true) }
     }
-    
+
     /// FCPXML: Get or set the value of the `frameDuration` attribute.
     /// Scales value if containing clip has a `conform-rate` child element.
     public var fcpFrameDuration: Fraction? {
         get { _fcpGetFraction(forAttribute: "frameDuration", scaled: true) }
         set { _fcpSet(fraction: newValue, forAttribute: "frameDuration", scaled: true) }
     }
-    
+
     /// FCPXML: Get or set the value of the `start` attribute.
     /// Scales value if containing clip has a `conform-rate` child element.
     public var fcpStart: Fraction? {
         get { _fcpGetFraction(forAttribute: "start", scaled: true) }
         set { _fcpSet(fraction: newValue, forAttribute: "start", scaled: true) }
     }
-    
+
     /// FCPXML: Get or set the value of the `tcStart` attribute.
     /// Scales value if containing clip has a `conform-rate` child element.
     public var fcpTCStart: Fraction? {
         get { _fcpGetFraction(forAttribute: "tcStart", scaled: true) }
         set { _fcpSet(fraction: newValue, forAttribute: "tcStart", scaled: true) }
     }
-    
+
     /// FCPXML: Get or set the value of the `offset` attribute.
     /// Scales value if containing clip has a `conform-rate` child element.
     public var fcpOffset: Fraction? {
         get { _fcpGetFraction(forAttribute: "offset", scaled: true) }
         set { _fcpSet(fraction: newValue, forAttribute: "offset", scaled: true) }
     }
-    
+
     /// FCPXML: Get or set the value of the `tcFormat` attribute.
     public var fcpTCFormat: FCPXML.TimecodeFormat? {
         get {
             guard let value = stringValue(forAttributeNamed: "tcFormat")
             else { return nil }
-            
+
             return FCPXML.TimecodeFormat(rawValue: value)
         }
         set {
@@ -137,7 +137,7 @@ extension XMLElement {
     public func fcpGetActive(default defaultValue: Bool) -> Bool {
         getBool(forAttribute: "active") ?? defaultValue
     }
-    
+
     /// FCPXML: Set the value of the `active` attribute.
     /// Removes the attribute if the new value equals the default value.
     public func fcpSet(active newValue: Bool?, default defaultValue: Bool) {
@@ -155,7 +155,7 @@ extension XMLElement {
     public func fcpGetEnabled(default defaultValue: Bool) -> Bool {
         getBool(forAttribute: "enabled") ?? defaultValue
     }
-    
+
     /// FCPXML: Set the value of the `enabled` attribute.
     /// Removes the attribute if the new value equals the default value.
     public func fcpSet(enabled newValue: Bool?, default defaultValue: Bool) {
@@ -183,34 +183,34 @@ extension XMLElement {
     public func fcpRole<R: FCPXMLRole>(as roleType: R.Type) -> R? {
         guard let value = stringValue(forAttributeNamed: "role")
         else { return nil }
-        
+
         return R(rawValue: value)
     }
-    
+
     /// FCPXML: Set the value of the `role` attribute.
-    public func fcpSet<R: FCPXMLRole>(role: R?) {
+    public func fcpSet(role: (some FCPXMLRole)?) {
         addAttribute(withName: "role", value: role?.rawValue)
     }
-    
+
     /// FCPXML: Get or set the value of the `audioRole` attribute.
     public var fcpAudioRole: FCPXML.AudioRole? {
         get {
             guard let value = stringValue(forAttributeNamed: "audioRole")
             else { return nil }
-            
+
             return FCPXML.AudioRole(rawValue: value)
         }
-        set { 
+        set {
             addAttribute(withName: "audioRole", value: newValue?.rawValue)
         }
     }
-    
+
     /// FCPXML: Get or set the value of the `videoRole` attribute.
     public var fcpVideoRole: FCPXML.VideoRole? {
         get {
             guard let value = stringValue(forAttributeNamed: "videoRole")
             else { return nil }
-            
+
             return FCPXML.VideoRole(rawValue: value)
         }
         set {
@@ -230,10 +230,10 @@ extension XMLElement {
         guard let value = stringValue(forAttributeNamed: attributeName),
               let base = Fraction(fcpxmlString: value)
         else { return nil }
-        
+
         // scale if necessary
         // a clip's local start will be scaled if the clip contains `conform-rate`
-        let isStartAttribute = ["start" /*, "tcStart" */].contains(attributeName)
+        let isStartAttribute = ["start" /* , "tcStart" */ ].contains(attributeName)
         if scaled,
            let scalingFactor = _fcpConformRateScalingFactor(includingSelf: isStartAttribute)
         {
@@ -242,7 +242,7 @@ extension XMLElement {
             return base
         }
     }
-    
+
     /// FCPXML: Set an attribute time value from a `Fraction` instance.
     func _fcpSet(
         fraction newValue: Fraction?,
@@ -250,17 +250,17 @@ extension XMLElement {
         scaled: Bool
     ) {
         var newValue = newValue
-        
+
         // scale if necessary
         // a clip's local start will be scaled if the clip contains `conform-rate`
-        let isStartAttribute = ["start" /*, "tcStart" */].contains(attributeName)
+        let isStartAttribute = ["start" /* , "tcStart" */ ].contains(attributeName)
         if scaled,
            let _newValue = newValue,
            let scalingFactor = _fcpConformRateScalingFactor(includingSelf: isStartAttribute)
         {
             newValue = Fraction(double: _newValue.doubleValue / scalingFactor)
         }
-        
+
         addAttribute(
             withName: attributeName,
             value: newValue?.fcpxmlStringValue

@@ -1,7 +1,7 @@
 //
 //  XMLParsableAttributesKey.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -25,7 +25,7 @@ import Foundation
     //         dict[key] = stringValue(forAttributeNamed: key.rawValue)
     //     }
     // }
-    
+
     // /// Utility:
     // /// Returns attribute string value for the given attribute key name.
     // subscript(_ key: some XMLParsableAttributesKey) -> String? {

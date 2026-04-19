@@ -1,7 +1,7 @@
 //
 //  FCPXML Media.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -24,15 +24,15 @@ extension FCPXML {
     /// > ).
     public struct Media: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .media
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.media]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -54,7 +54,7 @@ extension FCPXML.Media {
         modDate: String? = nil
     ) {
         self.init()
-        
+
         // shared resource attributes
         self.id = id
         self.name = name
@@ -64,7 +64,7 @@ extension FCPXML.Media {
         // FCPXMLElementOptionalModDate
         self.modDate = modDate
     }
-    
+
     public init(
         // shared resource attributes
         id: String,
@@ -84,9 +84,9 @@ extension FCPXML.Media {
             projectRef: projectRef,
             modDate: modDate
         )
-        self.element.addChild(multicam.element)
+        element.addChild(multicam.element)
     }
-    
+
     public init(
         // shared resource attributes
         id: String,
@@ -106,7 +106,7 @@ extension FCPXML.Media {
             projectRef: projectRef,
             modDate: modDate
         )
-        self.element.addChild(sequence.element)
+        element.addChild(sequence.element)
     }
 }
 
@@ -117,12 +117,12 @@ extension FCPXML.Media {
         // shared resource attributes
         case id
         case name
-        
+
         // asset attributes
         case uid
         case projectRef
     }
-    
+
     // can contain either one `multicam` or one `sequence`
 }
 
@@ -130,24 +130,24 @@ extension FCPXML.Media {
 
 extension FCPXML.Media {
     // shared resource attributes
-    
+
     public var id: String {
         get { element.fcpID ?? "" }
         nonmutating set { element.fcpID = newValue }
     }
-    
+
     public var name: String? {
         get { element.fcpName }
         nonmutating set { element.fcpName = newValue }
     }
-    
+
     public var projectRef: String? {
         get { element.stringValue(forAttributeNamed: Attributes.projectRef.rawValue) }
         nonmutating set { element.addAttribute(withName: Attributes.projectRef.rawValue, value: newValue) }
     }
-    
+
     // asset attributes
-    
+
     public var uid: String? {
         get { element.fcpUID }
         nonmutating set { element.fcpUID = newValue }
@@ -165,18 +165,18 @@ extension FCPXML.Media {
         nonmutating set {
             // there can only be a sequence or multicam, so remove old one if present
             element._removeChildren(ofType: .sequence)
-            
+
             element._updateChildElements(ofType: .multicam, withChild: newValue)
         }
     }
-    
+
     /// Returns the `sequence` child element if one exists.
     public var sequence: FCPXML.Sequence? {
         get { element.firstChild(whereFCPElement: .sequence) }
         nonmutating set {
             // there can only be a sequence or multicam, so remove old one if present
             element._removeChildren(ofType: .multicam)
-            
+
             element._updateChildElements(ofType: .sequence, withChild: newValue)
         }
     }

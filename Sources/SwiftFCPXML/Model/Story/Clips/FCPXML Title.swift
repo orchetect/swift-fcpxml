@@ -1,14 +1,14 @@
 //
 //  FCPXML Title.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// Title clip.
@@ -18,15 +18,15 @@ extension FCPXML {
     /// Therefore, "tcFormat" (NDF/DF) attribute is not stored in `title` XML itself.
     public struct Title: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .title
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.title]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -54,23 +54,23 @@ extension FCPXML.Title {
         metadata: FCPXML.Metadata? = nil
     ) {
         self.init()
-        
+
         self.ref = ref
         self.role = role
-        
+
         // Anchorable Attributes
         self.lane = lane
         self.offset = offset
-        
+
         // Clip Attributes
         self.name = name
         self.start = start
         self.duration = duration
         self.enabled = enabled
-        
+
         // Note child
         self.note = note
-        
+
         // Metadata
         self.metadata = metadata
     }
@@ -82,18 +82,18 @@ extension FCPXML.Title {
     public enum Attributes: String {
         case ref // effect ID for a Motion template
         case role
-        
+
         // Anchorable Attributes
         case lane
         case offset
-        
+
         // Clip Attributes
         case name
         case start
         case duration
         case enabled
     }
-    
+
     // can contain DTD param*
     // contains DTD %intrinsic-params-video
     // can contain DTD %anchor_item*
@@ -109,7 +109,7 @@ extension FCPXML.Title {
         get { element.fcpRef ?? "" }
         nonmutating set { element.fcpRef = newValue }
     }
-    
+
     public var role: FCPXML.VideoRole? {
         get { element.fcpRole(as: FCPXML.VideoRole.self) }
         nonmutating set { element.fcpSet(role: newValue) }
@@ -129,7 +129,7 @@ extension FCPXML.Title {
             element.addChildren(newValue)
         }
     }
-    
+
     /// Returns child story elements.
     public var storyElements: LazyFilteredCompactMapSequence<[XMLNode], XMLElement> {
         element.fcpStoryElements
@@ -147,7 +147,9 @@ extension FCPXML.Title: FCPXMLElementTextStyleDefinitionChildren { }
 // MARK: - Meta Conformances
 
 extension FCPXML.Title: FCPXMLElementMetaTimeline {
-    public func asAnyTimeline() -> FCPXML.AnyTimeline { .title(self) }
+    public func asAnyTimeline() -> FCPXML.AnyTimeline {
+        .title(self)
+    }
 }
 
 // MARK: - Typing

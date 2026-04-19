@@ -1,7 +1,7 @@
 //
 //  API-swift-daw-file-tools-0.7.2.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 // MARK: - API Deprecations - swift-daw-file-tools 0.7.2

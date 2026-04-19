@@ -1,7 +1,7 @@
 //
 //  FCPXMLElementMediaAttributes.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -30,15 +30,15 @@ public protocol FCPXMLElementMediaAttributes: FCPXMLElement,
 {
     /// Format resource ID. (Required)
     var format: String { get nonmutating set }
-    
+
     // FCPXMLElementOptionalDuration
     /// Local timeline duration.
     var duration: Fraction? { get nonmutating set }
-    
+
     // FCPXMLElementTCStart
     /// Local timeline start time.
     var tcStart: Fraction? { get nonmutating set }
-    
+
     // FCPXMLElementTCFormat
     /// Local timeline timecode format.
     var tcFormat: FCPXML.TimecodeFormat? { get nonmutating set }
@@ -49,13 +49,13 @@ extension FCPXMLElementMediaAttributes {
         get { element.fcpFormat ?? "" }
         nonmutating set { element.fcpFormat = newValue }
     }
-    
+
     // implemented by FCPXMLElementOptionalDuration
     // public var duration: Fraction?
-    
+
     // implemented by FCPXMLElementOptionalTCStart
     // public var tcStart: Fraction?
-    
+
     // implemented by FCPXMLElementOptionalTCFormat
     // public var tcFormat: FCPXML.TimecodeFormat?
 }

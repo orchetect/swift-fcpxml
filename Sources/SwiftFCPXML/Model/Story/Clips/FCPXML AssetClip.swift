@@ -1,14 +1,14 @@
 //
 //  FCPXML AssetClip.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// Asset Clip element.
@@ -36,15 +36,15 @@ extension FCPXML {
     /// > > components from a media file as a clip.
     public struct AssetClip: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .assetClip
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.assetClip]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -82,7 +82,7 @@ extension FCPXML.AssetClip {
         metadata: FCPXML.Metadata? = nil
     ) {
         self.init()
-        
+
         self.ref = ref
         self.srcEnable = srcEnable
         self.format = format
@@ -90,27 +90,27 @@ extension FCPXML.AssetClip {
         self.tcFormat = tcFormat
         self.audioRole = audioRole
         self.videoRole = videoRole
-        
+
         // Audio Start/Duration
         self.audioStart = audioStart
         self.audioDuration = audioDuration
-        
+
         // Anchorable Attributes
         self.lane = lane
         self.offset = offset
-        
+
         // Clip Attributes
         self.name = name
         self.start = start
         self.duration = duration
         self.enabled = enabled
-        
+
         // Mod Date
         self.modDate = modDate
-        
+
         // Note child
         self.note = note
-        
+
         // Metadata
         self.metadata = metadata
     }
@@ -128,25 +128,25 @@ extension FCPXML.AssetClip {
         case audioRole
         case videoRole
         case srcEnable
-        
+
         // Audio Start/Duration
         case audioStart
         case audioDuration
-        
+
         // Anchorable Attributes
         case lane
         case offset
-        
+
         // Clip Attributes
         case name
         case start
         case duration
         case enabled
-        
+
         // Mod Date
         case modDate
     }
-    
+
     // contains DTD audio-channel-source*
     // contains DTD %timing-params
     // contains DTD %intrinsic-params
@@ -163,13 +163,13 @@ extension FCPXML.AssetClip {
         get { element.fcpRef ?? "" }
         nonmutating set { element.fcpRef = newValue }
     }
-    
+
     /// Sources to enable for audio and video. (Default: `.all`)
     public var srcEnable: FCPXML.ClipSourceEnable {
         get { element.fcpClipSourceEnable }
         nonmutating set { element.fcpClipSourceEnable = newValue }
     }
-    
+
     public var format: String? { // DTD: default is same as parent
         get { element.fcpFormat }
         nonmutating set { element.fcpFormat = newValue }
@@ -211,7 +211,7 @@ extension FCPXML.AssetClip {
             element.addChildren(newValue)
         }
     }
-    
+
     /// Returns child story elements.
     public var storyElements: LazyFilteredCompactMapSequence<[XMLNode], XMLElement> {
         element.fcpStoryElements
@@ -228,8 +228,10 @@ extension FCPXML.AssetClip: FCPXMLElementTimingParams { }
 
 // MARK: - Meta Conformances
 
-extension FCPXML.AssetClip: FCPXMLElementMetaTimeline { 
-    public func asAnyTimeline() -> FCPXML.AnyTimeline { .assetClip(self) }
+extension FCPXML.AssetClip: FCPXMLElementMetaTimeline {
+    public func asAnyTimeline() -> FCPXML.AnyTimeline {
+        .assetClip(self)
+    }
 }
 
 // MARK: - Typing
@@ -244,4 +246,3 @@ extension XMLElement {
 }
 
 #endif
-

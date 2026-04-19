@@ -1,7 +1,7 @@
 //
 //  FCPXMLElement.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -13,34 +13,34 @@ import SwiftTimecodeCore
 public protocol FCPXMLElement where Self: Equatable, Self: Hashable {
     /// The wrapped XML element object.
     var element: XMLElement { get }
-    
+
     /// The FCPXML element type of the model instance.
     var elementType: FCPXML.ElementType { get }
-    
+
     /// All FCPXML element types the model object is capable of handling.
     ///
     /// Most model objects only handle a single type.
     /// However some model objects are 'meta types' and can handle more than one, such as
     /// ``FCPXML/Marker`` which handles both `marker` and `chapter-marker`.
     static var supportedElementTypes: Set<FCPXML.ElementType> { get }
-    
+
     /// Initialize a new empty element with defaults.
     init()
-    
+
     /// Wrap a FCPXML element.
     /// Returns `nil` if the element does not match the model element type.
     init?(element: XMLElement)
 }
 
 extension FCPXMLElement /* : Equatable */ {
-    public static func == <O: FCPXMLElement>(lhs: Self, rhs: O) -> Bool {
+    public static func == (lhs: Self, rhs: some FCPXMLElement) -> Bool {
         lhs.element == rhs.element
     }
-    
+
     public static func == (lhs: XMLElement, rhs: Self) -> Bool {
         lhs == rhs.element
     }
-    
+
     public static func == (lhs: Self, rhs: XMLElement) -> Bool {
         lhs.element == rhs
     }

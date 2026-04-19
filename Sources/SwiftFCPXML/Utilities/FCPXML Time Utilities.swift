@@ -1,7 +1,7 @@
 //
 //  FCPXML Time Utilities.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -18,11 +18,11 @@ extension FCPXML {
     /// `Timecode` setting for `.subFramesBase`.
     /// Final Cut Pro uses 80 subframes per frame.
     public static let timecodeSubFramesBase: Timecode.SubFramesBase = .max80SubFrames
-    
+
     /// `Timecode` setting for `.upperLimit`.
     /// Final Cut Pro is confined to a 24-hour SMPTE timecode clock.
     public static let timecodeUpperLimit: Timecode.UpperLimit = .max24Hours
-    
+
     /// `Timecode` setting for `.stringFormat`.
     public static let timecodeStringFormat: Timecode.StringFormat = []
 }
@@ -41,7 +41,7 @@ extension FCPXML {
             limit: timecodeUpperLimit
         )
     }
-    
+
     /// `Timecode` template.
     public static func formTimecode(
         rational fraction: Fraction,
@@ -54,7 +54,7 @@ extension FCPXML {
             limit: timecodeUpperLimit
         )
     }
-    
+
     /// `Timecode` template.
     public static func formTimecode(
         realTime seconds: TimeInterval,
@@ -67,7 +67,7 @@ extension FCPXML {
             limit: timecodeUpperLimit
         )
     }
-    
+
     /// `TimecodeInterval` template.
     public static func formTimecodeInterval(
         at rate: TimecodeFrameRate
@@ -75,13 +75,12 @@ extension FCPXML {
         let tc = formTimecode(at: rate)
         return TimecodeInterval(tc)
     }
-    
+
     /// `TimecodeInterval` template.
     public static func formTimecodeInterval(
         realTime seconds: TimeInterval,
         at rate: TimecodeFrameRate
     ) throws -> TimecodeInterval {
-        
         try TimecodeInterval(
             realTime: seconds,
             at: rate,
@@ -89,7 +88,7 @@ extension FCPXML {
             limit: timecodeUpperLimit
         )
     }
-    
+
     /// `TimecodeInterval` template.
     public static func formTimecodeInterval(
         rational fraction: Fraction,
@@ -116,7 +115,7 @@ extension XMLElement {
     ) throws -> Timecode? {
         guard let fraction = Fraction(fcpxmlString: rawString)
         else { return nil }
-        
+
         return try _fcpTimecode(
             fromRational: fraction,
             tcFormat: tcFormat,
@@ -124,7 +123,7 @@ extension XMLElement {
             resources: resources
         )
     }
-    
+
     /// FCPXML: Convert raw time attribute value string to `Timecode`.
     func _fcpTimecode(
         fromRational fraction: Fraction,
@@ -138,7 +137,7 @@ extension XMLElement {
             in: resources
         )
         else { return nil }
-        
+
         return try FCPXML._timecode(
             fromRealTime: fraction.doubleValue,
             frameRate: frameRate
@@ -159,7 +158,7 @@ extension XMLElement {
     ) throws -> Timecode? {
         guard let fraction = Fraction(fcpxmlString: rawString)
         else { return nil }
-        
+
         return try _fcpTimecode(
             fromRational: fraction,
             frameRateSource: frameRateSource,
@@ -167,7 +166,7 @@ extension XMLElement {
             resources: resources
         )
     }
-    
+
     /// FCPXML: Convert raw time attribute value string to `Timecode`.
     /// Traverses the parents of the given XML leaf to determine frame rate.
     func _fcpTimecode(
@@ -183,7 +182,7 @@ extension XMLElement {
             resources: resources
         )
     }
-    
+
     /// FCPXML: Convert raw time in seconds to `Timecode`.
     func _fcpTimecode(
         fromRealTime seconds: TimeInterval,
@@ -196,7 +195,7 @@ extension XMLElement {
             breadcrumbs: breadcrumbs,
             resources: resources
         ) else { return nil }
-        
+
         return try FCPXML.formTimecode(realTime: seconds, at: frameRate)
     }
 }
@@ -210,13 +209,13 @@ extension FCPXML {
     ) throws -> Timecode? {
         guard let fraction = Fraction(fcpxmlString: rawString)
         else { return nil }
-        
+
         return try _timecode(
             fromRational: fraction,
             frameRate: frameRate
         )
     }
-    
+
     /// FCPXML: Convert raw time attribute value string to `Timecode`.
     /// Does not auto-scale.
     static func _timecode(
@@ -225,7 +224,7 @@ extension FCPXML {
     ) throws -> Timecode? {
         try FCPXML.formTimecode(realTime: fraction.doubleValue, at: frameRate)
     }
-    
+
     /// FCPXML: Convert raw time in seconds to `Timecode`.
     /// Does not auto-scale.
     static func _timecode(
@@ -249,7 +248,7 @@ extension XMLElement {
     ) throws -> TimecodeInterval? {
         guard let fraction = Fraction(fcpxmlString: rawString)
         else { return nil }
-        
+
         return try _fcpTimecodeInterval(
             fromRational: fraction,
             frameRateSource: frameRateSource,
@@ -257,7 +256,7 @@ extension XMLElement {
             resources: resources
         )
     }
-    
+
     /// FCPXML: Convert raw time attribute value string to `TimecodeInterval`.
     /// Traverses the parents of the given XML leaf to determine frame rate.
     func _fcpTimecodeInterval(
@@ -273,7 +272,7 @@ extension XMLElement {
             resources: resources
         )
     }
-    
+
     /// FCPXML: Convert raw time attribute value string to `TimecodeInterval`.
     /// Traverses the parents of the given XML leaf to determine frame rate.
     func _fcpTimecodeInterval(
@@ -287,7 +286,7 @@ extension XMLElement {
             breadcrumbs: breadcrumbs,
             resources: resources
         ) else { return nil }
-        
+
         return try FCPXML._timecodeInterval(
             fromRealTime: seconds,
             frameRate: frameRate
@@ -304,13 +303,13 @@ extension FCPXML {
     ) throws -> TimecodeInterval? {
         guard let fraction = Fraction(fcpxmlString: rawString)
         else { return nil }
-        
+
         return try _timecodeInterval(
             fromRational: fraction,
             frameRate: frameRate
         )
     }
-    
+
     /// Utility:
     /// Convert raw time attribute value string to `TimecodeInterval`.
     static func _timecodeInterval(
@@ -319,7 +318,7 @@ extension FCPXML {
     ) throws -> TimecodeInterval? {
         try _timecodeInterval(fromRealTime: fraction.doubleValue, frameRate: frameRate)
     }
-    
+
     /// Utility:
     /// Convert raw time attribute value string to `TimecodeInterval`.
     static func _timecodeInterval(

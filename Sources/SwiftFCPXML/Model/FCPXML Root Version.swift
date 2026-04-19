@@ -1,7 +1,7 @@
 //
 //  FCPXML Root Version.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -13,20 +13,26 @@ extension FCPXML {
     public struct Version {
         /// Returns the FCPXML format version number as a semantic version type.
         public let semanticVersion: SemanticVersion
-        
+
         /// Major version component.
-        public var major: Int { semanticVersion.major }
-        
-        /// Minor version component.
-        public var minor: Int { semanticVersion.minor }
-        
-        /// Patch version component.
-        public var patch: Int { semanticVersion.patch }
-        
-        public init(_ semVer: SemanticVersion) {
-            self.semanticVersion = semVer
+        public var major: Int {
+            semanticVersion.major
         }
-        
+
+        /// Minor version component.
+        public var minor: Int {
+            semanticVersion.minor
+        }
+
+        /// Patch version component.
+        public var patch: Int {
+            semanticVersion.patch
+        }
+
+        public init(_ semVer: SemanticVersion) {
+            semanticVersion = semVer
+        }
+
         public init(_ major: UInt, _ minor: UInt, _ patch: UInt = 0) {
             semanticVersion = SemanticVersion(major, minor, patch)
         }
@@ -49,12 +55,12 @@ extension FCPXML.Version: CustomStringConvertible {
 
 extension FCPXML.Version: RawRepresentable {
     public typealias RawValue = String
-    
+
     public init?(rawValue: String) {
         guard let semVer = SemanticVersion(nonStrict: rawValue) else { return nil }
-        self.semanticVersion = semVer
+        semanticVersion = semVer
     }
-    
+
     public var rawValue: String {
         semanticVersion.patch != 0
             ? "\(semanticVersion.major).\(semanticVersion.minor).\(semanticVersion.patch)"
@@ -65,36 +71,36 @@ extension FCPXML.Version: RawRepresentable {
 // MARK: - Static Members
 
 extension FCPXML.Version {
-    public static let ver1_0: Self = Self(1, 0, 0)
-    public static let ver1_1: Self = Self(1, 1, 0)
-    public static let ver1_2: Self = Self(1, 2, 0)
-    public static let ver1_3: Self = Self(1, 3, 0)
-    public static let ver1_4: Self = Self(1, 4, 0)
-    public static let ver1_5: Self = Self(1, 5, 0)
-    public static let ver1_6: Self = Self(1, 6, 0)
-    public static let ver1_7: Self = Self(1, 7, 0)
-    public static let ver1_8: Self = Self(1, 8, 0)
-    public static let ver1_9: Self = Self(1, 9, 0)
-    
+    public static let ver1_0: Self = .init(1, 0, 0)
+    public static let ver1_1: Self = .init(1, 1, 0)
+    public static let ver1_2: Self = .init(1, 2, 0)
+    public static let ver1_3: Self = .init(1, 3, 0)
+    public static let ver1_4: Self = .init(1, 4, 0)
+    public static let ver1_5: Self = .init(1, 5, 0)
+    public static let ver1_6: Self = .init(1, 6, 0)
+    public static let ver1_7: Self = .init(1, 7, 0)
+    public static let ver1_8: Self = .init(1, 8, 0)
+    public static let ver1_9: Self = .init(1, 9, 0)
+
     /// FCPXML 1.10.
     /// Format is a `fcpxmld` bundle.
-    public static let ver1_10: Self = Self(1, 10)
-    
+    public static let ver1_10: Self = .init(1, 10)
+
     /// FCPXML 1.11.
     /// Format is a `fcpxmld` bundle.
-    public static let ver1_11: Self = Self(1, 11)
-    
+    public static let ver1_11: Self = .init(1, 11)
+
     /// FCPXML 1.12 introduced in Final Cut Pro 10.8.
     /// Format is a `fcpxmld` bundle.
-    public static let ver1_12: Self = Self(1, 12)
-    
+    public static let ver1_12: Self = .init(1, 12)
+
     /// FCPXML 1.13 introduced in Final Cut Pro 11.0.
     /// Format is a `fcpxmld` bundle.
-    public static let ver1_13: Self = Self(1, 13)
-    
+    public static let ver1_13: Self = .init(1, 13)
+
     /// FCPXML 1.14 introduced in Final Cut Pro 12.0.
     /// Format is a `fcpxmld` bundle.
-    public static let ver1_14: Self = Self(1, 14)
+    public static let ver1_14: Self = .init(1, 14)
 }
 
 extension FCPXML.Version: CaseIterable {
@@ -115,9 +121,11 @@ extension FCPXML.Version: CaseIterable {
         .ver1_13,
         .ver1_14
     ]
-    
+
     /// Returns the latest FCPXML format version supported.
-    public static var latest: Self { Self.allCases.last! }
+    public static var latest: Self {
+        allCases.last!
+    }
 }
 
 extension FCPXML.Version: Comparable {

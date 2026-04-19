@@ -1,7 +1,7 @@
 //
 //  FCPXML CaptionsExtractionPreset.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -12,7 +12,7 @@ extension FCPXML {
     /// FCPXML extraction preset that extracts closed captions.
     public struct CaptionsExtractionPreset: FCPXMLExtractionPreset {
         public init() { }
-        
+
         public func perform(
             on extractable: XMLElement,
             scope: FCPXML.ExtractionScope
@@ -21,10 +21,10 @@ extension FCPXML {
                 types: [.caption],
                 scope: scope
             )
-            
+
             let wrapped = extracted
                 .map { ExtractedCaption($0) }
-            
+
             return wrapped
         }
     }
@@ -39,39 +39,39 @@ extension FCPXMLExtractionPreset where Self == FCPXML.CaptionsExtractionPreset {
 
 extension FCPXML {
     // TODO: XMLElement is not Sendable
-    
+
     /// An extracted caption element with pertinent data.
     public struct ExtractedCaption: FCPXMLExtractedModelElement, @unchecked Sendable {
         public typealias Model = Caption
         public let element: XMLElement
         public let breadcrumbs: [XMLElement]
         public let resources: XMLElement?
-        
+
         init(_ extractedElement: ExtractedElement) {
             element = extractedElement.element
             breadcrumbs = extractedElement.breadcrumbs
             resources = extractedElement.resources
         }
-        
+
         /// Return the a context value for the element.
         public func value<Value>(
             forContext contextKey: FCPXML.ElementContext<Value>
         ) -> Value {
             contextKey.value(from: element, breadcrumbs: breadcrumbs, resources: resources)
         }
-        
+
         // Convenience getters
-        
+
         /// Caption name.
         public var name: String? {
             model.name
         }
-        
+
         /// Caption note, if any.
         public var note: String? {
             model.note
         }
-        
+
         /// Inherited roles from container(s).
         public var roles: [AnyInterpolatedRole] {
             value(forContext: .inheritedRoles)

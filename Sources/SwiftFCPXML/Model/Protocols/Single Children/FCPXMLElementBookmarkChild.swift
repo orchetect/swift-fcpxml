@@ -1,7 +1,7 @@
 //
 //  FCPXMLElementBookmarkChild.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -13,7 +13,7 @@ public protocol FCPXMLElementBookmarkChild: FCPXMLElement {
     /// Security-scoped bookmark data in a base64-encoded string.
     /// Access the `stringValue` property on the returned element.
     var bookmark: XMLElement? { get nonmutating set }
-    
+
     /// Security-scoped bookmark data.
     /// Returns the decoded ``bookmark`` base64-encoded string as `Data`.
     var bookmarkData: Data? { get nonmutating set }
@@ -28,14 +28,14 @@ extension FCPXMLElementBookmarkChild {
             element._updateChildElements(ofType: .bookmark, withChild: newValue)
         }
     }
-    
+
     public var bookmarkData: Data? {
         get {
             guard let value = element
                 .firstChildElement(whereFCPElementType: .bookmark)?
                 .stringValue
             else { return nil }
-            
+
             return Data(base64Encoded: value)
         }
         nonmutating set {

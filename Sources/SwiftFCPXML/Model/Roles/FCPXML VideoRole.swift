@@ -1,7 +1,7 @@
 //
 //  FCPXML VideoRole.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -23,7 +23,7 @@ extension FCPXML {
     public struct VideoRole: Equatable, Hashable, Sendable {
         public let role: String
         public let subRole: String?
-        
+
         public init(role: String, subRole: String? = nil) {
             self.role = role
             self.subRole = subRole
@@ -32,50 +32,53 @@ extension FCPXML {
 }
 
 extension FCPXML.VideoRole: FCPXMLRole {
-    public var roleType: FCPXML.RoleType { .video }
-    public func asAnyRole() -> FCPXML.AnyRole { .video(self) }
-    
+    public var roleType: FCPXML.RoleType {
+        .video
+    }
+
+    public func asAnyRole() -> FCPXML.AnyRole {
+        .video(self)
+    }
+
     public func lowercased(derivedOnly: Bool) -> Self {
         let newRole: String = role.lowercased()
-        var newSubRole: String?
-        
-        if derivedOnly, !isSubRoleDerivedFromMainRole {
-            newSubRole = subRole
+        let newSubRole: String? = if derivedOnly, !isSubRoleDerivedFromMainRole {
+            subRole
         } else {
-            newSubRole = subRole?.lowercased()
+            subRole?.lowercased()
         }
-        
+
         return Self(role: newRole, subRole: newSubRole)
     }
-    
+
     public func titleCased(derivedOnly: Bool) -> Self {
         let newRole: String = role.titleCased(firstCharacterOfWordsOnly: false, preserveUppercaseWords: false)
-        var newSubRole: String?
-        
-        if derivedOnly, !isSubRoleDerivedFromMainRole {
-            newSubRole = subRole
+        let newSubRole: String? = if derivedOnly, !isSubRoleDerivedFromMainRole {
+            subRole
         } else {
-            newSubRole = subRole?.titleCased(firstCharacterOfWordsOnly: false, preserveUppercaseWords: false)
+            subRole?.titleCased(firstCharacterOfWordsOnly: false, preserveUppercaseWords: false)
         }
-        
+
         return Self(role: newRole, subRole: newSubRole)
     }
-    
+
     public func titleCasedDefaultRole(derivedOnly: Bool) -> Self {
         isMainRoleBuiltIn
             ? titleCased(derivedOnly: derivedOnly)
             : self
     }
-    
+
     public var isMainRoleBuiltIn: Bool {
         let builtInMainRoles = [
-            "video", "Video",
-            "titles", "Titles"
+            "video",
+            "Video",
+            "titles",
+            "Titles"
         ]
-        
+
         return builtInMainRoles.contains(role)
     }
-    
+
     public var isSubRoleDerivedFromMainRole: Bool {
         FCPXML._isSubRole(subRole, derivedFromMainRole: role)
     }
@@ -84,16 +87,16 @@ extension FCPXML.VideoRole: FCPXMLRole {
 extension FCPXML.VideoRole: RawRepresentable {
     public var rawValue: String {
         var rawRole = role
-        if let subRole = subRole {
+        if let subRole {
             rawRole += "." + subRole
         }
         return rawRole
     }
-    
+
     public init?(rawValue: String) {
         guard let parsed = try? FCPXML._parseRawStandardRole(rawValue: rawValue)
         else { return nil }
-        
+
         role = parsed.role
         subRole = parsed.subRole
     }

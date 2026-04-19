@@ -1,7 +1,7 @@
 //
 //  FCPXML TimeMap TimePoint.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -26,15 +26,15 @@ extension FCPXML.TimeMap {
     /// > ```
     public struct TimePoint: FCPXMLElement, Equatable, Hashable {
         public let element: XMLElement
-        
+
         public let elementType: FCPXML.ElementType = .timePoint
-        
+
         public static let supportedElementTypes: Set<FCPXML.ElementType> = [.timePoint]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -53,7 +53,7 @@ extension FCPXML.TimeMap.TimePoint {
         transitionOutTime: Fraction? = nil
     ) {
         self.init()
-        
+
         self.time = time
         self.originalTime = originalTime
         self.interpolation = interpolation
@@ -72,7 +72,7 @@ extension FCPXML.TimeMap.TimePoint {
         case transitionInTime = "inTime"
         case transitionOutTime = "outTime"
     }
-    
+
     // no children
 }
 
@@ -88,48 +88,48 @@ extension FCPXML.TimeMap.TimePoint {
             element._fcpSet(fraction: newValue, forAttribute: Attributes.time.rawValue, scaled: true)
         }
     }
-    
+
     /// Original clip time. (Required)
     public var originalTime: Fraction {
-        get { 
+        get {
             element._fcpGetFraction(forAttribute: Attributes.originalTime.rawValue, scaled: true) ?? .zero
         }
         nonmutating set {
             element._fcpSet(fraction: newValue, forAttribute: Attributes.originalTime.rawValue, scaled: true)
         }
     }
-    
+
     /// Interpolation type for point. (Default: `smooth2`)
     /// - Note: `smooth` has been deprecated by Final Cut Pro.
     public var interpolation: Interpolation {
-        get { 
+        get {
             guard let value = element.stringValue(forAttributeNamed: Attributes.interpolation.rawValue),
                   let interp = Interpolation(rawValue: value)
             else { return .smooth2 }
-            
+
             return interp
         }
         nonmutating set {
             element.addAttribute(withName: Attributes.interpolation.rawValue, value: newValue.rawValue)
         }
     }
-    
+
     /// Transition in time. (Used only with smooth interpolations.)
     public var transitionInTime: Fraction? {
-        get { 
+        get {
             element._fcpGetFraction(forAttribute: Attributes.transitionInTime.rawValue, scaled: true)
         }
         nonmutating set {
             element._fcpSet(fraction: newValue, forAttribute: Attributes.transitionInTime.rawValue, scaled: true)
         }
     }
-    
+
     /// Transition out time. (Used only with smooth interpolations.)
     public var transitionOutTime: Fraction? {
         get {
             element._fcpGetFraction(forAttribute: Attributes.transitionOutTime.rawValue, scaled: true)
         }
-        nonmutating set { 
+        nonmutating set {
             element._fcpSet(fraction: newValue, forAttribute: Attributes.transitionOutTime.rawValue, scaled: true)
         }
     }
@@ -152,7 +152,7 @@ extension FCPXML.TimeMap.TimePoint {
     public enum Interpolation: String, Equatable, Hashable, CaseIterable, Sendable {
         /// Linear time interpolation.
         case linear
-        
+
         /// Smooth time interpolation. (Deprecated)
         @available(
             *,
@@ -161,10 +161,10 @@ extension FCPXML.TimeMap.TimePoint {
             message: "Smooth interpolation has been deprecated by Final Cut Pro. Use `smooth2` instead."
         )
         case smooth
-        
+
         /// Smooth 2 time interpolation.
         case smooth2
-        
+
         // (Swift can't synthesize CaseIterable `allCases` if any case(s) are marked `@available`)
         public static let allCases: [Self] = [.linear, .smooth2]
     }

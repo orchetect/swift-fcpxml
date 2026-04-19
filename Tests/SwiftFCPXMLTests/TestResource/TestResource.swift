@@ -1,14 +1,14 @@
 //
-//  FCPXML Exports.swift
+//  TestResource.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 import TestingExtensions
 
 extension TestResource {
     private static let subFolder: String = "FCPXML Exports"
-    
+
     enum FCPXMLExports {
         static let `23.98` = File(name: "23.98", ext: "fcpxml", subFolder: subFolder)
         static let `24` = File(name: "24", ext: "fcpxml", subFolder: subFolder)

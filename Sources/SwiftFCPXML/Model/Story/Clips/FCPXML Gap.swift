@@ -1,14 +1,14 @@
 //
 //  FCPXML Gap.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// Gap element.
@@ -18,15 +18,15 @@ extension FCPXML {
     /// > Defines a placeholder element that has no intrinsic audio or video data.
     public struct Gap: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .gap
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.gap]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -52,20 +52,20 @@ extension FCPXML.Gap {
         metadata: FCPXML.Metadata? = nil
     ) {
         self.init()
-        
+
         // Anchorable Attributes
         // (no lane)
         self.offset = offset
-        
+
         // Clip Attributes
         self.name = name
         self.start = start
         self.duration = duration
         self.enabled = enabled
-        
+
         // Note child
         self.note = note
-        
+
         // Metadata
         self.metadata = metadata
     }
@@ -78,14 +78,14 @@ extension FCPXML.Gap {
         // Anchorable Attributes
         // (no lane)
         case offset
-        
+
         // Clip Attributes
         case name
         case start
         case duration
         case enabled
     }
-    
+
     // can contain DTD anchor_item*
     // can contain markers
 }
@@ -112,7 +112,7 @@ extension FCPXML.Gap {
             element.addChildren(newValue)
         }
     }
-    
+
     /// Returns child story elements.
     public var storyElements: LazyFilteredCompactMapSequence<[XMLNode], XMLElement> {
         element.fcpStoryElements
@@ -126,9 +126,10 @@ extension FCPXML.Gap: FCPXMLElementNoteChild { }
 // MARK: - Meta Conformances
 
 extension FCPXML.Gap: FCPXMLElementMetaTimeline {
-    public func asAnyTimeline() -> FCPXML.AnyTimeline { .gap(self) }
+    public func asAnyTimeline() -> FCPXML.AnyTimeline {
+        .gap(self)
+    }
 }
-
 
 // MARK: - Typing
 

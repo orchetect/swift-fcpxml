@@ -1,7 +1,7 @@
 //
 //  FCPXML ClipSourceEnable.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -13,10 +13,10 @@ extension FCPXML {
     public enum ClipSourceEnable: String, Equatable, Hashable, CaseIterable, Sendable {
         /// Audio and Video.
         case all
-        
+
         /// Audio source.
         case audio
-        
+
         /// Video source.
         case video
     }
@@ -32,15 +32,17 @@ extension XMLElement {
     public var fcpClipSourceEnable: FCPXML.ClipSourceEnable {
         get {
             let defaultValue: FCPXML.ClipSourceEnable = .all
-            
+
             guard let value = stringValue(forAttributeNamed: FCPXML.ClipSourceEnable.attributeName)
             else { return defaultValue }
-            
+
             return FCPXML.ClipSourceEnable(rawValue: value) ?? defaultValue
         }
         set {
-            addAttribute(withName: FCPXML.ClipSourceEnable.attributeName,
-                         value: newValue.rawValue)
+            addAttribute(
+                withName: FCPXML.ClipSourceEnable.attributeName,
+                value: newValue.rawValue
+            )
         }
     }
 }

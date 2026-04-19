@@ -1,14 +1,14 @@
 //
 //  FCPXML Clip.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// Represents a basic unit of editing.
@@ -28,15 +28,15 @@ extension FCPXML {
     /// > ) to specify its format, etc.
     public struct Clip: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .clip
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.clip]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -70,31 +70,31 @@ extension FCPXML.Clip {
         metadata: FCPXML.Metadata? = nil
     ) {
         self.init()
-        
+
         self.format = format
         self.tcStart = tcStart
         self.tcFormat = tcFormat
-        
+
         // Audio Start/Duration
         self.audioStart = audioStart
         self.audioDuration = audioDuration
-        
+
         // Anchorable Attributes
         self.lane = lane
         self.offset = offset
-        
+
         // Clip Attributes
         self.name = name
         self.start = start
         self.duration = duration
         self.enabled = enabled
-        
+
         // Mod Date
         self.modDate = modDate
-        
+
         // Note child
         self.note = note
-        
+
         // Metadata
         self.metadata = metadata
     }
@@ -108,25 +108,25 @@ extension FCPXML.Clip {
         case format
         case tcStart
         case tcFormat
-        
+
         // Audio Start/Duration
         case audioStart
         case audioDuration
-        
+
         // Anchorable Attributes
         case lane
         case offset
-        
+
         // Clip Attributes
         case name
         case start
         case duration
         case enabled
-        
+
         // Mod Date
         case modDate
     }
-    
+
     // contains DTD %timing-params
     // contains DTD %intrinsic-params
     // contains spines, clips, captions
@@ -165,7 +165,7 @@ extension FCPXML.Clip {
             element.addChildren(newValue)
         }
     }
-    
+
     /// Returns child story elements.
     public var storyElements: LazyFilteredCompactMapSequence<[XMLNode], XMLElement> {
         element.fcpStoryElements
@@ -182,10 +182,11 @@ extension FCPXML.Clip: FCPXMLElementTimingParams { }
 
 // MARK: - Meta Conformances
 
-extension FCPXML.Clip: FCPXMLElementMetaTimeline { 
-    public func asAnyTimeline() -> FCPXML.AnyTimeline { .clip(self) }
+extension FCPXML.Clip: FCPXMLElementMetaTimeline {
+    public func asAnyTimeline() -> FCPXML.AnyTimeline {
+        .clip(self)
+    }
 }
-
 
 // MARK: - Typing
 

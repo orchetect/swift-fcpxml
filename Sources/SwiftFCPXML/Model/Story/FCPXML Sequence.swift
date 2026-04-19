@@ -1,30 +1,30 @@
 //
 //  FCPXML Sequence.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
-import Foundation
-import SwiftTimecodeCore
 import CoreMedia
+import Foundation
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// A container that represents the top-level sequence for a Final Cut Pro project or compound
     /// clip.
     public struct Sequence: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .sequence
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.sequence]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -52,23 +52,23 @@ extension FCPXML.Sequence {
         metadata: FCPXML.Metadata? = nil
     ) {
         self.init()
-        
+
         self.spine = spine
-        
+
         self.audioLayout = audioLayout
         self.audioRate = audioRate
         self.renderFormat = renderFormat
         self.keywords = keywords
-        
+
         // Media Attributes
         self.format = format
         self.duration = duration
         self.tcStart = tcStart
         self.tcFormat = tcFormat
-        
+
         // Note child
         self.note = note
-        
+
         // Metadata
         self.metadata = metadata
     }
@@ -83,14 +83,14 @@ extension FCPXML.Sequence {
         case audioRate
         case renderFormat
         case keywords
-        
+
         // Media Attributes
         case format
         case duration
         case tcStart
         case tcFormat
     }
-    
+
     // must contain one `spine`
     // can contain one `note`
     // can contain one `metadata`
@@ -106,25 +106,25 @@ extension FCPXML.Sequence {
         get {
             guard let value = element.stringValue(forAttributeNamed: Attributes.audioLayout.rawValue)
             else { return nil }
-            
+
             return FCPXML.AudioLayout(rawValue: value)
         }
         nonmutating set {
             element.addAttribute(withName: Attributes.audioLayout.rawValue, value: newValue?.rawValue)
         }
     }
-    
+
     /// Audio sample rate in Hz.
     public var audioRate: FCPXML.AudioRate? {
         get { element.fcpSequenceAudioRate }
         nonmutating set { element.fcpSequenceAudioRate = newValue }
     }
-    
+
     public var renderFormat: String? {
         get { element.fcpRenderFormat }
         nonmutating set { element.fcpRenderFormat = newValue }
     }
-    
+
     public var keywords: String? { // only exists on sequence
         get {
             element.stringValue(forAttributeNamed: Attributes.keywords.rawValue)
@@ -159,8 +159,10 @@ extension FCPXML.Sequence: FCPXMLElementMetadataChild { }
 
 // MARK: - Meta Conformances
 
-extension FCPXML.Sequence: FCPXMLElementMetaTimeline { 
-    public func asAnyTimeline() -> FCPXML.AnyTimeline { .sequence(self) }
+extension FCPXML.Sequence: FCPXMLElementMetaTimeline {
+    public func asAnyTimeline() -> FCPXML.AnyTimeline {
+        .sequence(self)
+    }
 }
 
 // MARK: - Properties
@@ -173,13 +175,13 @@ extension XMLElement {
         get { stringValue(forAttributeNamed: "renderFormat") }
         set { addAttribute(withName: "renderFormat", value: newValue) }
     }
-    
+
     /// FCPXML: Returns child `spine` elements.
     /// Typically called on a `sequence` element.
     public var fcpSpines: LazyFCPXMLChildrenSequence<FCPXML.Spine> {
         children(whereFCPElement: .spine)
     }
-    
+
     /// FCPXML: Returns a child `spine` element if it exists.
     /// Typically called on a `sequence` element.
     public func fcpSpine() -> FCPXML.Spine? {
@@ -189,14 +191,14 @@ extension XMLElement {
         }
         return spine
     }
-    
+
     /// FCPXML: Returns the `audioRate` attribute value (audio sample rate in Hz).
     /// Call this on a `sequence` element only.
     public var fcpSequenceAudioRate: FCPXML.AudioRate? {
         get {
             guard let value = stringValue(forAttributeNamed: "audioRate")
             else { return nil }
-            
+
             return FCPXML.AudioRate(rawValueForSequence: value)
         }
         set {

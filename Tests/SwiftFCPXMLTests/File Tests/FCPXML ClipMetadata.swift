@@ -1,78 +1,81 @@
 //
 //  FCPXML ClipMetadata.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
-@testable import SwiftFCPXML
 import Foundation
 import SwiftExtensions
+@testable import SwiftFCPXML
 import SwiftTimecodeCore
 import Testing
 import TestingExtensions
 
-@Suite struct FCPXML_ClipMetadata: TestUtils {
+@Suite
+struct FCPXML_ClipMetadata: TestUtils {
     // MARK: - Test Data
-    
-    var fileContents: Data { get throws {
-        try TestResource.FCPXMLExports.clipMetadata.data()
-    } }
-    
+
+    var fileContents: Data {
+        get throws {
+            try TestResource.FCPXMLExports.clipMetadata.data()
+        }
+    }
+
     // MARK: - Tests
-    
+
     @Test
-    func parse() async throws {
+    func parse() throws {
         // load file
         let rawData = try fileContents
-        
+
         // parse file
         let fcpxml = try FCPXML(fileContent: rawData)
-        
+
         // version
         #expect(fcpxml.version == .ver1_11)
     }
-    
+
     /// Test metadata that applies to marker(s).
     @Test
     func extractMarkersMetadata() async throws {
         // load file
         let rawData = try fileContents
-        
+
         // load
         let fcpxml = try FCPXML(fileContent: rawData)
-        
+
         // project
         let project = try #require(fcpxml.allProjects().first)
-        
+
         let extractedMarkers = await project
             .extract(preset: .markers, scope: .mainTimeline)
             .sortedByAbsoluteStartTimecode()
         // .zeroIndexed // not necessary after sorting - sort returns new array
-        
+
         let markers = extractedMarkers
-        
+
         let expectedMarkerCount = 1
         #expect(markers.count == expectedMarkerCount)
-        
+
         print("Markers sorted by absolute timecode:")
         print(Self.debugString(for: markers))
-        
+
         // markers
-        
+
         let marker1 = try #require(markers[safe: 0])
-        
+
         let metadata = marker1.value(forContext: .metadata)
-        
+
         #expect(metadata.count == 11)
-        
+
         func md(key: FCPXML.Metadata.Key) -> FCPXML.Metadata.Metadatum? {
             let matches = metadata.filter { $0.key == key }
             #expect(matches.count < 2)
             return matches.first
         }
-        
+
         // metadata from media
         #expect(md(key: .cameraName)?.value == "TestVideo Camera Name")
         #expect(md(key: .rawToLogConversion)?.value == "0")

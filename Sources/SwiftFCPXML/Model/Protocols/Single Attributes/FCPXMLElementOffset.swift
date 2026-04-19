@@ -1,7 +1,7 @@
 //
 //  FCPXMLElementOffset.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -19,7 +19,7 @@ extension FCPXMLElementRequiredOffset {
         get { element.fcpOffset ?? .zero }
         nonmutating set { element.fcpOffset = newValue }
     }
-    
+
     /// Returns the local timeline offset of the element as timecode.
     public func offsetAsTimecode(
         frameRateSource: FCPXML.FrameRateSource = .localToElement
@@ -41,7 +41,7 @@ extension FCPXMLElementOptionalOffset {
         get { element.fcpOffset }
         nonmutating set { element.fcpOffset = newValue }
     }
-    
+
     /// Returns the offset of the element as timecode.
     public func offsetAsTimecode(
         frameRateSource: FCPXML.FrameRateSource = .localToElement
@@ -62,7 +62,7 @@ extension XMLElement {
         default defaultOffset: Fraction? = .zero
     ) -> Timecode? {
         guard let dur = fcpOffset ?? defaultOffset else { return nil }
-        
+
         return try? _fcpTimecode(
             fromRational: dur,
             frameRateSource: frameRateSource

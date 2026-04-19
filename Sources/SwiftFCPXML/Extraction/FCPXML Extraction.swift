@@ -1,7 +1,7 @@
 //
 //  FCPXML Extraction.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -27,7 +27,7 @@ extension FCPXMLElement {
             scope: scope
         )
     }
-    
+
     /// Extract elements using a preset.
     ///
     /// - Parameters:
@@ -42,7 +42,7 @@ extension FCPXMLElement {
             scope: scope
         )
     }
-    
+
     /// Extract data using a closure that provides access to the element.
     ///
     /// If no implicit data transform is required, use ``extract(types:scope:)`` to simply return
@@ -78,7 +78,7 @@ extension XMLElement {
             resources: nil
         )
     }
-    
+
     /// Extract data using a preset.
     ///
     /// - Parameters:
@@ -93,7 +93,7 @@ extension XMLElement {
             scope: scope
         )
     }
-    
+
     /// Extract data using a closure that provides access to the element.
     ///
     /// If no implicit data transform is required, use ``fcpExtract(types:scope:)`` to simply return
@@ -112,7 +112,7 @@ extension XMLElement {
             ancestors: ancestorElements(includingSelf: false),
             resources: nil
         )
-        
+
         return await withOrderedTaskGroup(sequence: extractedElements) { extractedElement in
             transform(extractedElement)
         }
@@ -133,16 +133,16 @@ extension XMLElement {
     ///     If `nil`, the `resources` found in the document will be used if present.
     ///   - overrideDirectChildren: Uses the direct children rule supplied instead of the default
     ///     rule for the element type.
-    func _fcpExtract<Ancestors: Sequence<XMLElement>>(
+    func _fcpExtract(
         types elementTypes: Set<FCPXML.ElementType>,
         scope: FCPXML.ExtractionScope,
-        ancestors: Ancestors,
+        ancestors: some Sequence<XMLElement> & Sendable,
         resources: XMLElement?,
         overrideDirectChildren: FCPXML.ExtractableChildren? = nil
-    ) async -> [FCPXML.ExtractedElement] where Ancestors: Sendable {
+    ) async -> [FCPXML.ExtractedElement] {
         var scope = scope
         scope.filteredExtractionTypes = elementTypes
-        
+
         if scope.constrainToLocalTimeline {
             return await _fcpExtract(
                 scope: scope,
@@ -157,7 +157,7 @@ extension XMLElement {
             )
         }
     }
-    
+
     /// Internal extraction recursion method:
     /// Recursively extract elements based on a set of matching criteria and filtering rules.
     ///
@@ -168,60 +168,60 @@ extension XMLElement {
     ///     If `nil`, the `resources` found in the document will be used if present.
     ///   - overrideDirectChildren: Uses the direct children rule supplied instead of the default
     ///     rule for the element type.
-    private func _fcpExtract<Ancestors: Sequence<XMLElement>>(
+    private func _fcpExtract(
         scope: FCPXML.ExtractionScope,
-        ancestors: Ancestors,
+        ancestors: some Sequence<XMLElement> & Sendable,
         resources: XMLElement?,
         overrideDirectChildren: FCPXML.ExtractableChildren? = nil
-    ) async -> [FCPXML.ExtractedElement] where Ancestors: Sendable {
+    ) async -> [FCPXML.ExtractedElement] {
         // self
-        
+
         let selfExtractedElement = FCPXML.ExtractedElement(
             element: self,
             breadcrumbs: Array(ancestors),
             resources: resources
         )
-        
+
         let keepForExtraction = Self._fcpShouldKeepForExtraction(
             extractedElement: selfExtractedElement,
             scope: scope,
             ancestors: ancestors
         )
-        
+
         let keepForTraversal = Self._fcpShouldKeepForTraversal(
             extractedElement: selfExtractedElement,
             scope: scope,
             ancestors: ancestors
         )
-        
+
         var extractedElements: [FCPXML.ExtractedElement] = []
-        
+
         // occlusion - apply to both traversal and extraction
         let occlusion = _fcpEffectiveOcclusion(ancestors: ancestors)
         if !scope.occlusions.contains(occlusion) {
             return extractedElements
         }
-        
+
         if keepForExtraction {
             extractedElements.append(contentsOf: [selfExtractedElement])
         }
-        
+
         // gather immediate children with `lane != 0` which should be considered peers
         // with the current element
-        
+
         let extractedPeers = await _fcpExtractPeers(
             scope: scope,
             ancestors: ancestors,
             resources: resources
         )
         extractedElements.append(contentsOf: extractedPeers) // already filtered by predicate
-        
+
         if !keepForTraversal {
             return extractedElements
         }
-        
+
         // get recursing information
-        
+
         guard let recurse = overrideDirectChildren
                 ?? _fcpExtractableChildren(
                     resources: resources,
@@ -229,7 +229,7 @@ extension XMLElement {
                     mcClipAngleMask: scope.mcClipAngles
                 )
         else { return extractedElements }
-        
+
         // direct children, if any
         if let childrenRule = recurse.children {
             let extractedChildren = await _fcpExtractDirectChildren(
@@ -240,7 +240,7 @@ extension XMLElement {
             )
             extractedElements.append(contentsOf: extractedChildren) // already filtered by predicate
         }
-        
+
         // explicit descendants that are not automatically recursive, if any
         if let descendants = recurse.descendants, !descendants.isEmpty {
             let extractedDescendants = await _fcpExtractDescendants(
@@ -251,22 +251,22 @@ extension XMLElement {
             )
             extractedElements.append(contentsOf: extractedDescendants) // already filtered by predicate
         }
-        
+
         return extractedElements
     }
-    
-    private func _fcpExtractPeers<Ancestors: Sequence<XMLElement>>(
+
+    private func _fcpExtractPeers(
         scope: FCPXML.ExtractionScope,
-        ancestors: Ancestors,
+        ancestors: some Sequence<XMLElement> & Sendable,
         resources: XMLElement?
-    ) async -> some Sequence<FCPXML.ExtractedElement> where Ancestors: Sendable {
+    ) async -> some Sequence<FCPXML.ExtractedElement> {
         // gather immediate children with `lane != 0` which should be considered peers
         // with the current element
-        
+
         let elements = childElements
             // filter out peers of parent, which we already handled in main extraction method
             .filter { ($0.fcpLane ?? 0) != 0 }
-        
+
         let extracted = await withOrderedTaskGroup(sequence: elements) { element in
             await element._fcpExtract(
                 scope: scope,
@@ -274,34 +274,32 @@ extension XMLElement {
                 resources: resources
             )
         }
-        
-        let output = extracted.flatMap { $0 }
-        
+
+        let output = extracted.flatMap(\.self)
+
         return output
     }
-        
+
     /// Helper to extract direct children of the element.
     ///
     /// Ancestors are ordered nearest to furthest ancestor.
-    private func _fcpExtractDirectChildren<Ancestors: Sequence<XMLElement>>(
+    private func _fcpExtractDirectChildren(
         childrenRule: FCPXML.ExtractableChildren.DirectChildren,
         scope: FCPXML.ExtractionScope,
-        ancestors: Ancestors,
+        ancestors: some Sequence<XMLElement> & Sendable,
         resources: XMLElement?
-    ) async -> [FCPXML.ExtractedElement] where Ancestors: Sendable {
-        let childrenSource: any Sequence<XMLElement>
-        
-        switch childrenRule {
+    ) async -> [FCPXML.ExtractedElement] {
+        let childrenSource: any Sequence<XMLElement> = switch childrenRule {
         case .all:
-            childrenSource = childElements
+            childElements
         case let .specific(childrenSequence):
-            childrenSource = childrenSequence
+            childrenSequence
         }
-        
+
         let elements = childrenSource
             // filter out peers of parent, which we already handled in main extraction method
             .filter { ($0.fcpLane ?? 0) == 0 }
-        
+
         let extracted = await withOrderedTaskGroup(sequence: elements) { element in
             await element._fcpExtract(
                 scope: scope,
@@ -309,12 +307,12 @@ extension XMLElement {
                 resources: resources
             )
         }
-        
-        let output = extracted.flatMap { $0 }
-        
+
+        let output = extracted.flatMap(\.self)
+
         return output
     }
-    
+
     /// Helper to extract further descendants of the element in special circumstances.
     ///
     /// - Note: This is not used for all descendants of any element, but for rare cases where a
@@ -323,16 +321,16 @@ extension XMLElement {
     /// Ancestors are ordered nearest to furthest ancestor.
     ///
     /// Descendants are ordered nearest to furthest descendant.
-    private func _fcpExtractDescendants<Ancestors: Sequence<XMLElement>>(
+    private func _fcpExtractDescendants(
         descendants: [FCPXML.ExtractableChildren.Descendant],
         scope: FCPXML.ExtractionScope,
-        ancestors: Ancestors,
+        ancestors: some Sequence<XMLElement> & Sendable,
         resources: XMLElement?
-    ) async -> [FCPXML.ExtractedElement] where Ancestors: Sendable {
+    ) async -> [FCPXML.ExtractedElement] {
         // each descendant record has an element, as well as an optional sequence of children
-        
+
         var descendantAccum: [XMLElement] = []
-        
+
         var descendantsIterator = descendants.makeIterator()
         typealias IteratorResult = (
             descendant: FCPXML.ExtractableChildren.Descendant,
@@ -343,10 +341,10 @@ extension XMLElement {
             defer { descendantAccum.insert(next.element, at: 0) }
             return (descendant: next, accum: descendantAccum)
         }
-        
+
         // parse from nearest descendent to furthest, which is the same as
         // parsing ancestors from furthest to nearest
-        let extracted = await withOrderedTaskGroup(sequence: iterator) { (descendant, accum) in
+        let extracted = await withOrderedTaskGroup(sequence: iterator) { descendant, accum in
             await descendant.element._fcpExtract(
                 scope: scope,
                 ancestors: accum + [self] + ancestors,
@@ -354,19 +352,19 @@ extension XMLElement {
                 overrideDirectChildren: descendant.children
             )
         }
-        
-        let output = extracted.flatMap { $0 }
-        
+
+        let output = extracted.flatMap(\.self)
+
         return output
     }
-    
+
     /// Returns `true` if the element should be filtered (kept) in returned elements.
     ///
     /// Ancestors are ordered nearest to furthest ancestor.
-    static func _fcpShouldKeepForExtraction<Ancestors: Sequence<XMLElement>>(
+    static func _fcpShouldKeepForExtraction(
         extractedElement: FCPXML.ExtractedElement,
         scope: FCPXML.ExtractionScope,
-        ancestors: Ancestors
+        ancestors: some Sequence<XMLElement>
     ) -> Bool {
         // we can apply inclusion-filter even if we don't know the element type
         if !scope.filteredExtractionTypes.isEmpty {
@@ -380,41 +378,41 @@ extension XMLElement {
                 return false
             }
         }
-        
+
         // we can only exclude element types if has a type concretely known to us
         if let elementType = extractedElement.element.fcpElementType {
             if scope.excludedExtractionTypes.contains(elementType) {
                 return false
             }
         }
-        
+
         if let maxContainerDepth = scope.maxContainerDepth,
            _fcpContainerDepth(in: ancestors) > maxContainerDepth
         {
             return false
         }
-        
+
         let enabledState = extractedElement.element.fcpGetEnabled(default: true)
         if !scope.includeDisabled, !enabledState {
             return false
         }
-        
+
         if let predicate = scope.extractionPredicate,
            !predicate(extractedElement)
         {
             return false
         }
-        
+
         return true
     }
-    
+
     /// Returns `true` if the element should be filtered (kept) and further traversed.
     ///
     /// Ancestors are ordered nearest to furthest ancestor.
-    static func _fcpShouldKeepForTraversal<Ancestors: Sequence<XMLElement>>(
+    static func _fcpShouldKeepForTraversal(
         extractedElement: FCPXML.ExtractedElement,
         scope: FCPXML.ExtractionScope,
-        ancestors: Ancestors
+        ancestors: some Sequence<XMLElement>
     ) -> Bool {
         // we can apply inclusion-filter even if we don't know the element type
         if !scope.filteredTraversalTypes.isEmpty {
@@ -428,39 +426,39 @@ extension XMLElement {
                 return false
             }
         }
-        
+
         // we can only exclude element types if has a type concretely known to us
         if let elementType = extractedElement.element.fcpElementType {
             if scope.excludedTraversalTypes.contains(elementType) {
                 return false
             }
         }
-        
+
         if let maxContainerDepth = scope.maxContainerDepth,
            _fcpContainerDepth(in: ancestors) > maxContainerDepth
         {
             return false
         }
-        
+
         let enabledState = extractedElement.element.fcpGetEnabled(default: true)
         if !scope.includeDisabled, !enabledState {
             return false
         }
-        
+
         if let predicate = scope.traversalPredicate,
            !predicate(extractedElement)
         {
             return false
         }
-        
+
         return true
     }
-    
+
     /// Returns number of container elements found in an ancestor chain.
     ///
     /// Ancestors are ordered nearest to furthest ancestor.
-    static func _fcpContainerDepth<Ancestors: Sequence<XMLElement>>(
-        in ancestors: Ancestors
+    static func _fcpContainerDepth(
+        in ancestors: some Sequence<XMLElement>
     ) -> Int {
         var count = 0
         var isTraversingContainerClip = false
@@ -470,7 +468,7 @@ extension XMLElement {
                 && elementType != nil
                 && elementType != .spine // don't include spines
             let hasNoLane = (ancestor.fcpLane ?? 0) == 0
-            
+
             if elementType == .assetClip || elementType == .refClip {
                 if isTraversingContainerClip {
                     // don't count asset clips within an asset-clip or ref-clip
@@ -479,7 +477,7 @@ extension XMLElement {
                 }
                 isTraversingContainerClip = true
             }
-            
+
             if isIncrementingTimeline, hasNoLane { count += 1 }
         }
         return count
@@ -492,8 +490,8 @@ extension XMLElement {
     /// Return effective lane for the element.
     ///
     /// Ancestors are ordered nearest to furthest ancestor.
-    func _fcpEffectiveLane<Ancestors: Sequence<XMLElement>>(
-        ancestors: Ancestors
+    func _fcpEffectiveLane(
+        ancestors: some Sequence<XMLElement>
     ) -> Int? {
         _fcpAncestorElementTypesAndLanes(ancestors: ancestors, includingSelf: true)
             .first(where: { $0.lane != nil })?

@@ -1,14 +1,14 @@
 //
 //  FCPXML Audition.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// Contains one active story element followed by alternative story elements in the audition
@@ -20,15 +20,15 @@ extension FCPXML {
     /// > container.
     public struct Audition: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .audition
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.audition]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -47,11 +47,11 @@ extension FCPXML.Audition {
         modDate: String? = nil
     ) {
         self.init()
-        
+
         // Anchorable Attributes
         self.lane = lane
         self.offset = offset
-        
+
         // Mod Date
         self.modDate = modDate
     }
@@ -63,12 +63,12 @@ extension FCPXML.Audition {
     public enum Attributes: String {
         // Element-Specific Attributes
         case modDate
-        
+
         // Anchorable Attributes
         case lane
         case offset
     }
-    
+
     // can only contain one or more clips
 }
 
@@ -85,19 +85,19 @@ extension FCPXML.Audition /* Clip Attributes */ {
         get { activeClip?.fcpName }
         nonmutating set { activeClip?.fcpName = newValue }
     }
-    
+
     /// Get or set the active clip's `start` attribute.
     public var start: Fraction? {
         get { activeClip?.fcpStart }
         nonmutating set { activeClip?.fcpStart = newValue }
     }
-    
+
     /// Get or set the active clip's `duration` attribute.
     public var duration: Fraction? {
         get { activeClip?.fcpDuration }
         nonmutating set { activeClip?.fcpDuration = newValue }
     }
-    
+
     /// Get or set the active clip's `enabled` attribute.
     public var enabled: Bool {
         get { activeClip?.fcpGetEnabled(default: true) ?? true }
@@ -118,12 +118,12 @@ extension FCPXML.Audition {
             element.addChildren(newValue)
         }
     }
-    
+
     /// Convenience to return the active audition clip.
     public var activeClip: XMLElement? {
         get { clips.first }
         nonmutating set {
-            guard let newValue = newValue else { return }
+            guard let newValue else { return }
             guard !clips.isEmpty else {
                 element.addChild(newValue)
                 return
@@ -131,7 +131,7 @@ extension FCPXML.Audition {
             element.replaceChild(at: 0, with: newValue)
         }
     }
-    
+
     /// Convenience to return the inactive audition clips, if any.
     public var inactiveClips: LazyCompactMapSequence<[XMLNode], XMLElement>.SubSequence {
         clips.dropFirst()

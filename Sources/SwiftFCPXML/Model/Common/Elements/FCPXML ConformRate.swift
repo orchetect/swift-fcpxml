@@ -1,7 +1,7 @@
 //
 //  FCPXML ConformRate.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -18,15 +18,15 @@ extension FCPXML {
     /// > "A `conform-rate` defines how the clip's frame rate should be conformed to the sequence frame rate".
     public struct ConformRate: FCPXMLElement, Equatable, Hashable {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .conformRate
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.conformRate]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -43,7 +43,7 @@ extension FCPXML.ConformRate {
         frameSampling: FCPXML.FrameSampling = .floor
     ) {
         self.init()
-        
+
         self.scaleEnabled = scaleEnabled
         self.srcFrameRate = srcFrameRate
         self.frameSampling = frameSampling
@@ -58,7 +58,7 @@ extension FCPXML.ConformRate {
         case srcFrameRate // optional
         case frameSampling // default: floor
     }
-    
+
     // no children
 }
 
@@ -80,16 +80,16 @@ extension FCPXML.ConformRate {
             )
         }
     }
-    
+
     /// Source frame rate.
     public var srcFrameRate: SourceFrameRate? {
         get {
             guard let value = element.stringValue(forAttributeNamed: Attributes.srcFrameRate.rawValue)
             else { return nil }
-            
+
             return SourceFrameRate(rawValue: value)
         }
-        nonmutating set { 
+        nonmutating set {
             element.addAttribute(withName: Attributes.srcFrameRate.rawValue, value: newValue?.rawValue)
         }
     }
@@ -131,22 +131,22 @@ extension FCPXML.ConformRate.SourceFrameRate {
         guard let match = Self.allCases.first(where: {
             $0.timecodeFrameRate == timecodeFrameRate
         }) else { return nil }
-        
+
         self = match
     }
-    
+
     public var timecodeFrameRate: TimecodeFrameRate {
         switch self {
-        case .fps23_98: return .fps23_976
-        case .fps24: return .fps24
-        case .fps25: return .fps25
-        case .fps29_97: return .fps29_97
-        case .fps30: return .fps30
-        case .fps47_95: return .fps47_952
-        case .fps48: return .fps48
-        case .fps50: return .fps50
-        case .fps60: return .fps60
-        case .fps59_94: return .fps59_94
+        case .fps23_98: .fps23_976
+        case .fps24: .fps24
+        case .fps25: .fps25
+        case .fps29_97: .fps29_97
+        case .fps30: .fps30
+        case .fps47_95: .fps47_952
+        case .fps48: .fps48
+        case .fps50: .fps50
+        case .fps60: .fps60
+        case .fps59_94: .fps59_94
         }
     }
 }

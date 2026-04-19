@@ -1,14 +1,14 @@
 //
 //  FCPXMLElementTextStyleDefinitionChildren.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 public protocol FCPXMLElementTextStyleDefinitionChildren: FCPXMLElement {
     /// Child `text-style-def` elements.
@@ -24,7 +24,7 @@ extension FCPXMLElementTextStyleDefinitionChildren {
 
 extension XMLElement {
     // TODO: no model objects yet, so just return the bare XML
-    
+
     /// FCPXML: Returns child `text-style-def` elements.
     public var fcpTextStyleDefinitions: LazyFilteredCompactMapSequence<[XMLNode], XMLElement> {
         get {

@@ -1,28 +1,28 @@
 //
 //  FCPXML Keyword.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// Represents a keyword.
     public struct Keyword: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .keyword
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.keyword]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -40,7 +40,7 @@ extension FCPXML.Keyword {
         note: String? = nil
     ) {
         self.init()
-        
+
         self.keywords = keywords
         self.start = start
         self.duration = duration
@@ -58,7 +58,7 @@ extension FCPXML.Keyword {
         case value // comma-separated list of keywords, required
         case note
     }
-    
+
     // no children
 }
 
@@ -82,7 +82,7 @@ extension FCPXML.Keyword {
             }
         }
     }
-    
+
     /// Optional note.
     public var note: String? {
         get { element.fcpNote }
@@ -118,14 +118,14 @@ extension FCPXML.Keyword {
             includingSelf: true
         )
         else { return nil }
-        
+
         return absoluteRangeAsTimecode(
             timeline: timeline,
             timelineAncestors: timelineAncestors,
             resources: resources
         )
     }
-    
+
     func absoluteRangeAsTimecode(
         timeline: XMLElement,
         timelineAncestors: AnySequence<XMLElement>,
@@ -136,24 +136,24 @@ extension FCPXML.Keyword {
             resources: resources
         ),
               let kwAbsStartTimecode = try? element._fcpTimecode(
-                fromRealTime: kwAbsStart,
-                frameRateSource: .mainTimeline,
-                breadcrumbs: [timeline] + timelineAncestors,
-                resources: resources
+                  fromRealTime: kwAbsStart,
+                  frameRateSource: .mainTimeline,
+                  breadcrumbs: [timeline] + timelineAncestors,
+                  resources: resources
               ),
               let kwDuration = durationAsTimecode()
         else { return nil }
-        
+
         let lbound = kwAbsStartTimecode
         let ubound = lbound + kwDuration
-        
+
         return lbound ... ubound
     }
 }
 
 // MARK: - Collection Methods
 
-extension Collection where Element == FCPXML.Keyword {
+extension Collection<FCPXML.Keyword> {
     /// Flattens a collection of keywords by removing duplicates and sorting.
     public func flattenedKeywords() -> [String] {
         flatMap(\.keywords)

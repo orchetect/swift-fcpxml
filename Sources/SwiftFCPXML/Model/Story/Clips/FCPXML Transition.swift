@@ -1,14 +1,14 @@
 //
 //  FCPXML Transition.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// Transition element.
@@ -29,15 +29,15 @@ extension FCPXML {
     /// > A transition element defines an effect that overlaps two adjacent story elements.
     public struct Transition: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .transition
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.transition]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -57,12 +57,12 @@ extension FCPXML.Transition {
         metadata: FCPXML.Metadata? = nil
     ) {
         self.init()
-        
+
         // Element Attributes
         self.offset = offset
         self.name = name
         self.duration = duration
-        
+
         // Metadata
         self.metadata = metadata
     }
@@ -77,7 +77,7 @@ extension FCPXML.Transition {
         case name // optional
         case duration // required
     }
-    
+
     // can contain filter-audio
     // can contain filter-video
     // can contain markers
@@ -110,7 +110,7 @@ extension FCPXML.Transition {
             element.addChildren(newValue)
         }
     }
-    
+
     /// Returns child story elements.
     public var storyElements: LazyFilteredCompactMapSequence<[XMLNode], XMLElement> {
         element.fcpStoryElements
@@ -122,7 +122,9 @@ extension FCPXML.Transition: FCPXMLElementMetadataChild { }
 // MARK: - Meta Conformances
 
 extension FCPXML.Transition: FCPXMLElementMetaTimeline {
-    public func asAnyTimeline() -> FCPXML.AnyTimeline { .transition(self) }
+    public func asAnyTimeline() -> FCPXML.AnyTimeline {
+        .transition(self)
+    }
 }
 
 // MARK: - Typing

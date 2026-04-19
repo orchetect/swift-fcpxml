@@ -1,14 +1,14 @@
 //
 //  FCPXML RefClip.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// References a compound clip media.
@@ -30,15 +30,15 @@ extension FCPXML {
     /// > ) to specify its format and other attributes.
     public struct RefClip: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .refClip
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.refClip]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -72,31 +72,31 @@ extension FCPXML.RefClip {
         metadata: FCPXML.Metadata? = nil
     ) {
         self.init()
-        
+
         self.ref = ref
         self.srcEnable = srcEnable
         self.useAudioSubroles = useAudioSubroles
-        
+
         // Audio Start/Duration
         self.audioStart = audioStart
         self.audioDuration = audioDuration
-        
+
         // Anchorable Attributes
         self.lane = lane
         self.offset = offset
-        
+
         // Clip Attributes
         self.name = name
         self.start = start
         self.duration = duration
         self.enabled = enabled
-        
+
         // Mod Date
         self.modDate = modDate
-        
+
         // Note child
         self.note = note
-        
+
         // Metadata
         self.metadata = metadata
     }
@@ -113,21 +113,21 @@ extension FCPXML.RefClip {
         case audioStart
         case audioDuration
         case useAudioSubroles // default `0` (false)
-        
+
         // Anchorable Attributes
         case lane
         case offset
-        
+
         // Clip Attributes
         case name
         case start
         case duration
         case enabled
-        
+
         // Mod Date
         case modDate
     }
-    
+
     // contains audio-role-source*
     // contains DTD %timing-params
     // contains DTD %intrinsic-params
@@ -147,7 +147,7 @@ extension FCPXML.RefClip {
         get { element.fcpRef ?? "" }
         nonmutating set { element.fcpRef = newValue }
     }
-    
+
     public var useAudioSubroles: Bool { // only used by `ref-clip`
         get { element.getBool(forAttribute: Attributes.useAudioSubroles.rawValue) ?? false }
         nonmutating set {
@@ -159,7 +159,7 @@ extension FCPXML.RefClip {
             )
         }
     }
-    
+
     /// Sources to enable for audio and video. (Default: `.all`)
     public var srcEnable: FCPXML.ClipSourceEnable {
         get { element.fcpClipSourceEnable }
@@ -182,7 +182,7 @@ extension FCPXML.RefClip {
             element.addChildren(newValue)
         }
     }
-    
+
     /// Returns child story elements.
     public var storyElements: LazyFilteredCompactMapSequence<[XMLNode], XMLElement> {
         element.fcpStoryElements
@@ -200,7 +200,9 @@ extension FCPXML.RefClip: FCPXMLElementTimingParams { }
 // MARK: - Meta Conformances
 
 extension FCPXML.RefClip: FCPXMLElementMetaTimeline {
-    public func asAnyTimeline() -> FCPXML.AnyTimeline { .refClip(self) }
+    public func asAnyTimeline() -> FCPXML.AnyTimeline {
+        .refClip(self)
+    }
 }
 
 // MARK: - Resource
@@ -210,7 +212,7 @@ extension FCPXML.RefClip {
     public var mediaResource: FCPXML.Media? {
         element.fcpResource(forID: ref)?.fcpAsMedia
     }
-    
+
     /// Returns the `sequence` contained in the `media` resource.
     public var mediaSequence: FCPXML.Sequence? {
         mediaResource?.sequence

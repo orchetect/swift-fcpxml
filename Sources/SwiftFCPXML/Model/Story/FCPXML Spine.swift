@@ -1,28 +1,28 @@
 //
 //  FCPXML Spine.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// Contains elements ordered sequentially in time.
     public struct Spine: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .spine
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.spine]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -41,10 +41,10 @@ extension FCPXML.Spine {
         offset: Fraction? = nil
     ) {
         self.init()
-        
+
         self.name = name
         self.format = format
-        
+
         // Anchorable Attributes
         self.lane = lane
         self.offset = offset
@@ -58,12 +58,12 @@ extension FCPXML.Spine {
         // Element-Specific Attributes
         case name
         case format
-        
+
         // Anchorable Attributes
         case lane
         case offset
     }
-    
+
     // contains clips
     // contains transitions
 }
@@ -75,7 +75,7 @@ extension FCPXML.Spine {
         get { element.fcpName }
         nonmutating set { element.fcpName = newValue }
     }
-    
+
     public var format: String? {
         get { element.fcpFormat }
         nonmutating set { element.fcpFormat = newValue }
@@ -91,7 +91,7 @@ extension FCPXML.Spine {
     public var storyElements: LazyFilteredCompactMapSequence<[XMLNode], XMLElement> {
         element.fcpStoryElements
     }
-    
+
     /// Get or set child elements.
     public var contents: LazyCompactMapSequence<[XMLNode], XMLElement> {
         get { element.childElements }
@@ -104,8 +104,10 @@ extension FCPXML.Spine {
 
 // MARK: - Meta Conformances
 
-extension FCPXML.Spine: FCPXMLElementMetaTimeline { 
-    public func asAnyTimeline() -> FCPXML.AnyTimeline { .spine(self) }
+extension FCPXML.Spine: FCPXMLElementMetaTimeline {
+    public func asAnyTimeline() -> FCPXML.AnyTimeline {
+        .spine(self)
+    }
 }
 
 // MARK: - Typing

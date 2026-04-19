@@ -1,7 +1,7 @@
 //
 //  FCPXML ElementModelType XML.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -12,24 +12,25 @@ import SwiftExtensions
 // MARK: - Typealiases
 
 public typealias LazyFCPXMLChildrenSequence<Model: FCPXMLElement> = LazyCompactMapSequence<
-    LazyCompactMapSequence<[XMLNode], XMLElement>, Model
+    LazyCompactMapSequence<[XMLNode], XMLElement>,
+    Model
 >
 
 // MARK: - Sequence First (Strongly-Typed)
 
-extension Sequence where Element == XMLElement {
+extension Sequence<XMLElement> {
     /// FCPXML: Returns the first element with the given concrete element type.
     public func first<Model: FCPXMLElement>(
         whereFCPElement concreteModelType: Model.Type
     ) -> Model? {
-        self.lazy.first(whereFCPElement: concreteModelType)
+        lazy.first(whereFCPElement: concreteModelType)
     }
-    
+
     /// FCPXML: Returns the first element with the given element type.
     public func first<Model>(
         whereFCPElement elementType: FCPXML.ElementModelType<Model>
     ) -> Model? {
-        self.lazy.first(whereFCPElement: elementType)
+        lazy.first(whereFCPElement: elementType)
     }
 }
 
@@ -42,7 +43,7 @@ extension LazySequence where Element == XMLElement {
     ) -> Model? {
         compactMap { Model(element: $0) }.first
     }
-    
+
     /// FCPXML: Returns the first element with the given element type.
     public func first<Model>(
         whereFCPElement elementType: FCPXML.ElementModelType<Model>
@@ -53,19 +54,19 @@ extension LazySequence where Element == XMLElement {
 
 // MARK: - Sequence Filter (Strongly-Typed)
 
-extension Sequence where Element == XMLElement {
+extension Sequence<XMLElement> {
     /// FCPXML: Filter the element sequence by a specific concrete FCPXML model type.
     public func filter<Model: FCPXMLElement>(
         whereFCPElement concreteModelType: Model.Type
     ) -> LazyCompactMapSequence<LazySequence<Self>.Elements, Model> {
-        self.lazy.compactMap { Model(element: $0) }
+        lazy.compactMap { Model(element: $0) }
     }
-    
+
     /// FCPXML: Filter the element sequence by a specific concrete FCPXML model type.
     public func filter<Model>(
         whereFCPElement elementType: FCPXML.ElementModelType<Model>
     ) -> LazyCompactMapSequence<LazySequence<Self>.Elements, Model> {
-        self.lazy.compactMap { Model(element: $0) }
+        lazy.compactMap { Model(element: $0) }
     }
 }
 
@@ -78,7 +79,7 @@ extension LazySequence where Element == XMLElement {
     ) -> LazyCompactMapSequence<Base, Model?> {
         compactMap { Model(element: $0) }
     }
-    
+
     /// FCPXML: Filter the element sequence by a specific concrete FCPXML model type.
     public func filter<Model>(
         whereFCPElement modelType: FCPXML.ElementModelType<Model>
@@ -97,7 +98,7 @@ extension XMLElement {
         childElements
             .filter(whereFCPElement: concreteModelType)
     }
-    
+
     /// FCPXML: Returns child elements of the given type wrapped in a model object.
     public func children<Model>(
         whereFCPElement modelType: FCPXML.ElementModelType<Model>
@@ -105,7 +106,7 @@ extension XMLElement {
         childElements
             .filter(whereFCPElement: modelType)
     }
-    
+
     /// FCPXML: Returns the first child element of the given element type wrapped in a model object.
     public func firstChild<Model>(
         whereFCPElement modelType: FCPXML.ElementModelType<Model>
@@ -113,7 +114,7 @@ extension XMLElement {
         childElements
             .first(whereFCPElement: modelType)
     }
-    
+
     /// FCPXML: Returns the first child element of the given element type wrapped in a model object.
     /// If no matching child is found, the default is added as a child and returned.
     ///

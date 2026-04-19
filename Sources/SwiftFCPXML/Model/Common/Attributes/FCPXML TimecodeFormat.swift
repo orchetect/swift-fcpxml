@@ -1,7 +1,7 @@
 //
 //  FCPXML TimecodeFormat.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -25,8 +25,8 @@ extension FCPXML.TimecodeFormat {
     /// Returns `true` if format is drop-frame.
     public var isDrop: Bool {
         switch self {
-        case .dropFrame: return true
-        case .nonDropFrame: return false
+        case .dropFrame: true
+        case .nonDropFrame: false
         }
     }
 }

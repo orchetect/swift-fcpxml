@@ -1,67 +1,70 @@
 //
 //  FCPXML 60.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
-@testable import SwiftFCPXML
 import Foundation
 import SwiftExtensions
+@testable import SwiftFCPXML
 import SwiftTimecodeCore
 import Testing
 import TestingExtensions
 
-@Suite struct FCPXML_60: TestUtils {
+@Suite
+struct FCPXML_60: TestUtils {
     // MARK: - Test Data
-    
-    var fileContents: Data { get throws {
-        try TestResource.FCPXMLExports.`60`.data()
-    } }
-    
+
+    var fileContents: Data {
+        get throws {
+            try TestResource.FCPXMLExports.`60`.data()
+        }
+    }
+
     /// Project @ 60fps.
     /// Contains media @ 23.976fps and 29.97fps.
     let projectFrameRate: TimecodeFrameRate = .fps60
-    
+
     // MARK: - Tests
-    
+
     @Test
-    func parse() async throws {
+    func parse() throws {
         // load
         let rawData = try fileContents
         let fcpxml = try FCPXML(fileContent: rawData)
-        
+
         // version
         #expect(fcpxml.version == .ver1_11)
-        
+
         // resources
         let resourcesDict = fcpxml.root.resourcesDict
         #expect(resourcesDict.count == 8)
-        
+
         // library
         let library = try #require(fcpxml.root.library)
         let libraryURL = URL(string: "file:///Users/user/Movies/FCPXMLTest.fcpbundle/")
         #expect(library.location == libraryURL)
-        
+
         // event
         let events = fcpxml.allEvents()
         #expect(events.count == 1)
-        
+
         let event = try #require(events[safe: 0])
         #expect(event.name == "11-9-22")
-        
+
         // project
         let projects = event.projects.zeroIndexed
         #expect(projects.count == 1)
-        
+
         let project = try #require(projects[safe: 0])
         #expect(project.name == "60_V1")
         #expect(
             try project.startTimecode()
                 == Timecode(.rational(0, 1), at: projectFrameRate, base: .max80SubFrames)
         )
-        
+
         // sequence
         let sequence = try #require(projects[safe: 0]).sequence
         #expect(sequence.format == "r1")
@@ -71,38 +74,38 @@ import TestingExtensions
         #expect(sequence.durationAsTimecode() == Self.tc("00:04:23:10", projectFrameRate))
         #expect(sequence.audioLayout == .stereo)
         #expect(sequence.audioRate == .rate48kHz)
-        
+
         // spine
         let spine = sequence.spine
-        
+
         let storyElements = spine.storyElements.zeroIndexed
         #expect(storyElements.count == 17)
     }
-    
+
     @Test
     func extractMarkers() async throws {
         // load file
         let rawData = try fileContents
-        
+
         // load
         let fcpxml = try FCPXML(fileContent: rawData)
-        
+
         // project
         let project = try #require(fcpxml.allProjects().first)
-        
+
         let extractedMarkers = await project
             .extract(preset: .markers, scope: .deep())
             .sortedByAbsoluteStartTimecode()
             // .zeroIndexed // not necessary after sorting - sort returns new array
-        
+
         let markers = extractedMarkers
-        
+
         // 3 x markers in r8 media resource (resource is used twice which produces 6 markers):
         // -------
         // <marker start="247247/15000s" duration="1001/30000s" value="INSIDE 1"/>
         // <marker start="181181/10000s" duration="1001/30000s" value="INSIDE 2"/>
         // <marker start="49049/2500s" duration="1001/30000s" value="INSIDE 3"/>
-        
+
         // 30 x markers in sequence (listed in chronological order as seen in FCP's marker list):
         // -------
         // <marker start="199199/12000s" duration="1001/24000s" value="Shot_01" completed="0"/>
@@ -135,14 +138,14 @@ import TestingExtensions
         // <marker start="227227/2500s" duration="1001/30000s" value="Marker 20"/>
         // <marker start="187187/2000s" duration="1001/30000s" value="Marker 21"/>
         // <marker start="953953/10000s" duration="1001/30000s" value="Marker 22"/>
-        
+
         struct MarkerData {
             let absTC: String // Absolute timecode, as seen in FCP
             let name: String
             let config: FCPXML.Marker.Configuration
             let occ: FCPXML.ElementOcclusion
         }
-        
+
         // swiftformat:disable all
         let markerList: [MarkerData] = [
             MarkerData(absTC: "00:00:16:33.51", name: "Shot_01", config: .toDo(completed: false), occ: .notOccluded),
@@ -195,16 +198,16 @@ import TestingExtensions
         // swiftformat:enable all
         let expectedMarkerCount = 30 + (2 * 3)
         assert(markerList.count == expectedMarkerCount) // unit test sanity check
-        
+
         #expect(markers.count == expectedMarkerCount)
-        
+
         print("Markers sorted by absolute timecode:")
         print(Self.debugString(for: markers))
-        
+
         for (index, markerData) in markerList.enumerated() {
             let marker = try #require(markers[safe: index])
             let desc = marker.name
-            
+
             // name
             guard marker.name == markerData.name else {
                 Issue.record(
@@ -212,88 +215,88 @@ import TestingExtensions
                 )
                 continue
             }
-            
+
             // config
             #expect(marker.configuration == markerData.config, "\(desc)")
-            
+
             // absolute timecode
             let tc = try #require(marker.timecode(), "\(marker.name)")
             #expect(tc == Self.tc(markerData.absTC, projectFrameRate), "\(desc)")
             #expect(tc.frameRate == projectFrameRate, "\(desc)")
-            
+
             // occlusion
             #expect(marker.value(forContext: .effectiveOcclusion) == markerData.occ, "\(desc)")
         }
     }
-    
+
     /// Just check that the correct number of markers are extracted for main timeline.
     @Test
     func extractMarkers_MainTimeline() async throws {
         // load file
         let rawData = try fileContents
-        
+
         // load
         let fcpxml = try FCPXML(fileContent: rawData)
-        
+
         // project
         let project = try #require(fcpxml.allProjects().first)
-        
+
         let extractedMarkers = await project
             .extract(preset: .markers, scope: .mainTimeline)
             .sortedByAbsoluteStartTimecode()
             // .zeroIndexed // not necessary after sorting - sort returns new array
-        
+
         #expect(extractedMarkers.count == 30)
     }
-    
+
     @Test
-    func edgeCase() async throws {
+    func edgeCase() throws {
         // load file
         let rawData = try fileContents
-        
+
         // load
         let fcpxml = try FCPXML(fileContent: rawData)
-        
+
         // event
         let events = fcpxml.allEvents()
         let event = try #require(events[safe: 0])
-        
+
         // project
         let projects = event.projects.zeroIndexed
         let project = try #require(projects[safe: 0])
-        
+
         // sequence
         let sequence = project.sequence
-        
+
         // spine
         let spine = sequence.spine
-        
+
         let storyElements = spine.storyElements.zeroIndexed
-        
+
         // asset-clip @ 00:03:30:34 absolute timecode
         let assetClip1 = try #require(storyElements[safe: 8]?.fcpAsAssetClip)
         #expect(
             assetClip1.offset?.doubleValue
-                == Fraction(75804000, 360000).doubleValue // NOT scaled
+                == Fraction(75_804_000, 360_000).doubleValue // NOT scaled
         )
         #expect(
             assetClip1.start?.doubleValue
-                == Fraction(143286143, 375000).doubleValue / 1.001 // scaled
+                == Fraction(143_286_143, 375_000).doubleValue / 1.001 // scaled
         )
-        
+
         let ac1StoryElements = assetClip1.storyElements.zeroIndexed
-        
+
         // asset-clip @ 00:03:37:38 absolute timecode
         let assetClip2 = try #require(ac1StoryElements[safe: 0]?.fcpAsAssetClip)
         #expect(
             assetClip2.offset?.doubleValue
-                == Fraction(145938793, 375000).doubleValue / 1.001 // scaled
+                == Fraction(145_938_793, 375_000).doubleValue / 1.001 // scaled
         )
         #expect(
             assetClip2.start?.doubleValue
-                == Fraction(299890591, 1000000).doubleValue / 1.001 // scaled
+                == Fraction(299_890_591, 1_000_000).doubleValue / 1.001 // scaled
         )
-        
+
         #expect(
             assetClip2.element
                 .fcpAncestorTimeline(includingSelf: true, withLaneZero: false)?
@@ -302,8 +305,10 @@ import TestingExtensions
         )
         #expect(
             assetClip2.element
-                ._fcpConformRateScalingFactor(timelineFrameRate: nil,
-                                              includingSelf: true)
+                ._fcpConformRateScalingFactor(
+                    timelineFrameRate: nil,
+                    includingSelf: true
+                )
             == 1 / 1.001
         )
     }

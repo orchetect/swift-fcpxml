@@ -1,7 +1,7 @@
 //
 //  FCPXML CaptionRole.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -32,7 +32,7 @@ extension FCPXML {
     public struct CaptionRole: Equatable, Hashable, Sendable {
         public let role: String
         public let captionFormat: String
-        
+
         public init(role: String, captionFormat: String) {
             self.role = role
             self.captionFormat = captionFormat
@@ -41,38 +41,45 @@ extension FCPXML {
 }
 
 extension FCPXML.CaptionRole: FCPXMLRole {
-    public var roleType: FCPXML.RoleType { .caption }
-    public func asAnyRole() -> FCPXML.AnyRole { .caption(self) }
-    
+    public var roleType: FCPXML.RoleType {
+        .caption
+    }
+
+    public func asAnyRole() -> FCPXML.AnyRole {
+        .caption(self)
+    }
+
     public func lowercased(derivedOnly: Bool) -> Self {
         // derivedOnly has no effect for caption roles
-        
+
         let role = role.lowercased()
         // caption format case shouldn't be modified
-        
+
         return Self(role: role, captionFormat: captionFormat)
     }
-    
+
     public func titleCased(derivedOnly: Bool) -> Self {
         // derivedOnly has no effect for caption roles
-        
+
         let role = role.titleCased(firstCharacterOfWordsOnly: false, preserveUppercaseWords: false)
         // caption format case shouldn't be modified
-        
+
         return Self(role: role, captionFormat: captionFormat)
     }
-    
+
     public func titleCasedDefaultRole(derivedOnly: Bool) -> Self {
         // this has no effect on caption role, as FCP does not lowercase default caption roles,
         // only default audio and video roles
         self
     }
-    
+
     public var isMainRoleBuiltIn: Bool {
         let builtInRoles = [
-            "iTT", "SRT", "CEA-608"
+            "iTT",
+            "SRT",
+            "CEA-608"
         ]
-        
+
         return builtInRoles.contains(role)
     }
 }
@@ -81,11 +88,11 @@ extension FCPXML.CaptionRole: RawRepresentable {
     public var rawValue: String {
         role + "?captionFormat=" + captionFormat
     }
-    
+
     public init?(rawValue: String) {
         guard let parsed = try? FCPXML._parseRawCaptionRole(rawValue: rawValue)
         else { return nil }
-        
+
         role = parsed.role
         captionFormat = parsed.captionFormat
     }

@@ -1,14 +1,14 @@
 //
 //  FCPXML MediaRep.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// Media representation.
@@ -23,15 +23,15 @@ extension FCPXML {
     /// > media representation, as a child element of the asset element.
     public struct MediaRep: Equatable, Hashable {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .mediaRep
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.mediaRep]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -50,14 +50,14 @@ extension FCPXML.MediaRep {
         bookmark: Data? = nil
     ) {
         self.init()
-        
+
         self.kind = kind
         self.sig = sig
         self.src = src
         self.suggestedFilename = suggestedFilename
-        self.bookmarkData = bookmark
+        bookmarkData = bookmark
     }
-    
+
     public init(
         kind: Kind = .originalMedia,
         sig: String? = nil,
@@ -66,12 +66,12 @@ extension FCPXML.MediaRep {
         bookmark: String
     ) {
         self.init()
-        
+
         self.kind = kind
         self.sig = sig
         self.src = src
         self.suggestedFilename = suggestedFilename
-        self.bookmarkData = bookmark.data(using: .utf8)
+        bookmarkData = bookmark.data(using: .utf8)
     }
 }
 
@@ -82,15 +82,15 @@ extension FCPXML.MediaRep {
         /// The kind of media representation.
         /// Default: `original-media`
         case kind
-        
+
         /// The unique identifier of a media representation, assigned by Final Cut Pro.
         case sig
-        
+
         /// Required.
         /// May be a full absolute URL to a local `file://` or remote `https://` resource.
         /// May also be a relative URL based on the location of the FCPXML document itself, for example: `./Media/MyMovie.mov`.
         case src
-        
+
         /// The filename string to use when Final Cut Pro manages the media representation file.
         ///
         /// See [FCPXML Reference](
@@ -98,7 +98,7 @@ extension FCPXML.MediaRep {
         /// ) for details.
         case suggestedFilename
     }
-    
+
     // can contain one bookmark
 }
 
@@ -110,23 +110,23 @@ extension FCPXML.MediaRep {
     public var kind: Kind { // only used in `media-rep`
         get {
             let defaultValue: Kind = .originalMedia
-            
+
             guard let value = element.stringValue(forAttributeNamed: Attributes.kind.rawValue)
             else { return defaultValue }
-            
+
             return Kind(rawValue: value) ?? defaultValue
         }
         nonmutating set {
             element.addAttribute(withName: Attributes.kind.rawValue, value: newValue.rawValue)
         }
     }
-    
+
     /// The unique identifier of a media representation, assigned by Final Cut Pro.
     public var sig: String? {
         get { element.stringValue(forAttributeNamed: Attributes.sig.rawValue) }
         nonmutating set { element.addAttribute(withName: Attributes.sig.rawValue, value: newValue) }
     }
-    
+
     /// Required.
     /// May be a full absolute URL to a local `file://` or remote `https://` resource.
     /// May also be a relative URL based on the location of the FCPXML document itself, for example: `./Media/MyMovie.mov`.
@@ -134,7 +134,7 @@ extension FCPXML.MediaRep {
         get { element.getURL(forAttribute: Attributes.src.rawValue) }
         nonmutating set { element.set(url: newValue, forAttribute: Attributes.src.rawValue) }
     }
-    
+
     /// The filename string to use when Final Cut Pro manages the media representation file.
     ///
     /// Used when the filename should not be derived from the URL. The appropriate extension
@@ -172,6 +172,7 @@ extension XMLElement {
         .init(element: self)
     }
 }
+
 // MARK: - Attribute Types
 
 extension FCPXML.MediaRep {

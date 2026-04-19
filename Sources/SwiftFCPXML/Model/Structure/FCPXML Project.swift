@@ -1,7 +1,7 @@
 //
 //  FCPXML Project.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -14,15 +14,15 @@ extension FCPXML {
     /// Project element.
     public struct Project: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .project
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.project]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -41,11 +41,11 @@ extension FCPXML.Project {
         modDate: String? = nil
     ) {
         self.init()
-        
+
         self.name = name
         self.id = id
         self.uid = uid
-        
+
         // Mod Date
         self.modDate = modDate
     }
@@ -61,7 +61,7 @@ extension FCPXML.Project {
         case uid
         case modDate
     }
-    
+
     // must contain one sequence
 }
 
@@ -72,12 +72,12 @@ extension FCPXML.Project {
         get { element.fcpName }
         nonmutating set { element.fcpName = newValue }
     }
-    
+
     public var id: String? {
         get { element.fcpID }
         nonmutating set { element.fcpID = newValue }
     }
-    
+
     public var uid: String? {
         get { element.fcpUID }
         nonmutating set { element.fcpUID = newValue }

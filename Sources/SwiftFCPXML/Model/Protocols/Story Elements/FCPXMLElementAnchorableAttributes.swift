@@ -1,7 +1,7 @@
 //
 //  FCPXMLElementAnchorableAttributes.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -31,7 +31,7 @@ public protocol FCPXMLElementAnchorableAttributes: FCPXMLElement {
     /// - `>0` = anchored above its parent
     /// - `<0` = anchored below its parent
     var lane: Int? { get nonmutating set }
-    
+
     /// Offset within parent timeline. (Default: 0)
     var offset: Fraction? { get nonmutating set }
 }
@@ -41,7 +41,7 @@ extension FCPXMLElementAnchorableAttributes {
         get { element.fcpLane }
         nonmutating set { element.fcpLane = newValue }
     }
-    
+
     public var offset: Fraction? {
         get { element.fcpOffset }
         nonmutating set { element.fcpOffset = newValue }
@@ -53,7 +53,7 @@ extension FCPXMLElementAnchorableAttributes {
     public func offsetAsTimecode(
         frameRateSource: FCPXML.FrameRateSource = .localToElement
     ) -> Timecode? {
-        guard let offset = offset else { return nil }
+        guard let offset else { return nil }
         return try? element._fcpTimecode(
             fromRational: offset,
             frameRateSource: frameRateSource

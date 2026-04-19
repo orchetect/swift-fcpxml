@@ -1,14 +1,14 @@
 //
 //  FCPXML Asset.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// Asset shared resource.
@@ -24,15 +24,15 @@ extension FCPXML {
     /// > See [`asset`](https://developer.apple.com/documentation/professional_video_applications/fcpxml_reference/asset).
     public struct Asset: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .asset
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.asset]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -61,7 +61,7 @@ extension FCPXML.Asset {
         metadata: FCPXML.Metadata? = nil
     ) {
         self.init()
-        
+
         self.id = id
         self.name = name
         self.start = start
@@ -89,7 +89,7 @@ extension FCPXML.Asset {
         case id // required
         /// Name.
         case name
-        
+
         // base attributes
         /// Local timeline start.
         case start
@@ -97,10 +97,10 @@ extension FCPXML.Asset {
         case duration
         /// Asset format ID.
         case format
-        
+
         // asset attributes
         case uid
-        
+
         // implied asset attributes
         /// True if asset contains audio. Default is `0` (false).
         case hasAudio
@@ -114,14 +114,14 @@ extension FCPXML.Asset {
         case audioRate
         /// Number of video sources. Default is `0`.
         case videoSources
-        
+
         case customLUTOverride
         case colorSpaceOverride
         case projectionOverride
         case stereoscopicOverride
         case auxVideoFlags
     }
-    
+
     // contains one or more media-rep
     // can contain metadata
 }
@@ -130,36 +130,36 @@ extension FCPXML.Asset {
 
 extension FCPXML.Asset {
     // shared resource attributes
-    
+
     /// Identifier. (Required)
     public var id: String {
         get { element.fcpID ?? "" }
         nonmutating set { element.fcpID = newValue }
     }
-    
+
     /// Name.
     public var name: String? {
         get { element.fcpName }
         nonmutating set { element.fcpName = newValue }
     }
-    
+
     // base attributes
-    
+
     /// Asset format ID.
     public var format: String? {
         get { element.fcpFormat }
         nonmutating set { element.fcpFormat = newValue }
     }
-    
+
     // asset attributes
-    
+
     public var uid: String? {
         get { element.fcpUID }
         nonmutating set { element.fcpUID = newValue }
     }
-    
+
     // implied asset attributes
-    
+
     /// True if asset contains audio. Default is `0` (false).
     public var hasAudio: Bool {
         get {
@@ -174,7 +174,7 @@ extension FCPXML.Asset {
             )
         }
     }
-    
+
     /// True if asset contains video. Default is `0` (false).
     public var hasVideo: Bool {
         get {
@@ -189,7 +189,7 @@ extension FCPXML.Asset {
             )
         }
     }
-    
+
     /// Number of audio sources. Default is `0`.
     public var audioSources: Int {
         get {
@@ -199,7 +199,7 @@ extension FCPXML.Asset {
             element.set(int: newValue, forAttribute: Attributes.audioSources.rawValue)
         }
     }
-    
+
     /// Number of audio channels. Default is `0`.
     public var audioChannels: Int {
         get {
@@ -209,13 +209,13 @@ extension FCPXML.Asset {
             element.set(int: newValue, forAttribute: Attributes.audioChannels.rawValue)
         }
     }
-    
+
     /// Audio sample rate in Hz.
     public var audioRate: FCPXML.AudioRate? {
         get { element.fcpAssetAudioRate }
         nonmutating set { element.fcpAssetAudioRate = newValue }
     }
-    
+
     /// Number of video sources. Default is `0`.
     public var videoSources: Int {
         get {
@@ -225,7 +225,7 @@ extension FCPXML.Asset {
             element.set(int: newValue, forAttribute: Attributes.videoSources.rawValue)
         }
     }
-    
+
     public var auxVideoFlags: String? { // only used by `asset`
         get { element.stringValue(forAttributeNamed: Attributes.auxVideoFlags.rawValue) }
         nonmutating set { element.addAttribute(withName: Attributes.auxVideoFlags.rawValue, value: newValue) }
@@ -267,7 +267,7 @@ extension XMLElement {
         get {
             guard let value = stringValue(forAttributeNamed: "audioRate")
             else { return nil }
-            
+
             return FCPXML.AudioRate(rawValueForAsset: value)
         }
         set {

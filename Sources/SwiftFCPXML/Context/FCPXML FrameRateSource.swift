@@ -1,24 +1,24 @@
 //
 //  FCPXML FrameRateSource.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// Frame rate source for an extracted element.
     public enum FrameRateSource {
         /// Derive frame rate from main timeline.
         case mainTimeline
-        
+
         /// Derive frame rate from the element's local timeline or closest parent timeline.
         case localToElement
-        
+
         /// Provide an arbitrary frame rate to use.
         ///
         /// This is generally not recommended unless conversion to a different frame rate than the

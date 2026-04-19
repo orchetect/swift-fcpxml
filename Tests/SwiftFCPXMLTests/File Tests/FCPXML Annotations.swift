@@ -1,46 +1,49 @@
 //
 //  FCPXML Annotations.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
-@testable import SwiftFCPXML
 import Foundation
 import SwiftExtensions
+@testable import SwiftFCPXML
 import SwiftTimecodeCore
 import Testing
 import TestingExtensions
 
-@Suite struct FCPXML_Annotations: TestUtils {
+@Suite
+struct FCPXML_Annotations: TestUtils {
     // MARK: - Test Data
-    
-    var fileContents: Data { get throws {
-        try TestResource.FCPXMLExports.annotations.data()
-    } }
-    
+
+    var fileContents: Data {
+        get throws {
+            try TestResource.FCPXMLExports.annotations.data()
+        }
+    }
+
     // MARK: - Tests
-    
+
     @Test
-    func parse() async throws {
+    func parse() throws {
         // load file
         let rawData = try fileContents
-        
+
         // parse file
         let fcpxml = try FCPXML(fileContent: rawData)
-        
+
         // version
         #expect(fcpxml.version == .ver1_11)
-        
+
         // resources
         let resources = fcpxml.root.resources
         #expect(resources.childElements.count == 3)
-        
+
         let r1 = try #require(resources.childElements[safe: 0]?.fcpAsFormat)
         #expect(r1.id == "r1")
         #expect(r1.name == "FFVideoFormat1080p25")
-        #expect(r1.frameDuration == Fraction(100,2500))
+        #expect(r1.frameDuration == Fraction(100, 2500))
         #expect(r1.fieldOrder == nil)
         #expect(r1.width == 1920)
         #expect(r1.height == 1080)
@@ -49,12 +52,12 @@ import TestingExtensions
         #expect(r1.colorSpace == "1-1-1 (Rec. 709)")
         #expect(r1.projection == nil)
         #expect(r1.stereoscopic == nil)
-        
+
         let r2 = try #require(resources.childElements[safe: 1]?.fcpAsAsset)
         #expect(r2.id == "r2")
         #expect(r2.name == "TestVideo")
         #expect(r2.start == .zero)
-        #expect(r2.duration == Fraction(738000, 25000))
+        #expect(r2.duration == Fraction(738_000, 25000))
         #expect(r2.format == "r3")
         #expect(r2.uid == "30C3729DCEE936129873D803DC13B623")
         #expect(r2.hasVideo == true)
@@ -64,14 +67,14 @@ import TestingExtensions
         #expect(r2.audioRate == .rate44_1kHz)
         #expect(r2.videoSources == 1)
         #expect(r2.auxVideoFlags == nil)
-        
+
         let r2MediaRep = r2.mediaRep
         #expect(r2MediaRep.kind == .originalMedia)
         #expect(r2MediaRep.sig == "30C3729DCEE936129873D803DC13B623")
         #expect(r2MediaRep.src == URL(string: "file:///Users/user/Movies/MyLibrary.fcpbundle/Test%20Event/Original%20Media/TestVideo.m4v")!)
         #expect(r2MediaRep.bookmark == nil)
-        
-        let r2MetadataXML = try! XMLElement(xmlString: """
+
+        let r2MetadataXML = try XMLElement(xmlString: """
             <metadata>
                 <md key="com.apple.proapps.studio.rawToLogConversion" value="0"/>
                 <md key="com.apple.proapps.spotlight.kMDItemProfileName" value="SD (6-1-6)"/>
@@ -89,11 +92,11 @@ import TestingExtensions
         )
         let r2Metadata = FCPXML.Metadata(element: r2MetadataXML)
         #expect(r2.metadata == r2Metadata)
-        
+
         let r3 = try #require(resources.childElements[safe: 2]?.fcpAsFormat)
         #expect(r3.id == "r3")
         #expect(r3.name == "FFVideoFormat640x480p25")
-        #expect(r3.frameDuration == Fraction(100,2500))
+        #expect(r3.frameDuration == Fraction(100, 2500))
         #expect(r3.fieldOrder == nil)
         #expect(r3.width == 640)
         #expect(r3.height == 480)
@@ -102,20 +105,20 @@ import TestingExtensions
         #expect(r3.colorSpace == "6-1-6 (Rec. 601 (NTSC))")
         #expect(r3.projection == nil)
         #expect(r3.stereoscopic == nil)
-        
+
         // library
         let library = try #require(fcpxml.root.library)
-        
+
         let libraryURL = URL(string: "file:///Users/user/Movies/MyLibrary.fcpbundle/")
         #expect(library.location == libraryURL)
-        
+
         // events
         let events = fcpxml.allEvents()
         #expect(events.count == 1)
-        
+
         let event = try #require(events[safe: 0])
         #expect(event.name == "Test Event")
-        
+
         // projects
         let projects = try #require(events[safe: 0]).projects.zeroIndexed
         #expect(projects.count == 1)
@@ -123,7 +126,7 @@ import TestingExtensions
         let project = try #require(projects[safe: 0])
         #expect(project.name == "Annotations")
         #expect(project.startTimecode() == Self.tc("01:00:00:00", .fps25))
-        
+
         // sequence
         let sequence = try #require(projects[safe: 0]?.sequence)
         #expect(sequence.format == "r1")
@@ -133,13 +136,13 @@ import TestingExtensions
         #expect(sequence.durationAsTimecode() == Self.tc("00:00:29:13", .fps25))
         #expect(sequence.audioLayout == .stereo)
         #expect(sequence.audioRate == .rate48kHz)
-        
+
         // story elements (clips etc.)
         let spine = sequence.spine
         #expect(spine.storyElements.count == 1)
-        
+
         let storyElements = spine.storyElements.zeroIndexed
-        
+
         let element1 = try #require(storyElements[safe: 0]?.fcpAsAssetClip)
         #expect(element1.ref == "r2")
         #expect(element1.offsetAsTimecode() == Self.tc("01:00:00:00", .fps25))
@@ -149,63 +152,63 @@ import TestingExtensions
         #expect(element1.durationAsTimecode() == Self.tc("00:00:29:13", .fps25))
         #expect(element1.durationAsTimecode()?.frameRate == .fps25)
         #expect(element1.audioRole?.rawValue == "dialogue")
-        
+
         // TODO: finish this - but can't test absolute timecodes without running element extraction
         // markers
-        
+
         let element1Markers = element1.contents
             .filter(whereFCPElement: .marker)
             .zeroIndexed
         #expect(element1Markers.count == 3)
-        
+
         let expectedE1Marker0 = try #require(element1Markers[safe: 0])
         #expect(expectedE1Marker0.startAsTimecode() == Self.tc("00:00:13:00", .fps25))
         #expect(expectedE1Marker0.durationAsTimecode() == Self.tc("00:00:00:01", .fps25))
         #expect(expectedE1Marker0.name == "Marker 1")
         #expect(expectedE1Marker0.configuration == .standard)
         #expect(expectedE1Marker0.note == nil)
-        
+
         let expectedE1Marker1 = try #require(element1Markers[safe: 1])
         #expect(expectedE1Marker1.startAsTimecode() == Self.tc("00:00:18:00", .fps25))
         #expect(expectedE1Marker1.durationAsTimecode() == Self.tc("00:00:00:01", .fps25))
         #expect(expectedE1Marker1.name == "Marker 2")
         #expect(expectedE1Marker1.configuration == .standard)
         #expect(expectedE1Marker1.note == nil)
-        
+
         let expectedE1Marker2 = try #require(element1Markers[safe: 2])
         #expect(expectedE1Marker2.startAsTimecode() == Self.tc("00:00:27:10", .fps25))
         #expect(expectedE1Marker2.durationAsTimecode() == Self.tc("00:00:00:01", .fps25))
         #expect(expectedE1Marker2.name == "Marker 3")
         #expect(expectedE1Marker2.configuration == .standard)
         #expect(expectedE1Marker2.note == "m3 notes")
-        
+
         // keywords
-        
+
         let element1Keywords = element1.contents
             .filter(whereFCPElement: .keyword)
             .zeroIndexed
         #expect(element1Keywords.count == 2)
-        
+
         // this keyword applies to entire video clip
         let expectedE1Keyword0 = try #require(element1Keywords[safe: 0])
         #expect(expectedE1Keyword0.keywords == ["keyword1"])
         #expect(expectedE1Keyword0.startAsTimecode() == Self.tc("00:00:00:00", .fps25))
         #expect(expectedE1Keyword0.durationAsTimecode() == Self.tc("00:00:29:13", .fps25))
         #expect(expectedE1Keyword0.note == "k1 notes")
-        
+
         let expectedE1Keyword1 = try #require(element1Keywords[safe: 1])
         #expect(expectedE1Keyword1.keywords == ["keyword2"])
         #expect(expectedE1Keyword1.startAsTimecode() == Self.tc("00:00:15:20", .fps25))
         #expect(expectedE1Keyword1.durationAsTimecode() == Self.tc("00:00:08:11", .fps25))
         #expect(expectedE1Keyword1.note == "k2 notes")
-        
+
         // captions
-        
+
         let element1Captions = element1.contents
             .filter(whereFCPElement: .caption)
             .zeroIndexed
         #expect(element1Captions.count == 2)
-        
+
 //        let element1Caption0 = try #require(element1Captions[safe: 0])
 //        #expect(element1Caption0.note == nil)
 //        #expect(element1Caption0.role?.rawValue == "iTT?captionFormat=ITT.en")
@@ -295,37 +298,37 @@ import TestingExtensions
     func extractMarkers() async throws {
         // load file
         let rawData = try fileContents
-        
+
         // load
         let fcpxml = try FCPXML(fileContent: rawData)
-        
+
         // project
         let project = try #require(fcpxml.allProjects().first)
-        
+
         let extractedMarkers = await project
             .extract(preset: .markers, scope: .mainTimeline)
             .sortedByAbsoluteStartTimecode()
         // .zeroIndexed // not necessary after sorting - sort returns new array
-        
+
         let markers = extractedMarkers
-        
+
         let expectedMarkerCount = 3
         #expect(markers.count == expectedMarkerCount)
-        
+
         print("Markers sorted by absolute timecode:")
         print(Self.debugString(for: markers))
-        
+
         // markers
-        
+
         let marker1 = try #require(markers[safe: 0])
         let marker2 = try #require(markers[safe: 1])
         let marker3 = try #require(markers[safe: 2])
-        
+
         // Check keywords while constraining to keyword ranges
         #expect(marker1.keywords(constrainToKeywordRanges: true) == ["keyword1"])
         #expect(marker2.keywords(constrainToKeywordRanges: true) == ["keyword1", "keyword2"])
         #expect(marker3.keywords(constrainToKeywordRanges: true) == ["keyword1"])
-        
+
         // Check keywords while NOT constraining to keyword ranges
         #expect(marker1.keywords(constrainToKeywordRanges: false) == ["keyword1", "keyword2"])
         #expect(marker2.keywords(constrainToKeywordRanges: false) == ["keyword1", "keyword2"])

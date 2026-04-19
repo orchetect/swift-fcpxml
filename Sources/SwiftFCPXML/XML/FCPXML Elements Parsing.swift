@@ -1,7 +1,7 @@
 //
 //  FCPXML Elements Parsing.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -35,7 +35,7 @@ extension XMLElement {
         childElements
             .filter { $0.fcpElementType?.isTimeline == true }
     }
-    
+
     /// FCPXML: Returns immediate child timeline model objects wrapped in type-erased
     /// ``FCPXML/AnyTimeline`` instances.
     public var fcpTimelineElementsAsAnyTimeline: LazyMapSequence<
@@ -45,7 +45,8 @@ extension XMLElement {
                     LazyFilterSequence<LazyMapSequence<
                         LazySequence<[XMLNode]>.Elements,
                         XMLElement?
-                    >>, XMLElement
+                    >>,
+                    XMLElement
                 >.Elements,
                 FCPXML.AnyTimeline?
             >
@@ -53,9 +54,9 @@ extension XMLElement {
         FCPXML.AnyTimeline
     > {
         childElements
-            .compactMap { $0.fcpAsAnyTimeline }
+            .compactMap(\.fcpAsAnyTimeline)
     }
-    
+
     /// FCPXML: Recursively returns descendant timelines, including within `library`, `event` and
     /// `project` elements.
     ///
@@ -87,7 +88,7 @@ extension XMLElement {
             addChild(model.element)
         }
     }
-    
+
     func _updateChildElements<S: Sequence>(
         ofType elementType: FCPXML.ElementType,
         with newChildren: S
@@ -96,11 +97,11 @@ extension XMLElement {
         removeChildren { child in
             child.fcpElementType == elementType
         }
-        
+
         // add new children
         addChildren(newChildren)
     }
-    
+
     func _updateChildElements<S: Sequence, T: FCPXMLElementModelTypeProtocol>(
         ofType elementType: T,
         with newChildren: S
@@ -110,11 +111,11 @@ extension XMLElement {
             guard let ct = child.fcpElementType else { return false }
             return elementType.supportedElementTypes.contains(ct)
         }
-        
+
         // add new children
         _addChildren(newChildren)
     }
-    
+
     func _updateChildElements(
         ofType elementType: FCPXML.ElementType,
         withChild newChild: XMLNode?,
@@ -124,13 +125,13 @@ extension XMLElement {
         removeChildren { child in
             child.fcpElementType == elementType
         }
-        
+
         // add new child
         if let newChild = newChild ?? defaultChild {
             addChild(newChild)
         }
     }
-    
+
     func _updateChildElements<M: FCPXMLElement>(
         ofType modelType: FCPXML.ElementModelType<M>,
         withChild newChild: M?,
@@ -141,53 +142,53 @@ extension XMLElement {
             guard let ct = child.fcpElementType else { return false }
             return modelType.supportedElementTypes.contains(ct)
         }
-        
+
         // add new child
         if let newChild = newChild?.element ?? defaultChild?.element {
             addChild(newChild)
         }
     }
-    
+
     func _updateFirstChildElement<M: FCPXMLElement>(
         ofType modelType: FCPXML.ElementModelType<M>,
         withChild newChild: M?,
         default defaultChild: M? = nil
     ) {
         let newElement = newChild?.element ?? defaultChild?.element
-        
+
         if let existingChild = firstChild(whereFCPElement: modelType)?.element {
-            if let newElement = newElement {
+            if let newElement {
                 if newElement != existingChild {
                     replaceChild(at: existingChild.index, with: newElement)
                 }
             } else {
                 removeChild(at: existingChild.index)
             }
-        } else if let newElement = newElement {
+        } else if let newElement {
             addChild(newElement)
         }
     }
-    
+
     func _updateFirstChildElement(
         ofType elementType: FCPXML.ElementType,
         withChild newChild: XMLElement?,
-        default defaultChild: @autoclosure () -> XMLElement? = { nil }()
+        default defaultChild: @autoclosure () -> XMLElement? = nil
     ) {
         let newElement = newChild ?? defaultChild()
-        
+
         if let existingChild = firstChildElement(whereFCPElementType: elementType) {
-            if let newElement = newElement {
+            if let newElement {
                 if newElement != existingChild {
                     replaceChild(at: existingChild.index, with: newElement)
                 }
             } else {
                 removeChild(at: existingChild.index)
             }
-        } else if let newElement = newElement {
+        } else if let newElement {
             addChild(newElement)
         }
     }
-    
+
     func _updateDefaultedFirstChildElement(
         ofType elementType: FCPXML.ElementType,
         withChild newChild: XMLElement?
@@ -198,7 +199,7 @@ extension XMLElement {
             default: XMLElement(name: elementType.rawValue)
         )
     }
-    
+
     func _removeChildren(
         ofType elementType: FCPXML.ElementType
     ) {
@@ -206,7 +207,7 @@ extension XMLElement {
             child.fcpElementType == elementType
         }
     }
-    
+
     func _removeChildren(
         ofTypes elementTypes: Set<FCPXML.ElementType>
     ) {
@@ -215,9 +216,9 @@ extension XMLElement {
             return elementTypes.contains(ct)
         }
     }
-    
-    func _removeChildren<Model>(
-        ofTypes modelType: FCPXML.ElementModelType<Model>
+
+    func _removeChildren(
+        ofTypes modelType: FCPXML.ElementModelType<some FCPXMLElement>
     ) {
         removeChildren { child in
             guard let ct = child.fcpElementType else { return false }
@@ -235,18 +236,18 @@ extension XMLElement {
     ) {
         _updateChildElement(named: childType.rawValue, newStringValue: newStringValue)
     }
-    
+
     /// Updates the `stringValue` of the first matching child if it exists.
     /// If the new value is `nil`, the child element is removed.
     func _updateChildElement(named childName: String, newStringValue: String?) {
         if let existingChild = firstChildElement(named: childName) {
-            if let newStringValue = newStringValue {
+            if let newStringValue {
                 existingChild.stringValue = newStringValue
             } else {
                 existingChild.detach()
             }
         } else {
-            if let newStringValue = newStringValue {
+            if let newStringValue {
                 let newNote = XMLElement(name: childName)
                 newNote.stringValue = newStringValue
                 addChild(newNote)
@@ -261,8 +262,8 @@ extension XMLElement {
     /// Returns the first ancestor clip, if the element is contained within one.
     ///
     /// Ancestors are ordered nearest to furthest.
-    public func fcpAncestorClip<S: Sequence<XMLElement>>(
-        ancestors: S? = nil as [XMLElement]?,
+    public func fcpAncestorClip(
+        ancestors: (some Sequence<XMLElement>)? = nil as [XMLElement]?,
         includingSelf: Bool
     ) -> XMLElement? {
         let ancestors = ancestorElements(overrideWith: ancestors, includingSelf: includingSelf)
@@ -270,29 +271,29 @@ extension XMLElement {
         return ancestors
             .first(whereFCPElementTypes: clipTypes)
     }
-    
+
     /// Returns the first ancestor timeline, if the element is contained within one.
     ///
     /// Ancestors are ordered nearest to furthest.
-    public func fcpAncestorTimeline<S: Sequence<XMLElement>>(
-        ancestors: S? = nil as [XMLElement]?,
+    public func fcpAncestorTimeline(
+        ancestors: (some Sequence<XMLElement>)? = nil as [XMLElement]?,
         includingSelf: Bool,
         withLaneZero: Bool = false
     ) -> (timeline: XMLElement, ancestors: AnySequence<XMLElement>)? {
         var ancestors = ancestorElements(overrideWith: ancestors, includingSelf: includingSelf)
         let timelineTypes = FCPXML.ElementType.allTimelineCases
-        
+
         var zeroLaneCount = 0
         var nonZeroLaneCount = 0
-        
+
         for ancestor in ancestors {
             ancestors = ancestors.dropFirst()
-            
+
             guard let elementType = ancestor.fcpElementType else { continue }
-            
+
             let isTimeline = timelineTypes.contains(elementType)
             guard isTimeline else { continue }
-            
+
             // if we don't care about lane, just return early
             guard withLaneZero else {
                 if isTimeline {
@@ -301,20 +302,20 @@ extension XMLElement {
                     continue
                 }
             }
-            
+
             let isLaneZero = (ancestor.fcpLane ?? 0) == 0
-            
+
             if isLaneZero {
                 zeroLaneCount += 1
             } else {
                 nonZeroLaneCount += 1
             }
-            
+
             // first clip encountered has lane zero
             if zeroLaneCount == 1, nonZeroLaneCount == 0 {
                 return (timeline: ancestor, ancestors: ancestors)
             }
-            
+
             // skip a generation because we want the clip that is the lane-zero parent
             // clip, lane 0 <-- we want this
             //   - clip, lane 1 <-- skip this
@@ -323,15 +324,15 @@ extension XMLElement {
                 return (timeline: ancestor, ancestors: ancestors)
             }
         }
-        
+
         return nil
     }
-    
+
     /// FCPXML: Returns type and lane for each of the element's ancestors.
     ///
     /// Ancestors are ordered nearest to furthest.
-    func _fcpAncestorElementTypesAndLanes<S: Sequence<XMLElement>>(
-        ancestors: S? = nil as [XMLElement]?,
+    func _fcpAncestorElementTypesAndLanes(
+        ancestors: (some Sequence<XMLElement>)? = nil as [XMLElement]?,
         includingSelf: Bool
     ) -> LazyMapSequence<
         LazyFilterSequence<

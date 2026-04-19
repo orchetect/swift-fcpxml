@@ -1,7 +1,7 @@
 //
 //  FCPXML Library.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -13,15 +13,15 @@ extension FCPXML {
     /// Represents a library location on disk.
     public struct Library: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .library
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.library]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -37,7 +37,7 @@ extension FCPXML.Library {
         location: URL
     ) {
         self.init()
-        
+
         self.location = location
     }
 }
@@ -52,12 +52,12 @@ extension FCPXML.Library {
         /// https://developer.apple.com/documentation/professional_video_applications/fcpxml_reference/import-options
         /// ) attributes.
         case location
-        
+
         /// Specifies whether the library supports `standard`, `wide`, or `wide-hdr` color gamut.
         /// The default is `standard`.
         case colorProcessing
     }
-    
+
     // can contain `event`s
     // can contain `smart-collection`s
 }
@@ -74,7 +74,7 @@ extension FCPXML.Library {
         get { element.fcpLibraryLocation }
         nonmutating set { element.fcpLibraryLocation = newValue }
     }
-    
+
     /// Specifies whether the library supports `standard`, `wide`, or `wide-hdr` color gamut.
     /// The default is `standard`.
     public var colorProcessing: String? {
@@ -94,7 +94,7 @@ extension FCPXML.Library {
     public var events: LazyFCPXMLChildrenSequence<FCPXML.Event> {
         element.children(whereFCPElement: .event)
     }
-    
+
     // TODO: add smart-collection iterator
 }
 
@@ -113,18 +113,18 @@ extension XMLElement {
     /// Call on a `library` element.
     public var fcpLibraryName: String? {
         guard let libraryLocation = fcpLibraryLocation else { return nil }
-        
+
         // will be a file URL that is URL encoded
         let libName = libraryLocation
             .deletingPathExtension()
             .lastPathComponent
-        
+
         // decode URL encoding
         let libNameDecoded = libName.removingPercentEncoding ?? libName
-        
+
         return libNameDecoded
     }
-    
+
     /// FCPXML: Get or set the library `location` URL.
     /// Call on a `library` element.
     public var fcpLibraryLocation: URL? {

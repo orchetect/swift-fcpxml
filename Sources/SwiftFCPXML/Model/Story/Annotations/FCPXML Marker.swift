@@ -1,14 +1,14 @@
 //
 //  FCPXML Marker.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
+import CoreMedia
 import Foundation
 import SwiftTimecodeCore
-import CoreMedia
 
 extension FCPXML {
     /// Marker model meta-type.
@@ -16,11 +16,12 @@ extension FCPXML {
     /// Can represent any marker type (standard, to-do, and chapter).
     public struct Marker: FCPXMLElement {
         public let element: XMLElement
-        
+
         public static let supportedElementTypes: Set<ElementType> = [
-            .marker, .chapterMarker
+            .marker,
+            .chapterMarker
         ]
-        
+
         public var elementType: ElementType {
             guard let eType = element.fcpElementType,
                   Self.supportedElementTypes.contains(eType)
@@ -30,12 +31,12 @@ extension FCPXML {
             }
             return eType
         }
-        
+
         public init() {
             // default to standard marker
             self.init(markerElementNamed: "")
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -60,20 +61,20 @@ extension FCPXML.Marker {
         case .chapterMarker:
             self.init(chapterMarkerElementNamed: name)
         }
-        
+
         self.configuration = configuration
         self.start = start
         self.duration = duration
         self.note = note
     }
-    
+
     /// Initialize a new `marker` element with the given marker name.
     /// This element type may be a standard marker or a to-do marker.
     init(markerElementNamed markerName: String) {
         element = XMLElement(name: FCPXML.ElementType.marker.rawValue)
         name = markerName
     }
-    
+
     /// Initialize a new `chapter-marker` element with the given marker name.
     init(chapterMarkerElementNamed markerName: String) {
         element = XMLElement(name: FCPXML.ElementType.chapterMarker.rawValue)
@@ -88,29 +89,29 @@ extension FCPXML.Marker {
         /// Start time.
         /// Common for all marker types.
         case start
-        
+
         /// Duration.
         /// Common for all marker types.
         case duration
-        
+
         /// Value (marker name).
         /// Common for all marker types.
         case value
-        
+
         /// Note.
         /// Common for all marker types.
         case note
-        
+
         /// Poster Offset.
         /// Applies to Chapter Marker only.
         case posterOffset
-        
+
         /// Completed state.
         /// Applies to To-Do Markers only.
         /// If `completed` attribute is present, the marker becomes a to-do item.
         case completed
     }
-    
+
     // no children
 }
 
@@ -122,13 +123,13 @@ extension FCPXML.Marker {
         get { element.fcpValue ?? "" }
         nonmutating set { element.fcpValue = newValue }
     }
-    
+
     /// Optional note.
     public var note: String? {
         get { element.fcpNote }
         nonmutating set { element.fcpNote = newValue }
     }
-    
+
     public var configuration: Configuration {
         get { element.fcpMarkerConfiguration ?? .standard }
         nonmutating set { element.fcpMarkerConfiguration = newValue }
@@ -158,7 +159,7 @@ extension XMLElement {
             )
         }
     }
-    
+
     /// FCPXML: Returns the value of the `posterOffset` attribute as a `CMTime` instance.
     /// Call this on a `chapter-marker` element.
     public var fcpPosterOffset: Fraction? {
@@ -187,7 +188,7 @@ extension XMLElement {
         get {
             guard let markerElementType = fcpMarkerElementType
             else { return nil }
-            
+
             switch markerElementType {
             case .marker:
                 // standard marker or to-do marker
@@ -198,29 +199,29 @@ extension XMLElement {
                     // marker is a standard marker
                     return .standard
                 }
-                
+
             case .chapterMarker:
                 // posterOffset (thumbnail timecode) is optional, but can a be negative offset
-                
+
                 let posterOffset: Fraction
-                if let fcpPosterOffset = fcpPosterOffset {
+                if let fcpPosterOffset {
                     posterOffset = fcpPosterOffset
                 } else {
                     print("Error: marker posterOffset could not be decoded.")
                     posterOffset = .zero
                 }
-                
+
                 return .chapter(posterOffset: posterOffset)
             }
         }
         set {
-            guard let newValue = newValue else { return }
+            guard let newValue else { return }
             guard let markerElementType = fcpMarkerElementType else { return }
-            
+
             if newValue.markerElementType != markerElementType {
                 // we have to modify the XML element name
-                self.name = newValue.markerElementType.elementType.rawValue
-                
+                name = newValue.markerElementType.elementType.rawValue
+
                 // remove incompatible attributes if present
                 switch newValue.markerElementType {
                 case .marker:
@@ -229,13 +230,13 @@ extension XMLElement {
                     removeAttribute(forName: FCPXML.Marker.Attributes.completed.rawValue)
                 }
             }
-            
+
             // set new attributes
             switch newValue {
             case .standard:
                 // remove non-applicable to-do attributes
                 removeAttribute(forName: FCPXML.Marker.Attributes.completed.rawValue)
-                
+
             case let .toDo(completed: completed):
                 // note: don't allow deletion of this attribute, as the presence of `completed`
                 // attribute signifies that this marker is a to-do marker
@@ -246,7 +247,7 @@ extension XMLElement {
                     removeIfDefault: false,
                     useInt: true
                 )
-                
+
             case let .chapter(posterOffset: posterOffset):
                 _fcpSet(
                     fraction: posterOffset,
@@ -278,7 +279,7 @@ extension Sequence<FCPXML.Marker> {
             lhs.start < rhs.start
         }
     }
-    
+
     /// Sort collection by marker name.
     public func sortedByName() -> [FCPXML.Marker] {
         sorted { lhs, rhs in
@@ -290,17 +291,17 @@ extension Sequence<FCPXML.Marker> {
 // MARK: - MarkerElementType
 
 extension FCPXML.Marker {
-    internal enum MarkerElementType: Equatable, Hashable, CaseIterable, Sendable {
+    enum MarkerElementType: Equatable, Hashable, CaseIterable, Sendable {
         case marker
         case chapterMarker
-        
+
         var elementType: FCPXML.ElementType {
             switch self {
-            case .marker: return .marker
-            case .chapterMarker: return .chapterMarker
+            case .marker: .marker
+            case .chapterMarker: .chapterMarker
             }
         }
-        
+
         init?(element: XMLElement) {
             switch element.fcpElementType {
             case .marker: self = .marker
@@ -318,7 +319,7 @@ extension XMLElement {
     /// FCPXML: Returns the element wrapped in a ``FCPXML/Marker/MarkerElementType``
     /// model object.
     /// Call this on a `marker` or `chapter-marker` element only.
-    internal var fcpMarkerElementType: FCPXML.Marker.MarkerElementType? {
+    var fcpMarkerElementType: FCPXML.Marker.MarkerElementType? {
         .init(element: self)
     }
 }
@@ -330,14 +331,14 @@ extension FCPXML.Marker {
         /// Standard Marker.
         /// Contains no additional metadata.
         case standard
-        
+
         /// Chapter Marker.
         ///
         /// - Parameters:
         ///   - posterOffset: The chapter marker's thumbnail location expressed as the distance
         ///     (offset) from the marker's start. This may be a positive or negative time.
         case chapter(posterOffset: Fraction)
-        
+
         /// To Do Marker.
         case toDo(completed: Bool)
     }
@@ -345,10 +346,10 @@ extension FCPXML.Marker {
 
 extension FCPXML.Marker.Configuration {
     /// Returns the associated element type.
-    internal var markerElementType: FCPXML.Marker.MarkerElementType {
+    var markerElementType: FCPXML.Marker.MarkerElementType {
         switch self {
-        case .standard, .toDo: return .marker
-        case .chapter: return .chapterMarker
+        case .standard, .toDo: .marker
+        case .chapter: .chapterMarker
         }
     }
 }
@@ -361,12 +362,12 @@ extension FCPXML.Marker {
         case standard
         case chapter
         case toDo
-        
+
         public var name: String {
             switch self {
-            case .standard: return "Standard"
-            case .chapter: return "Chapter"
-            case .toDo: return "To Do"
+            case .standard: "Standard"
+            case .chapter: "Chapter"
+            case .toDo: "To Do"
             }
         }
     }
@@ -377,7 +378,7 @@ extension XMLElement { // Any Marker
     /// Call on `marker` or `chapter-marker` elements.
     public var fcpMarkerKind: FCPXML.Marker.MarkerKind? {
         guard let markerConfiguration = fcpMarkerConfiguration else { return nil }
-        
+
         switch markerConfiguration {
         case .standard: return .standard
         case .chapter: return .chapter

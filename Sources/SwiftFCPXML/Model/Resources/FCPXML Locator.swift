@@ -1,7 +1,7 @@
 //
 //  FCPXML Locator.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -21,15 +21,15 @@ extension FCPXML {
     /// > See [`locator`](https://developer.apple.com/documentation/professional_video_applications/fcpxml_reference/locator).
     public struct Locator: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .locator
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.locator]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -45,7 +45,7 @@ extension FCPXML.Locator {
         url: URL? = nil
     ) {
         self.init()
-        
+
         self.id = id
         self.url = url
     }
@@ -58,7 +58,7 @@ extension FCPXML.Locator {
         /// Required.
         /// Identifier.
         case id
-        
+
         /// Required.
         /// Absolute URL or relative URL to library path.
         case url
@@ -74,7 +74,7 @@ extension FCPXML.Locator {
         get { element.fcpID ?? "" }
         nonmutating set { element.fcpID = newValue }
     }
-    
+
     /// Required.
     /// Absolute URL or relative URL to library path.
     public var url: URL? {

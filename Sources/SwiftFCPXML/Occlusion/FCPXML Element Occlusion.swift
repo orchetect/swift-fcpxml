@@ -1,14 +1,14 @@
 //
 //  FCPXML Element Occlusion.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// Utility: Returns occlusion information.
@@ -24,26 +24,26 @@ extension FCPXML {
         let cRange = cStart ... cEnd
         let iStart = internalStart.rounded(decimalPlaces: dp)
         let iEnd = internalEnd?.rounded(decimalPlaces: dp)
-        
+
         // don't allow element start exactly on container upper bound
         let isStartWithinParent = cRange.contains(iStart) && iStart < cEnd
-        
+
         guard isStartWithinParent else { return .fullyOccluded }
-        
-        guard let iEnd = iEnd else {
+
+        guard let iEnd else {
             return .notOccluded
         }
-        
+
         let isEndWithinParent = iEnd <= cEnd
-        
+
         if isEndWithinParent {
             return .notOccluded
         }
-        
+
         if (iStart ..< iEnd).overlaps(cRange) {
             return .partiallyOccluded
         }
-        
+
         return .fullyOccluded
     }
 }
@@ -54,36 +54,36 @@ extension XMLElement {
     ///
     /// - Parameters:
     ///   - ancestors: Optional replacement for ancestors. Ordered nearest to furthest ancestor.
-    func _fcpEffectiveOcclusion<S: Sequence<XMLElement>>(
-        ancestors: S? = nil as [XMLElement]?
+    func _fcpEffectiveOcclusion(
+        ancestors: (some Sequence<XMLElement>)? = nil as [XMLElement]?
     ) -> FCPXML.ElementOcclusion {
         let ancestors = ancestorElements(overrideWith: ancestors, includingSelf: false)
-        
+
         guard var internalAbsStart = _fcpCalculateAbsoluteStart(
             ancestors: ancestors
         ) else { return .notOccluded }
-        
+
         var internalAbsEnd: TimeInterval?
         if let elementDuration = fcpDuration {
             internalAbsEnd = internalAbsStart + elementDuration.doubleValue
         }
-        
+
         var ancestorWalkedCount = 0
         var isPartial = false
         var lastLane: Int?
-        
+
         for ancestor in ancestors {
             ancestorWalkedCount += 1
             let partialAncestors = ancestors.dropFirst(ancestorWalkedCount)
-            
+
             let getLane = ancestor.fcpLane
             let lane = getLane != nil ? Int(getLane!) : nil
             defer { lastLane = lane }
-            
+
             if let getLastLane = lastLane {
                 guard lane == getLastLane else { continue }
             }
-            
+
             guard let ancestorAbsStart = ancestor._fcpCalculateAbsoluteStart(
                 ancestors: partialAncestors
             ),
@@ -92,27 +92,27 @@ extension XMLElement {
                     includingSelf: true
                 )
             else { continue }
-            
+
             let ancestorAbsEnd = ancestorAbsStart + ancestorDuration.doubleValue
             let ancestorRange = ancestorAbsStart ... ancestorAbsEnd
-            
+
             // if fcpElementType == .story(.sequence) {
             //     _ = Void() // set breakpoint for debugging on this line
             // }
-            
+
             let o = FCPXML._occlusion(
                 container: ancestorRange,
                 internalStart: internalAbsStart,
                 internalEnd: internalAbsEnd
             )
-            
+
             // print(self.name!, stringValue(forAttributeNamed: "value") ?? "",
             //       o, ([ancestor] + partialAncestors).map(\.name!))
-            
+
             if o == .fullyOccluded {
                 return o
             }
-            
+
             if o == .partiallyOccluded {
                 // reduce exposed internal range
                 internalAbsStart = internalAbsStart.clamped(to: ancestorRange)
@@ -120,12 +120,12 @@ extension XMLElement {
                 isPartial = true
             }
         }
-        
+
         let result: FCPXML.ElementOcclusion = isPartial ? .partiallyOccluded : .notOccluded
-        
+
         // print(self.name!, stringValue(forAttributeNamed: "value") ?? "",
         //       result, "-> return")
-        
+
         return result
     }
 }

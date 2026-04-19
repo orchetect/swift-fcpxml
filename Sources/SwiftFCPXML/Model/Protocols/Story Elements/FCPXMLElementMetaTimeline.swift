@@ -1,7 +1,7 @@
 //
 //  FCPXMLElementMetaTimeline.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2024 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -24,12 +24,12 @@ extension FCPXMLElementMetaTimeline {
     public var timelineName: String? {
         element.fcpName
     }
-    
+
     /// Returns the timeline's local start as timecode.
     public func timelineStartAsTimecode() -> Timecode? {
         element._fcpTimelineStartAsTimecode()
     }
-    
+
     /// Returns the timeline's local duration as timecode.
     public func timelineDurationAsTimecode() -> Timecode? {
         element._fcpTimelineDurationAsTimecode()
@@ -41,7 +41,7 @@ extension FCPXMLElementMetaTimeline {
 extension XMLElement {
     func _fcpTimelineStartAsTimecode() -> Timecode? {
         // TODO: this hasn't been fully unit tested for every timeline type; it's likely this method will need to be structured as a switch-case on timeline element type because there may be specific handling needed for various different timeline element types
-        
+
         // check for parent project if local timeline is a sequence or spine
         if let fcpElementType,
            fcpElementType == .spine,
@@ -54,14 +54,14 @@ extension XMLElement {
             }
             return sequenceStart
         }
-        
+
         // check for local `tcstart` or `start` attribute
         if let localTC = _fcpTCStartAsTimecode(frameRateSource: .localToElement)
             ?? _fcpStartAsTimecode(frameRateSource: .localToElement, default: nil)
         {
             return localTC
         }
-        
+
         // check for local `offset` attribute, which transition uses
         if let fcpElementType,
            fcpElementType == .transition,
@@ -69,21 +69,21 @@ extension XMLElement {
         {
             return localOffset
         }
-        
+
         // cascade to inner resource timelines which may be necessary for clips like `ref-clip`
         return fcpResource()?
             ._fcpFirstChildTimelineElement()?
             .fcpAsAnyTimeline?
             .timelineStartAsTimecode()
     }
-    
+
     /// Returns the timeline's local duration as timecode.
     /// Should only be used on elements that are timelines.
     func _fcpTimelineDurationAsTimecode() -> Timecode? {
         if let localTC = _fcpDurationAsTimecode(frameRateSource: .localToElement) {
             return localTC
         }
-        
+
         // cascade to inner timelines which may be necessary for clips like `ref-clip`
         return fcpResource()?
             ._fcpFirstChildTimelineElement()?

@@ -1,14 +1,14 @@
 //
 //  FCPXMLExtractedModelElement.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 /// Protocol for extracted elements that adds contextual properties.
 public protocol FCPXMLExtractedModelElement: FCPXMLExtractedElement {

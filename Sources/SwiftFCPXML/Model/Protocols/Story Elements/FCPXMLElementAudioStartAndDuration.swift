@@ -1,7 +1,7 @@
 //
 //  FCPXMLElementAudioStartAndDuration.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -23,7 +23,7 @@ extension FCPXMLElementAudioStartAndDuration {
         get { element.fcpAudioStart }
         nonmutating set { element.fcpAudioStart = newValue }
     }
-    
+
     public var audioDuration: Fraction? {
         get { element.fcpAudioDuration }
         nonmutating set { element.fcpAudioDuration = newValue }

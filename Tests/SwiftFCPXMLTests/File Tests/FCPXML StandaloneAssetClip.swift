@@ -1,67 +1,70 @@
 //
 //  FCPXML StandaloneAssetClip.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
-@testable import SwiftFCPXML
 import Foundation
 import SwiftExtensions
+@testable import SwiftFCPXML
 import SwiftTimecodeCore
 import Testing
 import TestingExtensions
 
-@Suite struct FCPXML_StandaloneAssetClip: TestUtils {
+@Suite
+struct FCPXML_StandaloneAssetClip: TestUtils {
     // MARK: - Test Data
-    
-    var fileContents: Data { get throws {
-        try TestResource.FCPXMLExports.standaloneAssetClip.data()
-    } }
-    
+
+    var fileContents: Data {
+        get throws {
+            try TestResource.FCPXMLExports.standaloneAssetClip.data()
+        }
+    }
+
     // MARK: - Tests
-    
+
     @Test
-    func parse() async throws {
+    func parse() throws {
         // load file
         let rawData = try fileContents
-        
+
         // parse file
         let fcpxml = try FCPXML(fileContent: rawData)
-        
+
         // version
         #expect(fcpxml.version == .ver1_11)
     }
-    
+
     /// Test that FCPXML that doesn't contain a project is still able to extract standalone clips.
     @Test
-    func extract() async throws {
+    func extract() throws {
         // load file
         let rawData = try fileContents
-        
+
         // load
         let fcpxml = try FCPXML(fileContent: rawData)
-        
+
         // timelines
         let timelines = fcpxml.allTimelines()
         #expect(timelines.count == 1)
-        
+
         let anyTimeline = try #require(timelines.first)
-        
+
         // AnyTimeline
-        
+
         let timelineStartTC = try #require(anyTimeline.timelineStartAsTimecode())
         #expect(timelineStartTC.components == .init(h: 00, m: 59, s: 50, f: 00))
         #expect(timelineStartTC.frameRate == .fps29_97)
         let timelineDurTC = try #require(anyTimeline.timelineDurationAsTimecode())
         #expect(timelineDurTC.components == .init(h: 00, m: 00, s: 10, f: 00))
         #expect(timelineDurTC.frameRate == .fps29_97)
-        
+
         // unwrap AssetClip
-        
-        guard case .assetClip(let assetClip) = anyTimeline else { Issue.record() ; return }
-        
+
+        guard case let .assetClip(assetClip) = anyTimeline else { Issue.record(); return }
+
         // FCPXMLElementMetaTimeline
         let assetClipStartTC = try #require(anyTimeline.timelineStartAsTimecode())
         #expect(assetClipStartTC.components == .init(h: 00, m: 59, s: 50, f: 00))
@@ -69,7 +72,7 @@ import TestingExtensions
         let assetClipDurTC = try #require(anyTimeline.timelineDurationAsTimecode())
         #expect(assetClipDurTC.components == .init(h: 00, m: 00, s: 10, f: 00))
         #expect(assetClipDurTC.frameRate == .fps29_97)
-        
+
         // local XML attributes
         let clipStartTC = try #require(assetClip.startAsTimecode())
         #expect(clipStartTC.components == .init(h: 00, m: 59, s: 50, f: 00))

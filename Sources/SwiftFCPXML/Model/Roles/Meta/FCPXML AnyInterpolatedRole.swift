@@ -1,7 +1,7 @@
 //
 //  FCPXML AnyInterpolatedRole.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -13,11 +13,11 @@ extension FCPXML {
     public enum AnyInterpolatedRole: Equatable, Hashable, Sendable {
         /// Element's role is a custom role assigned by the user.
         case assigned(AnyRole)
-        
+
         /// Element's role is a defaulted role and no role is assigned either to the element or any
         /// of its ancestors.
         case defaulted(AnyRole)
-        
+
         /// Role is not assigned to the element, but is inherited from an ancestor whose role was
         /// assigned by the user.
         case inherited(AnyRole)
@@ -28,38 +28,38 @@ extension FCPXML.AnyInterpolatedRole: FCPXMLRole {
     public var roleType: FCPXML.RoleType {
         wrapped.roleType
     }
-    
+
     public func asAnyRole() -> FCPXML.AnyRole {
         wrapped.asAnyRole()
     }
-    
+
     public func lowercased(derivedOnly: Bool) -> Self {
         let anyRole = wrapped.lowercased(derivedOnly: derivedOnly)
         return rewrap(newRole: anyRole)
     }
-    
+
     public func titleCased(derivedOnly: Bool) -> Self {
         let anyRole = wrapped.titleCased(derivedOnly: derivedOnly)
         return rewrap(newRole: anyRole)
     }
-    
+
     public func titleCasedDefaultRole(derivedOnly: Bool) -> Self {
         let anyRole = wrapped.titleCasedDefaultRole(derivedOnly: derivedOnly)
         return rewrap(newRole: anyRole)
     }
-    
+
     public var isMainRoleBuiltIn: Bool {
         wrapped.isMainRoleBuiltIn
     }
-    
+
     public init?(rawValue: String) {
         guard let anyRole = FCPXML.AnyRole(rawValue: rawValue)
         else { return nil }
-        
+
         // TODO: assigned case is best default case, but not ideal
         self = .assigned(anyRole)
     }
-    
+
     public var rawValue: String {
         wrapped.rawValue
     }
@@ -75,9 +75,9 @@ extension FCPXML.AnyInterpolatedRole {
 extension FCPXML.AnyInterpolatedRole {
     public var wrapped: FCPXML.AnyRole {
         switch self {
-        case let .assigned(role): return role
-        case let .defaulted(role): return role
-        case let .inherited(role): return role
+        case let .assigned(role): role
+        case let .defaulted(role): role
+        case let .inherited(role): role
         }
     }
 }
@@ -88,13 +88,13 @@ extension FCPXML.AnyInterpolatedRole {
         guard case .assigned = self else { return false }
         return true
     }
-    
+
     /// Returns `true` if the interpolated case is ``FCPXML/AnyInterpolatedRole/defaulted(_:)``.
     public var isDefaulted: Bool {
         guard case .defaulted = self else { return false }
         return true
     }
-    
+
     /// Returns `true` if the interpolated case is ``FCPXML/AnyInterpolatedRole/inherited(_:)``.
     public var isInherited: Bool {
         guard case .inherited = self else { return false }
@@ -105,9 +105,9 @@ extension FCPXML.AnyInterpolatedRole {
 extension FCPXML.AnyInterpolatedRole: CustomDebugStringConvertible {
     public var debugDescription: String {
         switch self {
-        case let .assigned(role): return "assigned(\(role.debugDescription))"
-        case let .defaulted(role): return "defaulted(\(role.debugDescription))"
-        case let .inherited(role): return "inherited(\(role.debugDescription))"
+        case let .assigned(role): "assigned(\(role.debugDescription))"
+        case let .defaulted(role): "defaulted(\(role.debugDescription))"
+        case let .inherited(role): "inherited(\(role.debugDescription))"
         }
     }
 }
@@ -117,9 +117,9 @@ extension FCPXML.AnyInterpolatedRole: CustomDebugStringConvertible {
 extension FCPXML.AnyInterpolatedRole {
     fileprivate func rewrap(newRole: FCPXML.AnyRole) -> Self {
         switch self {
-        case .assigned: return .assigned(newRole)
-        case .defaulted: return .defaulted(newRole)
-        case .inherited: return .inherited(newRole)
+        case .assigned: .assigned(newRole)
+        case .defaulted: .defaulted(newRole)
+        case .inherited: .inherited(newRole)
         }
     }
 }

@@ -1,7 +1,7 @@
 //
 //  FCPXMLRole.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -12,24 +12,24 @@ import SwiftExtensions
 public protocol FCPXMLRole where Self: RawRepresentable, RawValue == String, Self: Sendable {
     /// Returns the role type enum case.
     var roleType: FCPXML.RoleType { get }
-    
+
     /// Returns the annotation as ``FCPXML/AnyRole``.
     func asAnyRole() -> FCPXML.AnyRole
-    
+
     /// Returns the role with its string lowercased.
     ///
     /// - Parameters:
     ///   - derivedOnly: Determines if the operation should only affect roles which have a sub-role
     ///     that is derived from its main role.
     func lowercased(derivedOnly: Bool) -> Self
-    
+
     /// Returns the role with its string title-cased.
-    /// 
+    ///
     /// - Parameters:
     ///   - derivedOnly: Determines if the operation should only affect roles which have a sub-role
     ///     that is derived from its main role.
     func titleCased(derivedOnly: Bool) -> Self
-    
+
     /// Returns the role with its string title-cased if it is a default role.
     ///
     /// Final Cut Pro typically writes default role names as lowercase in FCPXML.
@@ -41,7 +41,7 @@ public protocol FCPXMLRole where Self: RawRepresentable, RawValue == String, Sel
     ///   - derivedOnly: Determines if the operation should only affect roles which have a sub-role
     ///     that is derived from its main role.
     func titleCasedDefaultRole(derivedOnly: Bool) -> Self
-    
+
     /// Returns `true` if the role is a built-in role in Final Cut Pro (and not a user-defined
     /// role).
     var isMainRoleBuiltIn: Bool { get }
@@ -51,7 +51,7 @@ public protocol FCPXMLRole where Self: RawRepresentable, RawValue == String, Sel
 
 extension FCPXMLRole {
     func isEqual(to other: some FCPXMLRole) -> Bool {
-        self.asAnyRole() == other.asAnyRole()
+        asAnyRole() == other.asAnyRole()
     }
 }
 
@@ -87,15 +87,15 @@ extension Dictionary where Value: FCPXMLRole {
 
 extension Sequence where Element: FCPXMLRole {
     public var containsAudioRoles: Bool {
-        contains(where: { $0.isAudio })
+        contains(where: \.isAudio)
     }
-    
+
     public var containsVideoRoles: Bool {
-        contains(where: { $0.isVideo })
+        contains(where: \.isVideo)
     }
-    
+
     public var containsCaptionRoles: Bool {
-        contains(where: { $0.isCaption })
+        contains(where: \.isCaption)
     }
 }
 
@@ -111,11 +111,11 @@ extension Sequence where Element: FCPXMLRole {
     public func audioRoles() -> [Element] {
         filter(\.isAudio)
     }
-    
+
     public func videoRoles() -> [Element] {
         filter(\.isVideo)
     }
-    
+
     public func captionRoles() -> [Element] {
         filter(\.isCaption)
     }
@@ -138,7 +138,7 @@ extension Sequence where Element: FCPXMLRole {
             lhs.rawValue.localizedStandardCompare(rhs.rawValue) == .orderedAscending
         }
     }
-    
+
     /// Returns the sequence sorted by role type: video, then audio, then caption.
     /// Role order is otherwise maintained and roles are not sorted alphabetically.
     public func sortedByRoleType() -> [Element] {
@@ -146,7 +146,7 @@ extension Sequence where Element: FCPXMLRole {
             + audioRoles()
             + captionRoles()
     }
-    
+
     /// Returns the sequence first sorted by role type (video, then audio, then caption)
     /// then sorted alphabetically within each type.
     public func sortedByRoleTypeThenByName() -> [Element] {
@@ -192,12 +192,12 @@ extension FCPXMLRole {
     public var isAudio: Bool {
         roleType == .audio
     }
-    
+
     /// Returns `true` if the role is a video role.
     public var isVideo: Bool {
         roleType == .video
     }
-    
+
     /// Returns `true` if the role is a caption role.
     public var isCaption: Bool {
         roleType == .caption
@@ -217,7 +217,7 @@ extension FCPXML {
             captureGroupsFromPattern: roleWithOptionalSubRolePattern,
             options: [.useUnicodeWordBoundaries]
         )
-        
+
         guard roleAndSubrole.count == 4, // we burn a capture group for the period (.)
               let mainRole = roleAndSubrole[1]
         else {
@@ -225,14 +225,14 @@ extension FCPXML {
                 "Malformed role encountered: \(rawValue.quoted)."
             )
         }
-        
+
         // re-cast Substrings as Strings
         let mainRoleString = String(mainRole)
         let subRoleString = roleAndSubrole[3] != nil ? String(roleAndSubrole[3]!) : nil
-        
+
         return (role: mainRoleString, subRole: subRoleString)
     }
-    
+
     /// Utility:
     /// Parses raw caption role string and returns role and format/language code.
     static func _parseRawCaptionRole(
@@ -242,7 +242,7 @@ extension FCPXML {
         let roleAndSubrole = rawValue.regexMatches(
             captureGroupsFromPattern: captionRolePattern
         )
-        
+
         guard roleAndSubrole.count == 3,
               let mainRole = roleAndSubrole[1],
               let format = roleAndSubrole[2]
@@ -251,14 +251,14 @@ extension FCPXML {
                 "Malformed caption role encountered: \(rawValue.quoted)."
             )
         }
-        
+
         // re-cast Substrings as Strings
         let mainRoleString = String(mainRole)
         let formatString = String(format)
-        
+
         return (role: mainRoleString, captionFormat: formatString)
     }
-    
+
     /// Utility:
     /// Strip off subrole if subrole is redundantly generated by FCP.
     /// ie: A role of `Role.Role-1` would return `Role`.
@@ -267,41 +267,41 @@ extension FCPXML {
         subRole inputSubRole: String?
     ) -> (role: String, subRole: String?) {
         let input = (role: inputRole, subRole: inputSubRole)
-        
-        guard let inputSubRole = inputSubRole else {
+
+        guard let inputSubRole else {
             return input
         }
-        
+
         // interpret an empty sub-role string or whitespace-only sub-role as being nil
         guard !inputSubRole.trimmed.isEmpty else {
             return (role: inputRole, subRole: nil)
         }
-        
+
         guard _isSubRole(inputSubRole, derivedFromMainRole: input.role) else {
             return input
         }
-        
+
         return (role: input.role, subRole: nil)
     }
-    
+
     /// Utility:
     /// Returns `true` if the given sub-role is derived from the main role.
     ///
     /// - `Dialogue.Dialogue` or `Dialogue.Dialogue-1` are considered derivative.
     /// - `Dialogue.CustomRole` is not considered derivative.
     static func _isSubRole(_ subRole: String?, derivedFromMainRole mainRole: String) -> Bool {
-        guard let subRole = subRole,
+        guard let subRole,
               subRole.starts(with: mainRole)
         else { return false }
-        
+
         if mainRole == subRole { return true }
-        
+
         // just ensure the suffix matches the expected pattern, we don't care about its actual contents
         // since we already confirmed main role starts with the sub-role
         let subRoleSuffix = subRole.dropFirst(mainRole.count) // "-1", "-2", etc.
         let pattern = #"^\-([\d]+)$"#
         let suffixMatches = subRoleSuffix.regexMatches(pattern: pattern)
-        
+
         return suffixMatches.count == 1
     }
 }

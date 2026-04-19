@@ -1,7 +1,7 @@
 //
 //  FCPXMLElementTimingParams.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -23,7 +23,7 @@ public protocol FCPXMLElementTimingParams: FCPXMLElement {
     /// >
     /// > "A `conform-rate` defines how the clip's frame rate should be conformed to the sequence frame rate".
     var conformRate: FCPXML.ConformRate? { get nonmutating set }
-    
+
     /// Clip time map.
     ///
     /// > FCPXML 1.11 DTD:
@@ -43,7 +43,7 @@ extension FCPXMLElementTimingParams {
             element._updateFirstChildElement(ofType: .conformRate, withChild: newValue)
         }
     }
-    
+
     public var timeMap: FCPXML.TimeMap? {
         get {
             element.firstChild(whereFCPElement: .timeMap)

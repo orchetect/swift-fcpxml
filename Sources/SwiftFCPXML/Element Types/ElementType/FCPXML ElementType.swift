@@ -1,7 +1,7 @@
 //
 //  FCPXML ElementType.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2023 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
@@ -11,18 +11,18 @@ import SwiftExtensions
 
 extension FCPXML {
     // TODO: this list is by no means complete, the DTD contains more element names we're not utilizing yet
-    
+
     /// FCPXML element types.
     public enum ElementType: String, Equatable, Hashable, CaseIterable, Sendable {
         // root
         case fcpxml
-        
+
         // structure element
         case resources
         case library
         case event
         case project
-        
+
         // resources
         case asset
         case media
@@ -38,11 +38,11 @@ extension FCPXML {
         case mcAngle = "mc-angle"
         // object-tracker sub-elements
         case trackingShape = "tracking-shape"
-        
+
         // sequence
         case sequence
         case spine
-        
+
         // clips
         case assetClip = "asset-clip"
         case audio
@@ -63,28 +63,28 @@ extension FCPXML {
         // sync-clip/ref-clip sub-elements
         case syncSource = "sync-source"
         case audioRoleSource = "audio-role-source"
-        
+
         // annotations
         case caption
         case keyword
         case marker
         case chapterMarker = "chapter-marker"
-        
+
         // textual
         case note
         case text
         case textStyle = "text-style"
         case textStyleDef = "text-style-def"
-        
+
         // metadata
         case metadata
         case metadatum = "md"
-        
+
         // collections
         case collectionFolder = "collection-folder"
         case keywordCollection = "keyword-collection"
         case smartCollection = "smart-collection"
-        
+
         // misc.
         case bookmark
         case conformRate = "conform-rate"
@@ -104,38 +104,61 @@ extension FCPXML.ElementType {
 extension XMLElement {
     /// Returns the ``FCPXML/ElementType`` case for the XML element.
     public var fcpElementType: FCPXML.ElementType? {
-        guard let name = name else { return nil }
+        guard let name else { return nil }
         return .init(rawValue: name)
     }
 }
 
 // MARK: - Meta
+
 // these methods are conveniences to help in filtering and classifying elements
 
 // swiftformat:options --wrapcollections preserve
 extension Set<FCPXML.ElementType> {
     public static let allStructureCases: Self = [
-        .fcpxml, .resources, .library, .event, .project
+        .fcpxml,
+        .resources,
+        .library,
+        .event,
+        .project
     ]
-    
+
     public static let allResourceCases: Self = [
-        .asset, .media, .format, .effect, .locator, .objectTracker
+        .asset,
+        .media,
+        .format,
+        .effect,
+        .locator,
+        .objectTracker
     ]
-    
+
     public static let allClipCases: Self = [
-        .assetClip, .audio, .audition, .clip, .gap, .liveDrawing,
-            .mcClip, .refClip, .syncClip, .title, .transition, .video
+        .assetClip,
+        .audio,
+        .audition,
+        .clip,
+        .gap,
+        .liveDrawing,
+        .mcClip,
+        .refClip,
+        .syncClip,
+        .title,
+        .transition,
+        .video
     ]
-    
+
     public static let allAnnotationCases: Self = [
-        .caption, .keyword, .marker, .chapterMarker
+        .caption,
+        .keyword,
+        .marker,
+        .chapterMarker
     ]
-    
+
     public static let allStoryElementCases: Self =
         [.sequence, .spine]
             + allClipCases
             + allAnnotationCases
-    
+
     public static let allTimelineCases: Self = [
         .assetClip,
         .audio,
@@ -161,31 +184,31 @@ extension FCPXML.ElementType {
     public var isStructure: Bool {
         Self.allStructureCases.contains(self)
     }
-    
+
     // resources
     public static let allResourceCases: Set<Self> = .allResourceCases
     public var isResource: Bool {
         Self.allResourceCases.contains(self)
     }
-    
+
     // clips
     public static let allClipCases: Set<Self> = .allClipCases
     public var isClip: Bool {
         Self.allClipCases.contains(self)
     }
-    
+
     // annotations
     public static let allAnnotationCases: Set<Self> = .allAnnotationCases
     public var isAnnotation: Bool {
         Self.allAnnotationCases.contains(self)
     }
-    
+
     // story elements
     public static let allStoryElementCases: Set<Self> = .allStoryElementCases
     public var isStoryElement: Bool {
         Self.allStoryElementCases.contains(self)
     }
-    
+
     // logical containers with a timeline that can contain story elements
     // and/or other nested containers.
     // (not "can it contain child elements?", but is it a container as far

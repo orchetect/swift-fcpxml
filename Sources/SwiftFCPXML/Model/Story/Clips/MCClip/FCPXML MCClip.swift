@@ -1,14 +1,14 @@
 //
 //  FCPXML MCClip.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 extension FCPXML {
     /// References a multicam media.
@@ -24,15 +24,15 @@ extension FCPXML {
     /// > ).
     public struct MCClip: FCPXMLElement {
         public let element: XMLElement
-        
+
         public let elementType: ElementType = .mcClip
-        
+
         public static let supportedElementTypes: Set<ElementType> = [.mcClip]
-        
+
         public init() {
             element = XMLElement(name: elementType.rawValue)
         }
-        
+
         public init?(element: XMLElement) {
             self.element = element
             guard _isElementTypeSupported(element: element) else { return nil }
@@ -65,30 +65,30 @@ extension FCPXML.MCClip {
         metadata: FCPXML.Metadata? = nil
     ) {
         self.init()
-        
+
         self.ref = ref
         self.srcEnable = srcEnable
-        
+
         // Audio Start/Duration
         self.audioStart = audioStart
         self.audioDuration = audioDuration
-        
+
         // Anchorable Attributes
         self.lane = lane
         self.offset = offset
-        
+
         // Clip Attributes
         self.name = name
         self.start = start
         self.duration = duration
         self.enabled = enabled
-        
+
         // Mod Date
         self.modDate = modDate
-        
+
         // Note child
         self.note = note
-        
+
         // Metadata
         self.metadata = metadata
     }
@@ -101,25 +101,25 @@ extension FCPXML.MCClip {
         // Element-Specific Attributes
         case ref // required
         case srcEnable // (all, audio, video) default: all
-        
+
         // Audio Start/Duration
         case audioStart
         case audioDuration
-        
+
         // Anchorable Attributes
         case lane
         case offset
-        
+
         // Clip Attributes
         case name
         case start
         case duration
         case enabled
-        
+
         // Mod Date
         case modDate
     }
-    
+
     // contains DTD mc-source*
     // contains DTD %timing-params
     // contains DTD %intrinsic-params-audio
@@ -135,7 +135,7 @@ extension FCPXML.MCClip {
         get { element.fcpRef ?? "" }
         nonmutating set { element.fcpRef = newValue }
     }
-    
+
     /// Sources to enable for audio and video. (Default: `.all`)
     public var srcEnable: FCPXML.ClipSourceEnable {
         get { element.fcpClipSourceEnable }
@@ -160,7 +160,7 @@ extension FCPXML.MCClip {
             element.addChildren(newValue)
         }
     }
-    
+
     /// Returns child story elements.
     public var storyElements: LazyFilteredCompactMapSequence<[XMLNode], XMLElement> {
         element.fcpStoryElements
@@ -183,8 +183,10 @@ extension FCPXML.MCClip: FCPXMLElementTimingParams { }
 
 // MARK: - Meta Conformances
 
-extension FCPXML.MCClip: FCPXMLElementMetaTimeline { 
-    public func asAnyTimeline() -> FCPXML.AnyTimeline { .mcClip(self) }
+extension FCPXML.MCClip: FCPXMLElementMetaTimeline {
+    public func asAnyTimeline() -> FCPXML.AnyTimeline {
+        .mcClip(self)
+    }
 }
 
 // MARK: - Properties
@@ -195,6 +197,7 @@ extension FCPXML.MCClip {
     public var multicamResource: FCPXML.Media.Multicam? {
         element.fcpResource()?.fcpAsMedia?.multicam
     }
+
     /// Returns audio and video `mc-angle` elements from the `media` resource's `multicam` element
     /// that correspond to the angles used by the `mc-clip`'s `mc-source` children.
     ///
@@ -206,7 +209,7 @@ extension FCPXML.MCClip {
     ) {
         let (audio, video) = multicamResource?.audioVideoMCAngles(forMulticamSources: sources)
             ?? (nil, nil)
-        
+
         return (audio, video)
     }
 }

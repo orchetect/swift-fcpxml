@@ -1,29 +1,29 @@
 //
 //  FCPXMLExtractedElement.swift
 //  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) // XMLNode only works on macOS
 
 import Foundation
-import SwiftTimecodeCore
 import SwiftExtensions
+import SwiftTimecodeCore
 
 /// Protocol for extracted elements that adds contextual properties.
 public protocol FCPXMLExtractedElement where Self: Sendable {
     /// The extracted XML element.
     var element: XMLElement { get }
-    
+
     /// XML breadcrumbs that were followed during the extraction process.
     ///
     /// This provides necessary element traversal history needed to infer context values
     /// that cannot be provided from the XML document layout.
     var breadcrumbs: [XMLElement] { get }
-    
+
     /// Resources. If `nil`, resources will be acquired from the XML document.
     var resources: XMLElement? { get }
-    
+
     /// Return the a context value for the element.
     func value<Value>(
         forContext contextKey: FCPXML.ElementContext<Value>
@@ -39,7 +39,7 @@ extension FCPXMLExtractedElement {
     ) -> Timecode? {
         value(forContext: .absoluteStartAsTimecode(frameRateSource: frameRateSource))
     }
-    
+
     /// Duration expressed as a length of timecode.
     public func duration(
         frameRateSource: FCPXML.FrameRateSource = .mainTimeline
@@ -66,8 +66,8 @@ extension Sequence where Element: FCPXMLExtractedElement {
                 // sort by `start` attribute as fallback
                 return lhs.element.fcpStart ?? .zero < rhs.element.fcpStart ?? .zero
             }
-            
-            if lhsTimecode == rhsTimecode, 
+
+            if lhsTimecode == rhsTimecode,
                 thenByName,
                let lhsName = lhs.element.fcpName ?? lhs.element.fcpValue,
                let rhsName = rhs.element.fcpName ?? rhs.element.fcpValue
@@ -78,7 +78,7 @@ extension Sequence where Element: FCPXMLExtractedElement {
             }
         }
     }
-    
+
     /// Sort collection by element `name`.
     /// If no `name` attribute exists, the `value` attribute will be used.
     public func sortedByName() -> [Element] {
