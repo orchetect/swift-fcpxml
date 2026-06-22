@@ -1,4 +1,4 @@
-# swift-fcpxml
+# SwiftFCPXML
 
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Forchetect%2Fswift-fcpxml%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/orchetect/swift-fcpxml) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Forchetect%2Fswift-fcpxml%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/orchetect/swift-fcpxml) [![License: MIT](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)](https://github.com/orchetect/swift-fcpxml/blob/main/LICENSE)
 
