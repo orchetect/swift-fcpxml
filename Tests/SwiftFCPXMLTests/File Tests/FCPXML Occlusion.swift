@@ -1,6 +1,6 @@
 //
 //  FCPXML Occlusion.swift
-//  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
+//  SwiftFCPXML • https://github.com/orchetect/swift-fcpxml
 //  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
@@ -18,7 +18,7 @@ struct FCPXML_Occlusion: TestUtils {
     // MARK: - Test Data
 
     var fileContents: Data {
-        get throws{
+        get throws {
             try TestResource.FCPXMLExports.occlusion.data()
         }
     }

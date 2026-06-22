@@ -1,6 +1,6 @@
 //
 //  FCPXML Annotations.swift
-//  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
+//  SwiftFCPXML • https://github.com/orchetect/swift-fcpxml
 //  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
@@ -250,7 +250,7 @@ struct FCPXML_Annotations: TestUtils {
 //                .assigned(.caption(raw: "iTT?captionFormat=ITT.en")!)
 //            ]
 //        )
-        
+
 //        let element1Caption1 = try #require(element1Captions[safe: 1])
 //        #expect(element1Caption1.note == nil)
 //        #expect(element1Caption1.role?.rawValue == "iTT?captionFormat=ITT.en")
@@ -292,7 +292,7 @@ struct FCPXML_Annotations: TestUtils {
 //            ]
 //        )
     }
-    
+
     /// Test keywords that apply to each marker.
     @Test
     func extractMarkers() async throws {

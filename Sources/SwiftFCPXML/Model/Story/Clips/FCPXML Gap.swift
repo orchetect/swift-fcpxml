@@ -1,6 +1,6 @@
 //
 //  FCPXML Gap.swift
-//  swift-fcpxml • https://github.com/orchetect/swift-fcpxml
+//  SwiftFCPXML • https://github.com/orchetect/swift-fcpxml
 //  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
