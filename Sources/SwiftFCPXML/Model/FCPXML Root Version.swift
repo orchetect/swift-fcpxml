@@ -7,6 +7,7 @@
 #if os(macOS) // XMLNode only works on macOS
 
 import SwiftExtensions
+import SwiftSemanticVersion
 
 extension FCPXML {
     /// FCPXML format version.

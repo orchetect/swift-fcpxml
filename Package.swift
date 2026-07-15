@@ -14,8 +14,9 @@ let package = Package(
         .library(name: "SwiftFCPXML", targets: ["SwiftFCPXML"])
     ],
     dependencies: [
-        .package(url: "https://github.com/orchetect/swift-extensions", from: "2.1.5"),
+        .package(url: "https://github.com/orchetect/swift-extensions", from: "3.0.0"),
         .package(url: "https://github.com/orchetect/swift-timecode", from: "3.1.0"),
+        .package(url: "https://github.com/orchetect/swift-semantic-version", from: "1.0.0"),
 
         // testing-only dependencies
         .package(url: "https://github.com/orchetect/swift-testing-extensions", from: "0.3.0")
@@ -25,7 +26,8 @@ let package = Package(
             name: "SwiftFCPXML",
             dependencies: [
                 .product(name: "SwiftExtensions", package: "swift-extensions"),
-                .product(name: "SwiftTimecodeCore", package: "swift-timecode")
+                .product(name: "SwiftTimecodeCore", package: "swift-timecode"),
+                .product(name: "SwiftSemanticVersion", package: "swift-semantic-version"),
             ]
         ),
         .testTarget(
