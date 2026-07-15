@@ -38,7 +38,7 @@ To add this package to an Xcode app project, use:
 To add this package to a Swift package, add it to your package dependencies:
 
 ```swift
-.package(url: "https://github.com/orchetect/swift-fcpxml", from: "0.1.0")
+.package(url: "https://github.com/orchetect/swift-fcpxml", from: "0.1.2")
 ```
 
 Then add it to your target dependencies:
@@ -49,7 +49,8 @@ Then add it to your target dependencies:
 
 ## Dependencies
 
-- [swift-timecode](https://github.com/orchetect/swift-timecode) to represent timecode values and frame rates
+- [SwiftTimecode](https://github.com/orchetect/swift-timecode) to represent timecode values and frame rates
+- [SwiftSemanticVersion](https://github.com/orchetect/swift-semantic-version) to represent FCPXML version
 
 ## Documentation
 
