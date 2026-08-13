@@ -15,7 +15,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/orchetect/swift-extensions", from: "3.0.0"),
-        .package(url: "https://github.com/orchetect/swift-timecode", from: "3.1.0"),
+        .package(url: "https://github.com/orchetect/swift-timecode", from: "3.1.3"),
         .package(url: "https://github.com/orchetect/swift-semantic-version", from: "1.0.0"),
 
         // testing-only dependencies
