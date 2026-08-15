@@ -19,7 +19,7 @@ let package = Package(
         .package(url: "https://github.com/orchetect/swift-semantic-version", from: "1.0.0"),
 
         // testing-only dependencies
-        .package(url: "https://github.com/orchetect/swift-testing-extensions", from: "0.3.0")
+        .package(url: "https://github.com/orchetect/swift-testing-extensions", from: "0.3.1")
     ],
     targets: [
         .target(
