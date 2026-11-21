@@ -98,6 +98,7 @@ extension FCPXML.Video {
     // can contain DTD param*
     // contains DTD %timing-params
     // contains DTD %intrinsic-params-video
+    // can contain DTD %intrinsic-params-primitive-video (superset of %intrinsic-params-video)
     // can contain DTD %anchor_item*
     // can contain markers
     // can contain DTD %video_filter_item*
