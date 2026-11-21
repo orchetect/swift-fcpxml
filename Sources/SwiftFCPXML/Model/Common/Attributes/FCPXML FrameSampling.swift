@@ -18,6 +18,7 @@ extension FCPXML {
         case opticalFlowClassic = "optical-flow-classic"
         case opticalFlow = "optical-flow"
         case opticalFlowFRC = "optical-flow-frc"
+        case vsaMotionBlur = "vsa-motion-blur"
     }
 }
 
