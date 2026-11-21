@@ -38,7 +38,7 @@ To add this package to an Xcode app project, use:
 To add this package to a Swift package, add it to your package dependencies:
 
 ```swift
-.package(url: "https://github.com/orchetect/swift-fcpxml", from: "0.1.2")
+.package(url: "https://github.com/orchetect/swift-fcpxml", from: "0.1.3")
 ```
 
 Then add it to your target dependencies:
