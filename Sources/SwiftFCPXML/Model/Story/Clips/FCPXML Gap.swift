@@ -92,6 +92,17 @@ extension FCPXML.Gap {
 
 // MARK: - Attributes
 
+extension FCPXML.Gap {
+    // TODO: Refactor as new OptionSet type. For now, property is offered as the raw string value stored in the XML.
+    /// Get or set the gap clip `flags`.
+    /// The value is typically a numeric value that is interpreted as a binary bit set.
+    /// As of FCPXML 1.15, the only bit defined is the first (lowest) bit indicating the clip is disconnected.
+    public var flags: String? {
+        get { element.stringValue(forAttributeNamed: "flags") }
+        nonmutating set { element.addAttribute(withName: "flags", value: newValue) }
+    }
+}
+
 extension FCPXML.Gap: FCPXMLElementClipAttributes {
     // A kludge since Gap uses 5 of the 6 clip attributes, except `lane`.
     @available(*, deprecated, message: "Can't set lane attribute on gap clip.")
