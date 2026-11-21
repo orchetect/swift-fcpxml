@@ -1,0 +1,44 @@
+// swift-tools-version: 6.2
+
+import PackageDescription
+
+let package = Package(
+    name: "swift-fcpxml",
+    platforms: [
+        .macOS(.v10_15),
+        .iOS(.v13),
+        .tvOS(.v13),
+        .watchOS(.v6)
+    ],
+    products: [
+        .library(name: "SwiftFCPXML", targets: ["SwiftFCPXML"])
+    ],
+    dependencies: [
+        .package(url: "https://github.com/orchetect/swift-extensions", from: "3.0.0"),
+        .package(url: "https://github.com/orchetect/swift-timecode", from: "3.1.3"),
+        .package(url: "https://github.com/orchetect/swift-semantic-version", from: "1.0.0"),
+
+        // testing-only dependencies
+        .package(url: "https://github.com/orchetect/swift-testing-extensions", from: "0.3.1")
+    ],
+    targets: [
+        .target(
+            name: "SwiftFCPXML",
+            dependencies: [
+                .product(name: "SwiftExtensions", package: "swift-extensions"),
+                .product(name: "SwiftTimecodeCore", package: "swift-timecode"),
+                .product(name: "SwiftSemanticVersion", package: "swift-semantic-version"),
+            ]
+        ),
+        .testTarget(
+            name: "SwiftFCPXMLTests",
+            dependencies: [
+                "SwiftFCPXML",
+                .product(name: "TestingExtensions", package: "swift-testing-extensions")
+            ],
+            resources: [
+                .copy("TestResource/FCPXML Exports")
+            ]
+        )
+    ]
+)
